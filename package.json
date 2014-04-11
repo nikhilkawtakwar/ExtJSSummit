@@ -1,5 +1,5 @@
-{
-    "name":"HTML5-Summit",
+/*{
+    "name":"ExtJS-Summit",
     "version": "0.0.1",
     "dependencies":{
         "express": "latest",
@@ -12,4 +12,4 @@
     "scripts":{
         "start": "node server.js"
     }
-}
+} */

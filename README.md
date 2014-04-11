@@ -14,9 +14,8 @@ How to run this project
 ------
 * Install NodeJS from http://nodejs.org/
 
-* Go To ExtJS-AngJS Directory
-* $>cd ExtJS-AngJS
-* $>npm install
+* Go To ExtJSSummit Directory
+* $>cd ExtJSSummit
 * $>npm start
-* Open http://localhost:5000 in Google Chrome Browser
+* Open http://localhost:4000 in Google Chrome Browser
 
