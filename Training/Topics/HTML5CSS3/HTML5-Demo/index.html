@@ -1,0 +1,3318 @@
+<!Doctype HTML>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <![endif]-->
+
+    <script src="js/jquery-1.7.2.min.js"></script>
+    <script src="js/slides.js"></script>
+    <script src="js/fibonacci.js"></script>
+    <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+    <link rel="stylesheet" href="css/slide.css"/>
+</head>
+<body>
+<section id="toc" class="toc">
+    <h1>Table of Contents</h1>
+    <ol>
+
+    </ol>
+</section>
+
+<section id="help" class="help">
+    <h1>Help</h1>
+    <p>Left Arrow - Previous Slide</p>
+    <p>Right Arrow - Next Slide</p>
+    <p>Up Arrow - First Slide</p>
+    <p>Down Arrow - Last Slide</p>
+
+</section>
+
+<nav class="slide-controller">
+
+    <div class="prev-slide"><img src="images/prev-slide.svg"/></div>
+    <div id="toc-toggle" class="text">Table of Contents</div>
+    <div id="help-toggle" class="text">Help (?)</div>
+    <div class="next-slide"><img src="images/next-slide.svg"/></div>
+</nav>
+
+
+<section class="slide-container">
+<div class="slide-strip">
+<article class="title">
+    <header>HTML 5</header>
+    <section>
+        <h2>By Rohit Ghatol</h2>
+        <h3>Director of Engineering - <a target="_blank" href="http://www.synerzip.com">Synerzip</a></h3>
+        <h3>Author - <a target="_blank" href="http://www.apress.com/9781430239031">Beginning PhoneGap</a></h3>
+        <h3>Manages - <a target="_blank" href="http://meetup.com/technext">TechNext</a> & <a target="_blank" href="http://meetup.com/pune-gdg">Pune-GDG</a></h3>
+        <p style="color:red">(Use only Google Chrome Browser till further notice)</p>
+    </section>
+</article>
+<article class="tx">
+    <header>Topic</header>
+    <section>
+        <ul>
+            <li><h1>What's new in HTML 5?</h1>
+                <ul>
+                    <li><h2>What's new in HTML?</h2></li>
+                    <li><h2>What's new in CSS 3?</h2></li>
+                    <li><h2>What's new in APIs?</h2></li>
+                </ul>
+            </li>
+            <li><h1>Issues with HTML 5</h1></li>
+            <li><h1>How to decide which feature to go with?</h1></li>
+        </ul>
+    </section>
+</article>
+<article class="tx">
+    <header>What's new in HTML5?</header>
+    <section>
+        <h3>We will cover</h3>
+        <ul>
+            <li><h3>HTML Tags</h3></li>
+            <li><h3>CSS3 </h3></li>
+            <li><h3>APIs </h3></li>
+        </ul>
+    </section>
+</article>
+<article class="tx">
+    <header>New Features in HTML</header>
+    <section>
+        <h3>We will cover</h3>
+        <ul>
+            <li><h3>New DocType & Syntax</h3></li>
+            <li><h3>New Tags: Article, Section, Nav, etc. </h3></li>
+            <li><h3>Audio/Video Tag </h3></li>
+            <li><h3>Canvas & SVG </h3></li>
+            <li><h3>New Form Elements </h3></li>
+        </ul>
+    </section>
+</article>
+<article class="tx">
+    <header>New DocType & Syntax</header>
+    <section>
+        <style>
+            .container {
+                padding-left: 50px;
+                width: 600px;
+                height: 500px;
+                position: relative;
+
+                border: 1px solid #CCC;
+                -webkit-perspective: 800px;
+                -moz-perspective: 800px;
+                -o-perspective: 800px;
+                perspective: 800px;
+            }
+
+            #card {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                -webkit-transition: -webkit-transform 1s;
+                -moz-transition: -moz-transform 1s;
+                -o-transition: -o-transform 1s;
+                transition: transform 1s;
+                -webkit-transform-style: preserve-3d;
+                -moz-transform-style: preserve-3d;
+                -o-transform-style: preserve-3d;
+                transform-style: preserve-3d;
+            }
+
+            #card.flipped {
+                -webkit-transform: rotateY(180deg);
+                -moz-transform: rotateY(180deg);
+                -o-transform: rotateY(180deg);
+                transform: rotateY(180deg);
+            }
+
+            #card figure {
+                display: block;
+                height: 100%;
+                width: 90%;
+                text-align: left;
+                color: black;
+                font-size: 14pt;
+                position: absolute;
+                -webkit-backface-visibility: hidden;
+                -moz-backface-visibility: hidden;
+                -o-backface-visibility: hidden;
+                backface-visibility: hidden;
+            }
+
+            #card .front {
+                background: white;
+            }
+
+            #card .back {
+                background: yellow;
+                -webkit-transform: rotateY(180deg);
+                -moz-transform: rotateY(180deg);
+                -o-transform: rotateY(180deg);
+                transform: rotateY(180deg);
+                padding-left: 10px;
+            }
+
+            .container:hover #card {
+                -webkit-transform: rotateY(180deg);
+                -moz-transform: rotateY(180deg);
+                -o-transform: rotateY(180deg);
+                transform: rotateY(180deg);
+
+            }
+        </style>
+        <section class="container">
+            <div id="card">
+                <figure class="front"><br/>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.01//EN&quot;<br/> &quot;http://www.w3.org/TR/html4/strict.dtd&quot;&gt;<br/>&lt;html
+                    lang=&quot;en&quot;&gt;<br/>&lt;head&gt;<br/> &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html;charset=utf-8&quot;&gt;<br/>
+                    &lt;script type=&quot;text/javascript&quot; src=&quot;js/app.js&quot;&gt;&lt;/script&gt;<br/> &lt;script
+                    type=&quot;text/javascript&quot;&gt;<br/> var data = &quot;abc&quot;<br/> &lt;/script&gt;<br/> &lt;link
+                    type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;css/app.css&quot; media=&quot;screen&quot;&gt;<br/>
+                    &lt;title&gt;HTML4&lt;/title&gt;<br/>&lt;/head&gt;<br/>&lt;body&gt;<br/> &lt;h1&gt;HTML 4&lt;/h1&gt;<br/>
+                    &lt;p&gt;View Source&lt;/p&gt;<br/>&lt;/body&gt;<br/>&lt;/html&gt;<br/><br/></figure>
+                <figure class="back"><br/>&lt;!DOCTYPE HTML&gt;<br/>&lt;html lang=&quot;en&quot;&gt;<br/>&lt;head&gt;<br/>
+                    &lt;meta content=&quot;text/html;charset=utf-8&quot;&gt;<br/> &lt;script src=&quot;js/app.js&quot;&gt;&lt;/script&gt;<br/>
+                    &lt;script&gt; <br/> var data = &quot;abc&quot;<br/> &lt;/script&gt;<br/> &lt;link rel=&quot;stylesheet&quot;
+                    href=&quot;css/app.css&quot; media=&quot;screen&quot;&gt;<br/> &lt;title&gt;HTML5&lt;/title&gt;<br/>&lt;/head&gt;<br/>&lt;body&gt;<br/>
+                    &lt;h1&gt;HTML 5&lt;/h1&gt;<br/> &lt;p&gt;View
+                    Source&lt;/p&gt;<br/>&lt;/body&gt;<br/>&lt;/html&gt;<br/><br/></figure>
+            </div>
+        </section>
+
+
+    </section>
+</article>
+<article class="title">
+    <header>New Tags: Article, Section, Nav, etc</header>
+    <section>
+
+    </section>
+</article>
+<article class="tx">
+    <header>Div Hell</header>
+    <section>
+        <h3>Traditional Approach</h3>
+        <p>
+            Imagine everything element in your HTML Page to be div and then try to figure out which element ends where.
+            Also think from the point of view of a code which is looking at the DIVs, there would be no way to find out
+            if a given div indicates a header section, a actual content section, a navigation area etc.
+        </p>
+       <p>
+            Live Demo - <a target="_blank" href="chapters/chapter-2/html4/index.html">See Example</a>
+       </p>
+        <pre class="code">
+&lt;div&gt;
+    &lt;div&gt;
+        ...
+    &lt;/div&gt;
+    &lt;div&gt;
+        &lt;div&gt;
+        ...
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+        </pre>
+    </section>
+</article>
+<article class="tx">
+    <header>Article, Section, Nav, Aside tags</header>
+    <section>
+        <h3>HTML 5 Tags Approach</h3>
+
+        Specific Tags for Specific Purpose - <a target="_blank" href="chapters/chapter-2/html5/index.html">See
+        Example</a>
+
+        <p>
+            Now Imagine different tags available like Article, Section, Nav, Header, Footer. The best part of about all
+            these tags is that these are nothing but DIVs but with different name
+        </p>
+        <p>
+            Live Demo - <a target="_blank" href="chapters/chapter-2/html5/index.html">See Example</a>
+        </p>
+        <pre class="code">
+&lt;section&gt;
+    &lt;article&gt;
+        &lt;header&gt;
+            ....
+        &lt;header&gt;
+        ...
+    &lt;/article&gt;
+    &lt;aside&gt;
+        &lt;nav&gt;
+        ...
+        &lt;/nav&gt;
+    &lt;/aside&gt;
+&lt;/section&gt;
+        </pre>
+    </section>
+</article>
+<article class="title">
+    <header>Audio & Video Tags</header>
+    <section>
+    </section>
+</article>
+<article class="tx">
+    <header>Video Tag Demo</header>
+    <section>
+        <video width="640" height="368" id="myVideo" controls>
+            <source src="http://www.html5videoplayer.net/videos/madagascar3.ogv"
+                    type='video/ogg; codecs="theora, vorbis"'>
+            <source src="http://www.html5videoplayer.net/videos/madagascar3.mp4"
+                    type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+            <source src="http://www.html5videoplayer.net/videos/madagascar3.webm"
+                    type='video/webm; codecs="vp8.0, vorbis"'>
+        </video>
+        <div class="controls">
+            <input type="button" name="skipBack" value="&lt;&lt;" id="rewind">
+            <input type="button" name="play" value="&gt;" id="play">
+            <input type="button" name="pause" value="||" id="pause">
+            <input type="button" name="stop" value="[]" id="stop">
+            <input type="button" name="skipBack" value="&gt;&gt;" id="forward">
+            <input type="range" name="range" id="range">
+        </div>
+
+
+        <script>
+            var videoElem = document.getElementById("myVideo");
+            var playButton = document.getElementById("play");
+            var pauseButton = document.getElementById("pause");
+            var stopButton = document.getElementById("stop");
+            var rewindButton = document.getElementById("rewind");
+            var forwardButton = document.getElementById("forward");
+            var range = document.getElementById("range");
+
+            videoElem.addEventListener("loadedmetadata", function () {
+                range.min = 0;
+                range.step = 1;
+                range.max = videoElem.duration;
+            }, false);
+
+            videoElem.addEventListener("timeupdate", function () {
+                range.value = videoElem.currentTime;
+            });
+
+            range.addEventListener("mousedown", function () {
+                videoElem.pause();
+
+            });
+            range.addEventListener("mouseup", function () {
+                videoElem.currentTime = range.value;
+                videoElem.play();
+
+            });
+
+            rewindButton.addEventListener("click", function () {
+                videoElem.currentTime -= 2;
+            });
+
+            playButton.addEventListener("click", function () {
+                videoElem.play();
+            });
+            pauseButton.addEventListener("click", function () {
+                videoElem.pause();
+            });
+            stopButton.addEventListener("click", function () {
+                videoElem.currentTime = 0;
+                videoElem.pause();
+            });
+
+            forwardButton.addEventListener("click", function () {
+                videoElem.currentTime += 2;
+            });
+        </script>
+    </section>
+</article>
+<article class="tx">
+    <header>Video Tag - Source Code</header>
+    <section>
+        <pre class="code">&lt;video width=&quot;640&quot; height=&quot;368&quot; id=&quot;myVideo&quot; controls&gt;<br/> &nbsp;&nbsp;&nbsp;&nbsp;&lt;source src=&quot;http://www.html5videoplayer.net/videos/madagascar3.ogv&quot; <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type='video/ogg;codecs=&quot;theora, vorbis&quot;'&gt;<br/> &nbsp;&nbsp;&nbsp;&nbsp;&lt;source src=&quot;http://www.html5videoplayer.net/videos/madagascar3.mp4&quot;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type='video/mp4; codecs=&quot;avc1.42E01E, mp4a.40.2&quot;'&gt;<br/> &nbsp;&nbsp;&nbsp;&nbsp;&lt;source src=&quot;http://www.html5videoplayer.net/videos/madagascar3.webm&quot;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type='video/webm; codecs=&quot;vp8.0, vorbis&quot;'&gt;<br/>&lt;/video&gt;</pre>
+<pre class="code">
+var videoElem = document.getElementById("myVideo");
+
+//Play Video
+videoElem.play();
+
+//Pause Video
+videoElem.pause();
+
+//Forward Rewind
+videoElem.currentTime = 100;
+</pre>
+    </section>
+</article>
+<article class="title">
+    <header>Canvas & SVG</header>
+    <section>
+
+    </section>
+</article>
+<article class="twoTxCol">
+    <header>Canvas Demo</header>
+    <section>
+        <h3>Demo</h3>
+        <canvas id="canvas1" width="300px" height="300px"></canvas>
+        <script>
+            var canvasElem = document.getElementById("canvas1");
+            var ctx = canvasElem.getContext('2d');
+            ctx.fillStyle = "#00A308";
+            ctx.beginPath();
+            ctx.arc(220, 220, 50, 0, Math.PI * 2, true);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.fillStyle = "#FF1C0A";
+            ctx.beginPath();
+            ctx.arc(100, 100, 100, 0, Math.PI * 2, true);
+            ctx.closePath();
+            ctx.fill();
+
+            //the rectangle is half transparent
+            ctx.fillStyle = "rgba(255, 255, 0, .5)"
+            ctx.beginPath();
+            ctx.rect(15, 150, 120, 120);
+            ctx.closePath();
+            ctx.fill();
+
+        </script>
+    </section>
+    <section>
+        <h3>Source Code</h3>
+        <pre class="code">
+var canvasElem = document.getElementById("canvas1");
+
+var ctx = canvasElem.getContext('2d');
+ctx.fillStyle = "#00A308";
+ctx.beginPath();
+ctx.arc(220, 220, 50, 0, Math.PI*2, true);
+ctx.closePath();
+ctx.fill();
+
+ctx.fillStyle = "#FF1C0A";
+ctx.beginPath();
+ctx.arc(100, 100, 100, 0, Math.PI*2, true);
+ctx.closePath();
+ctx.fill();
+
+//the rectangle is half transparent
+ctx.fillStyle = "rgba(255, 255, 0, .5)";
+ctx.beginPath();
+ctx.rect(15, 150, 120, 120);
+ctx.closePath();
+ctx.fill();
+        </pre>
+    </section>
+</article>
+<article class="tx">
+    <header>Drawing Capabilities</header>
+    <section>
+        <ul>
+            <li>
+                Drawing APIs
+                <ul>
+                    <li>lineTo(),moveTo(),arcTo()</li>
+                </ul>
+            </li>
+            <li>
+                Transformation APIs
+                <ul>
+                    <li>scale(), translate(), transform()</li>
+                </ul>
+            </li>
+            <li>
+                Context APIs
+                <ul>
+                    <li>save()</li>
+                    <li>restore()</li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+</article>
+<article class="twoTxCol">
+    <header>Drawing Concept</header>
+    <section>
+        <h1>Answer following Questions</h1>
+        <ul>
+
+            <li>At 115 Degree rotation what is x,y?</li>
+            <li>At 115 Degree rotation & 1/s scale what is x,y?</li>
+        </ul>
+
+    </section>
+    <section>
+        <h3>Canvas Drawing</h3>
+        <canvas id="canvas2" width="300px" height="300px"></canvas>
+        <script>
+            var canvasElem = document.getElementById("canvas2");
+            var ctx = canvasElem.getContext('2d');
+            ctx.fillStyle = "black";
+            ctx.strokeStyle = "red";
+
+            for (var i = 0; i < 20; i++) {
+                ctx.moveTo(i * 20, 0);
+                ctx.lineTo(i * 20, 400);
+                ctx.stroke();
+                for (var j = 0; j < 10; j++) {
+                    ctx.moveTo(0, i * 20);
+                    ctx.lineTo(400, i * 20);
+                    ctx.stroke();
+                }
+            }
+            ctx.save();
+            ctx.rect(0, 20, 80, 40);
+            ctx.fill();
+            ctx.fillText("0,20", 0, 10);
+            ctx.restore();
+
+            ctx.save();
+            ctx.translate(40, 60);
+            ctx.rect(0, 20, 80, 40);
+            ctx.fill();
+            ctx.fillText("40,80", 0, 10);
+            ctx.restore();
+
+            ctx.save();
+            ctx.translate(140, 100);
+            ctx.rotate(170);
+            ctx.rect(0, 20, 80, 40);
+            ctx.fill();
+            ctx.fillText("@ 115 Degree what is x,y", 0, 10);
+            ctx.restore();
+
+            ctx.save();
+            ctx.translate(40, 200);
+            ctx.rotate(170);
+            ctx.scale(0.5, 0.5)
+            ctx.rect(0, 20, 80, 40);
+            ctx.fill();
+            ctx.fillText("@ 115 Deg & 1/2 scale what is x,y", 0, 0);
+            ctx.restore();
+
+        </script>
+    </section>
+</article>
+<article class="twoTxCol">
+    <header>Code Snippet - 1</header>
+    <section>
+        <h3>Code</h3>
+        <pre class="code">
+ctx.save();
+ctx.rect(0,20,80,40);
+ctx.fill();
+ctx.fillText("0,20",0,10);
+ctx.restore();
+
+ctx.save();
+ctx.translate(40,60);
+ctx.rect(0,20,80,40);
+ctx.fill();
+ctx.fillText("40,80",0,10);
+ctx.restore();
+
+        </pre>
+    </section>
+    <section>
+        <h3>Canvas Drawing</h3>
+        <canvas id="canvas3" width="300px" height="300px"></canvas>
+        <script>
+            var canvasElem = document.getElementById("canvas3");
+            var ctx = canvasElem.getContext('2d');
+            ctx.fillStyle = "black";
+            ctx.strokeStyle = "red";
+
+            for (var i = 0; i < 20; i++) {
+                ctx.moveTo(i * 20, 0);
+                ctx.lineTo(i * 20, 400);
+                ctx.stroke();
+                for (var j = 0; j < 10; j++) {
+                    ctx.moveTo(0, i * 20);
+                    ctx.lineTo(400, i * 20);
+                    ctx.stroke();
+                }
+            }
+            ctx.save();
+            ctx.rect(0, 20, 80, 40);
+            ctx.fill();
+            ctx.fillText("0,20", 0, 10);
+            ctx.restore();
+
+            ctx.save();
+            ctx.translate(40, 60);
+            ctx.rect(0, 20, 80, 40);
+            ctx.fill();
+            ctx.fillText("40,80", 0, 10);
+            ctx.restore();
+
+            ctx.save();
+            ctx.translate(140, 100);
+            ctx.rotate(170);
+            ctx.rect(0, 20, 80, 40);
+            ctx.fill();
+            ctx.fillText("@ 115 Degree what is x,y", 0, 10);
+            ctx.restore();
+
+            ctx.save();
+            ctx.translate(40, 200);
+            ctx.rotate(170);
+            ctx.scale(0.5, 0.5)
+            ctx.rect(0, 20, 80, 40);
+            ctx.fill();
+            ctx.fillText("@ 115 Deg & 1/2 scale what is x,y", 0, 0);
+            ctx.restore();
+
+        </script>
+    </section>
+</article>
+<article class="twoTxCol">
+    <header>Code Snippet - 2</header>
+    <section>
+        <h3>Code</h3>
+        <pre class="code">
+ctx.save();
+ctx.translate(140,100);
+ctx.rotate(170);
+ctx.rect(0,20,80,40);
+ctx.fill();
+ctx.fillText("@ 115 Degree what is x,y",0,10);
+ctx.restore();
+
+ctx.save();
+ctx.translate(40,200);
+ctx.rotate(170);
+ctx.scale(0.5,0.5);
+ctx.rect(0,20,80,40);
+ctx.fill();
+ctx.fillText("@ 115 Deg & 1/2 scale what is x,y",0,0);
+ctx.restore();
+        </pre>
+
+    </section>
+    <section>
+        <h3>Canvas Drawing</h3>
+        <canvas id="canvas4" width="300px" height="300px"></canvas>
+        <script>
+            var canvasElem = document.getElementById("canvas4");
+            var ctx = canvasElem.getContext('2d');
+            ctx.fillStyle = "black";
+            ctx.strokeStyle = "red";
+
+            for (var i = 0; i < 20; i++) {
+                ctx.moveTo(i * 20, 0);
+                ctx.lineTo(i * 20, 400);
+                ctx.stroke();
+                for (var j = 0; j < 10; j++) {
+                    ctx.moveTo(0, i * 20);
+                    ctx.lineTo(400, i * 20);
+                    ctx.stroke();
+                }
+            }
+            ctx.save();
+            ctx.rect(0, 20, 80, 40);
+            ctx.fill();
+            ctx.fillText("0,20", 0, 10);
+            ctx.restore();
+
+            ctx.save();
+            ctx.translate(40, 60);
+            ctx.rect(0, 20, 80, 40);
+            ctx.fill();
+            ctx.fillText("40,80", 0, 10);
+            ctx.restore();
+
+            ctx.save();
+            ctx.translate(140, 100);
+            ctx.rotate(170);
+            ctx.rect(0, 20, 80, 40);
+            ctx.fill();
+            ctx.fillText("@ 115 Degree what is x,y", 0, 10);
+            ctx.restore();
+
+            ctx.save();
+            ctx.translate(40, 200);
+            ctx.rotate(170);
+            ctx.save();
+            ctx.scale(0.5, 0.5)
+            ctx.rect(0, 20, 80, 40);
+            ctx.fill();
+            ctx.restore();
+            ctx.fillText("@ 115 Deg & 1/2 scale what is x,y", 0, 0);
+            ctx.restore();
+
+        </script>
+    </section>
+</article>
+<article class="twoTxCol">
+    <header>Canvas Game</header>
+    <section>
+        <h3>Game Concept</h3>
+        <pre class="code">
+&lt;script&gt;<br/>
+setInterval(gameLoop,100);
+
+function gameLoop(){
+    manipulateModel();
+    clearCanvas();
+    drawModel();
+}
+
+&lt;script/&gt;
+        </pre>
+
+
+    </section>
+    <section>
+        <h3>Canvas Drawing</h3>
+        <canvas id="canvas5" width="300px" height="300px" style="border: 1px solid red;"></canvas>
+        <script>
+            var canvas = document.getElementById("canvas5");
+            var ctx = canvas.getContext("2d");
+            ctx.fillStyle = "#000000";
+            var ballX = 100, ballY = 200;
+            var radius = 20;
+            var xInc = 10;
+            var yInc = 10;
+            setInterval(gameLoop, 10);
+
+            function gameLoop() {
+                advanceBall();
+                clearCanvas();
+                drawBall();
+
+            }
+
+            function advanceBall() {
+                ballX += xInc;
+                ballY += yInc;
+                if ((ballX + radius) > canvas.width) {
+                    xInc = (-1) * xInc;
+                }
+                if ((ballX - radius) < 0) {
+                    xInc = (-1) * xInc;
+                }
+                if ((ballY + radius) > canvas.height) {
+                    yInc = (-1) * yInc;
+                }
+                if ((ballY - radius) < 0) {
+                    yInc = (-1) * yInc;
+                }
+            }
+            function clearCanvas() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+            function drawBall() {
+                ctx.beginPath();
+                ctx.arc(ballX, ballY, radius, 0, Math.PI * 2, true);
+                ctx.closePath();
+                ctx.fill();
+            }
+        </script>
+    </section>
+</article>
+
+<article class="tx">
+    <header>SVG Demo</header>
+    <section>
+        <style>
+            circle.myGreen {
+                stroke: #006600;
+                fill: #00cc00;
+            }
+
+            circle.myRed {
+                stroke: #660000;
+                fill: #cc0000;
+            }
+        </style>
+        <svg xmlns="http://www.w3.org/2000/svg"
+             xmlns:xlink="http://www.w3.org/1999/xlink">
+            <rect x="10" y="10" height="100" width="100"
+                  style="stroke:#ff0000; fill: #0000ff"/>
+            </rect>
+
+            <rect x="50" y="50" height="110" width="110"
+                  style="stroke:#ff0000; fill: #ccccff"
+                  transform="translate(30) rotate(45 50 50)"
+                    >
+            </rect>
+            <text x="70" y="100"
+                  transform="translate(30) rotate(45 50 50)">Hello World
+            </text>
+
+            <circle class="myGreen" cx="140" cy="40" r="24"/>
+            <circle class="myRed" cx="140" cy="100" r="24"/>
+
+            <g transform="rotate(300 300 50)">
+                <line x1="310" y1="310" x2="385" y2="310"
+                      style="stroke: #006600;"/>
+
+                <rect x="310" y="320" height="50" width="75"
+                      style="stroke: #006600; fill: #006600"/>
+
+                <text x="310" y="390" style="stroke: #660000; fill: #660000">
+                    Text grouped with shapes
+                </text>
+            </g>
+
+
+        </svg>
+
+
+    </section>
+</article>
+<article class="tx">
+    <header>SVG - Code</header>
+    <section>
+<pre class="code">
+&lt;style&gt;
+    circle.myGreen {
+        stroke: #006600;
+        fill: #00cc00;
+    }
+    circle.myRed {
+        stroke: #660000;
+        fill: #cc0000;
+    }
+&lt;/style&gt;
+&lt;svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;
+    &lt;rect x="10" y="10" height="100" width="100" style="stroke:#ff0000; fill: #0000ff"&lt;/rect&gt;
+    &lt;rect x="50" y="50" height="110" width="110" style="stroke:#ff0000; fill: #ccccff" transform="translate(30) rotate(45 50 50)"&gt;&lt;/rect&gt;
+    &lt;text x="70" y="100" transform="translate(30) rotate(45 50 50)">Hello World&lt;/text&gt;
+    &lt;circle class="myGreen" cx="140" cy="40" r="24"/&gt;
+    &lt;circle class="myRed" cx="140" cy="100" r="24"/&gt;
+
+    &lt;g transform="rotate(300 300 50)"&gt;
+        &lt;line x1="310" y1="310" x2="385" y2="310" style="stroke: #006600;"/&gt;
+        &lt;rect x="310" y="320" height="50" width="75" style="stroke: #006600; fill: #006600"/&gt;
+        &lt;text x="310" y="390" style="stroke: #660000; fill: #660000"&gt;
+            Text grouped with shapes
+        &lt;/text&gt;
+    &lt;/g&gt;
+&lt;/svg&gt;
+</pre>
+    </section>
+</article>
+
+
+<article class="tx">
+    <header>New Form Element</header>
+
+
+    <section>
+        <style>
+            .form-inputs {
+                font-size: 80%;
+            }
+
+            .form-inputs input {
+                float: right;
+                border: 1px solid #CCC;
+                -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 3px inset;
+                -moz-box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 3px inset;
+                -o-box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 3px inset;
+                box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 3px inset;
+                padding: 3px 5px;
+            }
+
+            input[required] {
+                border-color: #88a;
+                -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 3px inset, rgba(0, 0, 255, 0.5) 0px 0px 3px;
+                -moz-box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 3px inset, rgba(0, 0, 255, 0.5) 0px 0px 3px;
+                -o-box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 3px inset, rgba(0, 0, 255, 0.5) 0px 0px 3px;
+                box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 3px inset, rgba(0, 0, 255, 0.5) 0px 0px 3px;
+            }
+
+            input:invalid {
+                border-color: #e88;
+                -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 3px inset, 0 0 5px rgba(255, 0, 0, .8);
+                -moz-box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 3px inset, 0 0 5px rgba(255, 0, 0, .8);
+                -o-box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 3px inset, 0 0 5px rgba(255, 0, 0, .8);
+                box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 3px inset, 0 0 5px rgba(255, 0, 0, .8);
+            }
+        </style>
+
+        <table>
+            <tr>
+                <td><pre class="code">&lt;input type="text" required=""/&gt;</pre></td><td><input type="text" required=""/&gt;</td>
+            </tr>
+            <tr>
+                <td><pre class="code">&lt;input type="email" value="some@email.com"/&gt;</pre></td><td><input type="email" value="some@email.com"/&gt;</td>
+            </tr>
+            <tr>
+                <td><pre class="code">&lt;input type="date" min="2010-08-14" max="2011-08-14" value="2010-08-14"/&gt;</pre></td><td><input type="date" min="2010-08-14" max="2011-08-14" value="2010-08-14"/></td>
+            </tr>
+            <tr>
+                <td><pre class="code">&lt;input type="range" min="0" max="50" value="10"/&gt;</pre></td><td><input type="range" min="0" max="50" value="10"/></td>
+            </tr>
+            <tr>
+                <td><pre class="code">&lt;input type="tel" placeholder="(555) 555-5555" pattern="^\(?\d{3}\)?[-\s]\d{3}[-\s]\d{4}.*?$"/&gt;</pre></td><td><input type="tel" placeholder="(555) 555-5555" pattern="^\(?\d{3}\)?[-\s]\d{3}[-\s]\d{4}.*?$"/></td>
+            </tr>
+            <tr>
+                <td><pre class="code">&lt;input type="color" placeholder="e.g. #bbbbbb"/&gt;</pre></td><td><input type="color" placeholder="e.g. #bbbbbb"/></td>
+            </tr>
+            <tr>
+                <td><pre class="code">&lt;input type="number" step="1" min="-5" max="10" value="0"/&gt;</pre></td><td><input type="number" step="1" min="-5" max="10" value="0"/></td>
+            </tr>
+            <tr>
+                <td><pre class="code">&lt;input results="10" type="search" placeholder="Search..."/&gt;</pre></td><td><input results="10" type="search" placeholder="Search..."/></td>
+            </tr>
+        </table>
+
+    </section>
+</article>
+<article class="tx">
+    <header>CSS3</header>
+    <section>
+        <ul>
+            <li><h1>What's new in CSS3 ?</h1>
+                <ul>
+                    <li><h2>New Properties</h2></li>
+                    <li><h2>Transforms</h2></li>
+                    <li><h2>Transitions</h2></li>
+                    <li><h2>Animation</h2></li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+</article>
+<article class="tx">
+    <header>Border Properties</header>
+    <section>
+        <style>
+            .border-props div {
+                background: red;
+                color: white;
+                padding: 10px;
+            }
+
+            .border-props textarea {
+                width: 400px;
+                height: 80px;
+            }
+
+            .simpleround {
+                -webkit-border-radius: 50px;
+                -moz-border-radius: 50px;
+            }
+
+            .alternateround {
+                -webkit-border-top-left-radius: 50px;
+                -webkit-border-bottom-right-radius: 50px;
+                -moz-border-radius-topleft: 50px;
+                -moz-border-radius-bottomright: 50px;
+            }
+
+            .differentround {
+                -webkit-border-radius: 5px 200px 30px 50px;
+                -moz-border-radius: 5px 200px 30px 50px;
+            }
+
+        </style>
+        <div>
+            <table class="border-props" width="100%">
+                <tr>
+                    <td><h3>Example</h3></td>
+                    <td><h3>CSS Code</h3></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="simpleround">Simple Round</div>
+                    </td>
+                    <td>
+<pre class="code">
+.simpleround{
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+}</pre>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="alternateround">Alternate Round</div>
+                    </td>
+                    <td>
+<pre class="code">
+.alternateround{
+    -webkit-border-top-left-radius: 50px;
+    -webkit-border-bottom-right-radius: 50px;
+    -moz-border-radius-topleft: 50px;
+    -moz-border-radius-bottomright: 50px;
+}</pre>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="differentround">Different Round</div>
+                    </td>
+                    <td>
+<pre class="code">
+.differentround{
+    -webkit-border-radius: 5px 200px 30px 50px;
+    -moz-border-radius: 5px 200px 30px 50px;
+}</pre>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+    </section>
+</article>
+<article class="tx">
+    <header>Border Properties</header>
+    <section>
+        <style>
+            .border-props div {
+                background: red;
+                color: white;
+                padding: 10px;
+            }
+
+            .border-props textarea {
+                width: 400px;
+                height: 80px;
+            }
+
+
+            .ecliptical {
+                -webkit-border-radius: 100px / 30px;
+                -moz-border-radius: 100px / 30px;
+            }
+
+            .circle {
+                -webkit-border-radius: 300px;
+                -moz-border-radius: 300px;
+                width: 50px;
+                height: 50px;
+
+            }
+        </style>
+        <div>
+            <table class="border-props" width="100%">
+                <tr>
+                    <td><h3>Example</h3></td>
+                    <td><h3>CSS Code</h3></td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="ecliptical">Ecliptical Round</div>
+                    </td>
+                    <td>
+<pre class="code">
+.ecliptical{
+    -webkit-border-radius: 100px / 30px;
+    -moz-border-radius: 100px / 30px;
+}</pre>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="circle">Circle</div>
+                    </td>
+                    <td>
+<pre class="code">
+.circle{
+    -webkit-border-radius: 300px;
+    -moz-border-radius: 300px;
+    width:50px;
+    height:50px;
+}
+</pre>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+</article>
+<article class="tx">
+    <header>Shadow Properties</header>
+    <section>
+        <style>
+
+            .shadow-props div {
+                background: red;
+                color: white;
+                padding: 10px;
+            }
+
+            .shadow-props textarea {
+                width: 600px;
+                height: 80px;
+            }
+
+            .solidshadow {
+                -webkit-box-shadow: 10px 10px #000;
+                -moz-box-shadow: 10px 10px #000;
+            }
+
+            .blurshadow {
+                -webkit-box-shadow: 10px 10px 20px #000;
+                -moz-box-shadow: 10px 10px 20px #000;
+            }
+
+            .blurrrgbashadow {
+                -webkit-box-shadow: 10px 10px 20px rgba(200, 0, 0, 0.8);
+                -moz-box-shadow: 10px 10px 20px rgba(200, 0, 0, 0.8);
+            }
+
+        </style>
+        <div style="overflow:auto">
+            <table class="shadow-props" width="100%" cellspacing="10px">
+                <tr>
+                    <td><h3>Example</h3></td>
+                    <td><h3>CSS Code</h3></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="solidshadow">Solid Shadow</div>
+                    </td>
+                    <td>
+<pre class="code">
+.solidshadow{
+    -webkit-box-shadow: 10px 10px #000;
+    -moz-box-shadow: 10px 10px #000;
+}</pre>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="blurshadow">Blurr Shadow</div>
+                    </td>
+                    <td>
+<pre class="code">
+.blurshadow{
+    -webkit-box-shadow: 10px 10px 20px #000;
+    -moz-box-shadow: 10px 10px 20px #000;
+}</pre>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="blurrrgbashadow">Blurr Shadow using rgba</div>
+                    </td>
+                    <td>
+<pre class="code">
+.blurrrgbashadow{
+    -webkit-box-shadow: 10px 10px 20px rgba(200,0,0,0.8);
+    -moz-box-shadow: 10px 10px 20px rgba(200,0,0,0.8);
+}
+</pre>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+</article>
+<article class="tx">
+    <header>Shadow Properties</header>
+    <section>
+        <style>
+
+            .shadow-props div {
+                background: red;
+                color: white;
+                padding: 10px;
+            }
+
+            .shadow-props textarea {
+                width: 600px;
+                height: 80px;
+            }
+
+
+            .twoshadow {
+                -webkit-box-shadow: 10px 10px 20px rgba(200, 0, 0, 0.5), -10px -10px 20px rgba(0, 0, 200, 0.5);
+
+                -moz-box-shadow: 10px 10px 20px rgba(200, 0, 0, 0.5), -10px -10px 20px rgba(0, 0, 2000, 0.5);
+            }
+
+            .innershadow {
+                -webkit-box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.4);
+                -moz-box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.4);
+                -webkit-border-radius: 5px;
+                -moz-border-radius: 5px;
+            }
+        </style>
+        <div style="overflow:auto">
+            <table class="shadow-props" width="100%" cellspacing="10px">
+                <tr>
+                    <td><h3>Example</h3></td>
+                    <td><h3>CSS Code</h3></td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="twoshadow">Two Shadows</div>
+                    </td>
+                    <td>
+<pre class="code">
+.twoshadow{
+    -webkit-box-shadow: 10px 10px 20px rgba(200,0,0,0.5),
+    -10px -10px 20px rgba(0,0,200,0.5);
+    -moz-box-shadow: 10px 10px 20px rgba(200,0,0,0.5),
+    -10px -10px 20px rgba(0,0,2000,0.5);
+}</pre>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="innershadow">Inner Shadow</div>
+                    </td>
+                    <td>
+<pre class="code">
+.innershadow{
+    -webkit-box-shadow: inset 0px 2px 4px rgba(0,0,0,0.4);
+    -moz-box-shadow: inset 0px 2px 4px rgba(0,0,0,0.4);
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+}</pre>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+</article>
+
+<article class="tx">
+    <header>Gradient Properties</header>
+    <section>
+        <style>
+            .gradient-props div {
+                color: white;
+                padding: 10px;
+                height: 200px;
+            }
+
+            .gradient-props textarea {
+                width: 400px;
+                height: 100px;
+            }
+
+            .lineargradienthorz {
+                background-image: -webkit-gradient(linear, 0% 50%, 100% 50%, from(#0099ff), to(#000));
+                background-image: -moz-linear-gradient(0% 100% 0deg, #0099ff, #000);
+            }
+
+            .lineargradientangle {
+                background-image: -webkit-gradient(linear, left top, right bottom, from(#0099ff), to(#000));
+                background-image: -moz-linear-gradient(left top 315deg, #0099ff, #000);
+            }
+
+        </style>
+        <div>
+            <table class="gradient-props" width="100%">
+                <tr>
+                    <td><h3>Example</h3></td>
+                    <td><h3>CSS Code</h3></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="lineargradienthorz">Linear Gradient</div>
+                    </td>
+                    <td>
+<pre class="code">
+.lineargradienthorz{
+    background-image: -webkit-gradient(linear, 0% 50%, 100% 50%, from(#0099ff), to(#000));
+    background-image: -moz-linear-gradient(0% 100% 0deg, #0099ff, #000);
+}</pre>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="lineargradientangle">Linear Gradient at angle</div>
+                    </td>
+                    <td>
+<pre class="code">
+.lineargradientangle{
+    background-image: -webkit-gradient(linear, left top, right bottom, from(#0099ff), to(#000));
+    background-image: -moz-linear-gradient(left top 315deg, #0099ff, #000);
+}</pre>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+    </section>
+</article>
+<article class="tx">
+    <header>Gradient Properties</header>
+    <section>
+        <style>
+            .gradient-props div {
+                color: white;
+                padding: 10px;
+                height: 200px;
+            }
+
+            .gradient-props textarea {
+                width: 400px;
+                height: 100px;
+            }
+
+            .radialgradient1 {
+                background-image: -webkit-gradient(radial, center center, 0, center center, 200, from(#0099FF), to(#000));
+                background-image: -moz-radial-gradient(center, circle closest-corner, #0099FF 0%, #000 100%);
+            }
+
+            .radialgradient2 {
+                background-image: -webkit-gradient(radial, center center, 0, 150 150, 200, from(#0099FF), to(#000));
+
+            }
+        </style>
+        <div>
+            <table class="gradient-props" width="100%">
+                <tr>
+                    <td><h3>Example</h3></td>
+                    <td><h3>CSS Code</h3></td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="radialgradient1">Radial Gradient</div>
+                    </td>
+                    <td>
+<pre class="code">
+.radialgradient1{
+    background-image: -webkit-gradient(radial, center center, 0, center center, 200,
+    from(#0099FF), to(#000));
+    background-image: -moz-radial-gradient(center, circle closest-corner, #0099FF 0%, #000
+    100%);
+}</pre>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="radialgradient2">Radial Gradient center</div>
+                    </td>
+                    <td>
+<pre class="code">
+.radialgradient2{
+    background-image: -webkit-gradient(radial, center center, 0, 150 150, 200, from(#0099FF),
+    to(#000));
+
+}</pre>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+    </section>
+</article>
+
+
+<article class="tx">
+    <header>Text Properties</header>
+    <section>
+        <style>
+            @font-face {
+                font-family: 'Junction';
+                src: url(fonts/Junction.otf);
+            }
+
+            .text-props div {
+                background: red;
+                color: white;
+                padding: 10px;
+            }
+
+            .text-props textarea {
+                width: 400px;
+                height: 80px;
+            }
+
+            .textShadow {
+                text-shadow: 15px 15px 5px black;
+            }
+
+            .textInShadow {
+                color: #CCC;
+                text-shadow: 0px -1px 1px #000;
+            }
+
+            .textStroke {
+                color: #FFF;
+                text-shadow: -1px -1px 0 #CCC, 1px -1px 0 #CCC, -2px 2px 0 #555, 2px 2px 0 #555;
+            }
+
+        </style>
+        <div>
+            <table class="text-props" width="100%">
+                <tr>
+                    <td><h3>Example</h3></td>
+                    <td><h3>CSS Code</h3></td>
+                </tr>
+                <tr>
+                    <td>
+                        <h1 class="textShadow">Text Shadow </h1>
+                    </td>
+                    <td>
+<pre class="code">
+.textShadow{
+    text-shadow: 15px 15px 5px black;
+}</pre>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h1 class="textInShadow">Text Inline Shadow </h1>
+                    </td>
+                    <td>
+<pre class="code">
+.textInShadow {
+    color: #CCC;
+    text-shadow: 0px -1px 1px #000;
+}
+</pre>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h1 class="textStroke">Text Stroke</h1>
+                    </td>
+                    <td>
+<pre class="code">
+.textStroke {
+    color: #FFF;
+    text-shadow:-1px -1px 0 #CCC,  1px -1px 0 #CCC,
+                -2px 2px 0 #555,   2px 2px 0 #555;
+}</pre>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+    </section>
+</article>
+
+<article class="tx">
+    <header>Text Properties</header>
+    <section>
+        <style>
+            @font-face {
+                font-family: 'Junction';
+                src: url(fonts/Junction.otf);
+            }
+
+            .text-props div {
+                background: red;
+                color: white;
+                padding: 10px;
+            }
+
+            .text-props textarea {
+                width: 400px;
+                height: 80px;
+            }
+
+            .textreflection{
+                -webkit-box-reflect: below -10px -webkit-gradient(
+                    linear,
+                    left top, left bottom,
+                    from(transparent),
+                    color-stop(0.2, transparent),
+                    to(rgba(255,255,255,0.5))
+                 );
+            }
+            @font-face {
+                font-family: 'Junction';
+                src: url(Junction.otf);
+            }
+
+            .webfont {
+                font-family: 'Junction';
+            }
+
+
+        </style>
+        <div>
+            <table class="text-props" width="100%">
+                <tr>
+                    <td><h3>Example</h3></td>
+                    <td><h3>CSS Code</h3></td>
+                </tr>
+                <tr>
+                    <td>
+                        <h1 class="textreflection">Text Reflection</h1>
+                    </td>
+                    <td>
+<pre class="code">
+.textreflection{
+    -webkit-box-reflect: below -10px -webkit-gradient(
+    linear,
+    left top, left bottom,
+    from(transparent),
+    color-stop(0.2, transparent),
+    to(rgba(255,255,255,0.5))
+    );
+}</pre>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h1 class="webfont">Web Fonts</h1>
+                    </td>
+                    <td>
+<pre class="code">
+@font-face {
+    font-family: 'Junction';
+    src: url(Junction.otf);
+}
+
+.webfont {
+    font-family: 'Junction';
+}</pre>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+</article>
+<article class="twoTxCol">
+    <header>CSS Transforms</header>
+    <style>
+        #test-div {
+            border: 1px solid red;
+            background: yellow;
+            width:300px;
+            height:400px;
+            padding:20px;
+
+        }
+
+        #css-transform-text {
+            border: 1px solid blue;
+            background: white;
+            width:500px;
+            height:200px;
+        }
+    </style>
+
+
+    <section>
+        <table>
+            <tr>
+                <td>Skew</td>
+                <td><input id="skew" type="range" min="0" max="360" value="0"/></td>
+            </tr>
+            <tr>
+                <td>Scale X</td>
+                <td><input id="scaleX" type="range" min="0" max="100" value="100"/></td>
+            </tr>
+            <tr>
+                <td>Scale Y</td>
+                <td><input id="scaleY" type="range" min="0" max="100" value="100"/></td>
+            </tr>
+            <tr>
+                <td>Rotate X</td>
+                <td><input id="rotateX" type="range" min="0" max="360" value="0"/></td>
+            </tr>
+            <tr>
+                <td>Rotate Y</td>
+                <td><input id="rotateY" type="range" min="0" max="360" value="0"/></td>
+            </tr>
+            <tr>
+                <td>Rotate Z</td>
+                <td><input id="rotateZ" type="range" min="0" max="360" value="0"/></td>
+            </tr>
+            <tr>
+                <td>Translate X</td>
+                <td><input id="translateX" type="range" min="0" max="100" value="0"/></td>
+            </tr>
+            <tr>
+                <td>Translate Y</td>
+                <td><input id="translateY" type="range" min="0" max="100" value="0"/></td>
+            </tr>
+        </table>
+        <div id="css-transform-text">
+            -webkit-transform : skew(0deg)<br/>
+            scale(1,1)<br/>
+            rotateX(0deg)<br/>
+            rotateY(0deg)<br/>
+            rotateZ(0deg)<br/>
+            translate(0px,0px)<br/>
+        </div>
+    </section>
+    <section>
+        <div id="test-div">
+            This is a div, which will be modified using CSS 3 Transforms (2D & 3D)
+        </div>
+    </section>
+    <script>
+        var skew = 0;
+        var scaleX=1;
+        var scaleY=1;
+        var rotateX=0;
+        var rotateY=0;
+        var rotateZ=0;
+        var translateX=0;
+        var translateY=0;
+
+        $(document).ready(function () {
+
+            $("#skew").change(function (event) {
+                skew = $(event.target).val() ;
+                console.log("Skewed to "+skew);
+                applyTransform();
+            });
+            $("#scaleX").change(function (event) {
+                scaleX = parseFloat($(event.target).val()/100);
+                console.log("X Scaled to "+scaleX);
+                applyTransform();
+            });
+            $("#scaleY").change(function (event) {
+                scaleY = parseFloat($(event.target).val()/100);
+                console.log("Y Scaled to "+scaleY);
+                applyTransform();
+            });
+            $("#rotateX").change(function (event) {
+                console.log("Rotated X to "+rotateX);
+                rotateX = $(event.target).val();
+                applyTransform();
+            });
+            $("#rotateY").change(function (event) {
+                console.log("Rotated Y to "+rotateY);
+                rotateY = $(event.target).val();
+                applyTransform();
+            });
+            $("#rotateZ").change(function (event) {
+                console.log("Rotated Z to "+rotateZ);
+                rotateZ = $(event.target).val();
+                applyTransform();
+            });
+            $("#translateX").change(function (event) {
+                translateX = $(event.target).val();
+                console.log("X Translated to "+translateX);
+                applyTransform();
+            });
+            $("#translateY").change(function (event) {
+                translateY = $(event.target).val();
+                console.log("Y Translated to "+translateY);
+                applyTransform();
+            });
+
+
+
+        });
+        function applyTransform(){
+            $("#test-div").css("-webkit-transform","skew("+skew+"deg) scale("+scaleX+","+scaleY+") rotateX("+rotateX+"deg) rotateY("+rotateY+"deg) rotateZ("+rotateZ+"deg) translate("+translateX+"px,"+translateY+"px)");
+
+            $("#css-transform-text").html("");
+            $("#css-transform-text").append("-webkit-transform : skew("+skew+"deg)<br/>")
+            $("#css-transform-text").append("scale("+scaleX+","+scaleY+")<br/>")
+            $("#css-transform-text").append("rotateX("+rotateX+"deg)<br/>")
+            $("#css-transform-text").append("rotateY("+rotateY+"deg)<br/>")
+            $("#css-transform-text").append("rotateZ("+rotateZ+"deg)<br/>")
+            $("#css-transform-text").append("translate("+translateX+"px,"+translateY+"px)<br/>")
+        }
+    </script>
+
+</article>
+<article class="tx">
+    <header>CSS Transitions</header>
+    <section>
+        <style>
+            .transition{
+                border: 1px solid red;
+                background: yellow;
+                width:200px;
+                height:100px;
+                padding:20px;
+                margin:5px;
+            }
+            .to{
+                -webkit-transform:translate(600px,0px) rotateY(360Deg) rotateZ(300Deg) scale(0.8,0.8);
+                -moz-transform:translate(600px,0px) rotateY(360Deg) rotateZ(3000Deg) scale(0.8,0.8);
+                border-radius:10px;
+                background:red;
+                color:yellow;
+            }
+
+            #with-transition{
+                -webkit-transition: all 1s ease-in-out;
+                -moz-transition: all 1s ease-in-out;
+                -o-transition: all 1s ease-in-out;
+                transition: all 1s ease-in-out;
+            }
+        </style>
+        <p>Click on the DIVs below. Observe first div, has immediate effect and second one takes certain time. This is due to transition CSS Property</p>
+        <div id="without-transition" class="transition from">
+            This is Div without any CSS Transitions
+        </div>
+        <div id="with-transition" class="transition from">
+            This is Div with CSS Transition property
+            <p>
+
+            transition: all 1s ease-in-out;
+            </p>
+        </div>
+<pre class="code">
+#with-transition{
+    -webkit-transition: all 1s ease-in-out;
+    -moz-transition: all 1s ease-in-out;
+    -o-transition: all 1s ease-in-out;
+    transition: all 1s ease-in-out;
+}</pre>
+        <div>
+             Visit <a href="http://css3.bradshawenterprises.com/transitions/">http://css3.bradshawenterprises.com/transitions/</a> for more examples.
+        </div>
+        <script>
+            $(document).ready(function(){
+                $(".transition").click(function(){
+                    $(".transition").toggleClass('to');
+                });
+            });
+        </script>
+    </section>
+</article>
+<article class="twoTxCol">
+    <header>CSS Animations</header>
+    <section>
+        <style>
+
+            @-webkit-keyframes resize {
+              0% {
+                padding: 0;
+              }
+              50% {
+                padding: 0 20px;
+                background-color:
+                rgba(255,0,0,0.2);
+                color:white;
+                -webkit-transform:translate(100px,0px) rotateZ(180Deg);
+              }
+              100% {
+                padding: 0 100px;
+                background-color:
+                rgba(255,0,0,0.9);
+                color:white;
+              }
+            }
+
+            #box {
+                height:200px;
+                width:200px;
+                background:white;
+                border:1px solid blue;
+                -webkit-animation-name: resize;
+                -webkit-animation-duration: 2s;
+                -webkit-animation-iteration-count: infinite;
+
+            }
+
+        </style>
+
+        <div id="box">Box with Animation Effect</div>
+    </section>
+    <section>
+        <pre class="code">
+@-webkit-keyframes resize {
+          0% {
+            padding: 0;
+          }
+          50% {
+            padding: 0 20px;
+            color:white;
+            -webkit-transform:translate(100px,0px)
+                              rotateZ(180Deg);
+            background-color:rgba(255,0,0,0.2);
+          }
+          100% {
+            padding: 0 100px;
+            background-color:rgba(255,0,0,0.9);
+          }
+        }
+
+#box {
+    -webkit-animation-name: resize;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-iteration-count: infinite;
+}
+        </pre>
+    </section>
+</article>
+<article class="tx">
+    <header>CSS Advanced Demos</header>
+    <style>
+        .one {
+            -webkit-transform: rotateY(0deg)  translateZ(100px);
+        }
+        .one:hover{
+            -webkit-transform: rotateY(0deg) translateY(-200px) translateZ(100px);
+        }
+
+        .two {
+            -webkit-transform: rotateY(90deg)  translateZ(100px);
+        }
+        .two:hover {
+            -webkit-transform: rotateY(90deg) translateY(-200px) translateZ(100px);
+        }
+
+        .three {
+            -webkit-transform: rotateY(180deg)  translateZ(100px);
+        }
+        .three:hover {
+            -webkit-transform: rotateY(180deg) translateY(-200px) translateZ(100px);
+        }
+        .four {
+            -webkit-transform: rotateY(270deg)  translateZ(100px);
+        }
+        .four:hover {
+            -webkit-transform: rotateY(270deg) translateY(-200px) translateZ(100px);
+
+        }
+            /* Common CSS Attributes to Panel, color, rounded corners etc */
+        .panel {
+            position: absolute;
+            height: 200px;
+            width: 200px;
+            text-align: center;
+            font-size: 10em;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.6);
+            -webkit-transition: all 2s linear;
+            -webkit-border-radius:20px;
+            -webkit-box-shadow: 5px 5px 20px #000000;
+        }
+            /* Making the Shadow and background color to change on hover */
+        .panel:hover{
+            -webkit-box-shadow: 5px 5px 20px #FF0000;
+            background-image: -webkit-gradient(radial, center center, 0, center center, 200, from(#0099FF), to(#000));
+        }
+            /* CSS Animation to rotate shape around y axis */
+        @-webkit-keyframes spin {
+  		    from
+  		        {
+  		            -webkit-transform: rotateY(0);
+  		        }
+  		    to
+  		        {
+  		            -webkit-transform: rotateY(-360deg);
+  		        }
+	    }
+            /* Setting animation to rotate this around Y Axis */
+        .shape {
+            margin: 0 auto;
+            height: 200px;
+            width: 200px;
+            -webkit-transform-style: preserve-3d;
+            -webkit-animation: spin 8s infinite linear;
+        }
+            /* Setting Perspective */
+        .container {
+            -webkit-perspective: 800;
+            -webkit-perspective-origin: 50% 90px;
+            -webkit-transition: -webkit-perspective, 1s;
+            width: 600px;
+            margin: 0px;
+        }
+
+
+    </style>
+    <section >
+        <h1>Rotating Divs</h1>
+        <!-- For setting 3D perspective -->
+        <div class="container">
+            <!-- The Shape we plan to rotate -->
+            <div class="shape">
+                <!-- Divs which act as Panels and they transition on hover -->
+                <div class="panel one"><span>1</span></div>
+                <div class="panel two"><span>2</span></div>
+                <div class="panel three"><span>3</span></div>
+                <div class="panel four"><span>4</span></div>
+
+            </div>
+        </div>
+
+    </section>
+
+</article>
+
+<article class="tx">
+    <header>APIs</header>
+    <section>
+        <ul>
+            <li><h3>Cors</h3></li>
+            <li><h3>Server Sent Events</h3></li>
+            <li><h3>Web Sockets</h3></li>
+            <li><h3>Web Workers</h3></li>
+            <li><h3>Storage</h3></li>
+            <li><h3>Offline Access</h3></li>
+            <li><h3>Geo & Device Sensors</h3></li>
+            <li><h3>File System and Drag and Drop</h3></li>
+        </ul>
+    </section>
+</article>
+<article class="tx">
+    <header>Cors</header>
+    <section>
+        <h3>We will cover</h3>
+        <ul>
+            <li><h3>Single Origin Policy</h3></li>
+            <li><h3>Proxy Work around </h3></li>
+            <li><h3>JSONP Work around </h3></li>
+            <li><h3>CORS to rescue </h3></li>
+        </ul>
+    </section>
+</article>
+<article class="tx">
+    <header>Traditional Ajax Demo</header>
+    <section>
+        <style>
+            #traditional-response, #send-traditional, #traditional-url {
+                font-size: 24pt;
+            }
+
+        </style>
+        <h1>Traditional Ajax Request</h1>
+        <textarea id="traditional-url" rows="1" cols="60">http://html5-rohitghatol.rhcloud.com/traditional/capitalByCountry/India</textarea>
+        <button id="send-traditional">Ajax GET</button>
+        <div id="traditional-response"></div>
+
+        <script>
+            $(document).ready(function () {
+                $("#send-traditional").click(function () {
+                    $("#traditional-response").html("");
+                    var url = $("#traditional-url").val();
+                    var jqxhr = $.get(url, function (data) {
+                        $("#traditional-response").append("Got Response " + data.capital + "<br/>");
+                    })
+                            .error(function () {
+                                $("#traditional-response").append("Got Error for GET. This Origin is not allowed by Access-Control-Allow-Origin <br/>");
+                            })
+
+
+                })
+            });
+
+        </script>
+
+    </section>
+
+</article>
+<article class="tx">
+    <header>Cors Ajax Demo</header>
+    <section>
+        <style>
+            #cors-response, #send-cors, #cors-url {
+                font-size: 24pt;
+            }
+
+        </style>
+
+        <h1>Cors Ajax Request</h1>
+        <textarea id="cors-url" rows="1"
+                  cols="60">http://html5-rohitghatol.rhcloud.com/cors/capitalByCountry/India</textarea>
+        <button id="send-cors">Ajax GET</button>
+        <div id="cors-response"></div>
+
+        <script>
+            $(document).ready(function () {
+                $("#send-cors").click(function () {
+                    $("#cors-response").html("");
+                    var url = $("#cors-url").val();
+                    var jqxhr = $.get(url, function (data) {
+                        $("#cors-response").append("Got Response " + data.capital + "<br/>");
+                    })
+                            .error(function () {
+                                $("#cors-response").append("Got Error for GET. This Origin is not allowed by Access-Control-Allow-Origin <br/>");
+                            })
+
+
+                })
+            });
+
+        </script>
+        <h3>How did Ajax Request work this time?</h3>
+        <p>Because this time server send special headers with HTTP Response, shown below</p>
+        <pre class="code">
+Access-Control-Allow-Headers:X-Requested-With
+Access-Control-Allow-Origin:*
+        </pre>
+    </section>
+
+</article>
+<article class="tx">
+    <header>SSE - Concept</header>
+    <section>
+        <h1>Server Sent Events Concept</h1>
+        <ol>
+            <li>Polling the Server</li>
+            <li>Comet/Hanging GET/Reverse Ajax</li>
+            <li>Server Sent Events</li>
+        </ol>
+    </section>
+</article>
+<article class="tx">
+    <header>SSE - Flow</header>
+    <section>
+        <h1>Flow</h1>
+        <ol>
+            <li>Client Send HTTP Request with MimeType - event-stream</li>
+            <li>Server Caches the Connection and write the header -'content-type': 'text/event-stream'</li>
+            <li>Server now keeps putting information on the Connection</li>
+            <li>If Connection breaks, Client reconnects</li>
+        </ol>
+        <hr/>
+        <p>Read the Blog for more details - <a target="_blank" href="http://html5doctor.com/server-sent-events/">http://html5doctor.com/server-sent-events/</a> </p>
+    </section>
+</article>
+
+<article class="tx">
+    <header>SSE Protocol</header>
+    <section>
+        <h1>Data sent by Server</h1>
+        <pre class="code">
+//Simple Message
+data: this is a simple message
+
+//Multi line JSON Message
+data: {
+data:    "name":"Rohit Ghatol",
+data:    "city":"Pune"
+data: }
+
+//Messages with ID
+id: 33
+data: this is line one
+data: this is line two
+
+//Messages with &lt;&lt;Custom Event&gt;&gt;
+id: 36
+event: price
+data: 103.34
+        </pre>
+    </section>
+</article>
+
+<article class="tx">
+    <header>SSE Code</header>
+    <section>
+        <h1>Code Snippets</h1>
+        <pre class="code">
+var source = new EventSource('http://xyz.com/events');
+//Callback called when connection is established
+source.onopen = function () {
+    connectionOpen(true);
+};
+
+//Callback called when connection issues occurs
+source.onerror = function () {
+    connectionOpen(false);
+};
+
+//Callback called when server sends a data
+source.onmessage = function (event) {
+    console.log("Server sent "+event.data);
+};
+
+source.addEventListener('&lt;&lt;custom event&gt;&gt;', function(event){
+    console.log("Got Data "+event.data+" for &lt;&lt;custom event&gt;&gt;");
+}, false);
+
+
+        </pre>
+    </section>
+</article>
+
+<article class="tx">
+    <header>SSE Demo</header>
+    <section>
+        <h1>Demo time</h1>
+        <ol>
+            <li>Code Snippet Taken from - <a target="_blank" href="https://github.com/cheeyeo/Server-Sent-Events-with-Node-JS">https://github.com/cheeyeo/Server-Sent-Events-with-Node-JS</a></li>
+            <li>Lets run the Demo locally and see the results</li>
+        </ol>
+    </section>
+</article>
+
+<article class="tx">
+    <header>Web Sockets</header>
+    <section>
+        <h1>Concept</h1>
+        <ol>
+            <li>Full Duplex Communication protocol (like TCP/IP)</li>
+            <li>Both Client & Server have methods to send message</li>
+            <li>Both Client & Server have callbacks to receive message</li>
+        </ol>
+        <hr/>
+        <p>Live Demo : <a target="_blank" href="http://www.websocket.org/echo.html">http://www.websocket.org/echo.html</a></a></p>
+        <p>Lets see a Local Demo of Chat Server running locally. This local demo was dervied from <a target="_blank" href="http://martinsikora.com/nodejs-and-websocket-simple-chat-tutorial">http://martinsikora.com/nodejs-and-websocket-simple-chat-tutorial</a></p>
+    </section>
+</article>
+<article class="tx">
+    <header>Web Sockets - Code</header>
+
+    <section>
+        <h3>Code Snippet</h3>
+        <pre class="code">
+//Open Web Socket Connection
+var socket = new WebSocket('ws://localhost:5000/echo');
+
+//Callback for successful Connection
+socket.onopen = function(event) {
+  console.log("WebSocket connected Successfully");
+};
+
+//Send Message to Server
+socket.send('Hello, WebSocket');
+
+//Callback for receiving message sent by the Server
+socket.onmessage = function(event) {
+    console.log("Got message from server "+event.data);
+}
+
+//Callback when WebSocket Connection is terminated
+socket.onclose = function(event) {
+    console.log("WebSocket connection is terminated");
+}
+        </pre>
+    </section>
+
+</article>
+
+<article class="twoTxCol">
+    <header>Web Workers</header>
+    <section>
+        <canvas id="canvas8" width="300px" height="300px" style="border:1px solid black"></canvas>
+    </section>
+    <section>
+        <table>
+            <tr>
+                <td>Enter Fibocanni Number at Index</td>
+                <td><input type="text" id="index" value="40"></input></td>
+            </tr>
+            <tr>
+                <td>Fibocanni Number is</td>
+                <td>
+                    <div id="output"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button id="fibocanni">Fibonacci</button>
+                </td>
+                <td>
+                    <button id="fibocanniWorker">Fibonacci Worker</button>
+                </td>
+            </tr>
+            <tr>
+            </tr>
+        </table>
+
+
+    </section>
+    <script>
+        var canvas1 = document.getElementById("canvas8");
+        var ctx1 = canvas1.getContext("2d");
+        ctx1.fillStyle = "#000000";
+        var ballX1 = 100, ballY1 = 200;
+        var radius1 = 20;
+        var xInc1 = 10;
+        var yInc1 = 10;
+        setInterval(gameLoop1, 10);
+
+        function gameLoop1() {
+            advanceBall1();
+            clearCanvas1();
+            drawBall1();
+        }
+
+        function advanceBall1() {
+            ballX1 += xInc1;
+            ballY1 += yInc1;
+            if ((ballX1 + radius1) > canvas1.width) {
+                xInc1 = (-1) * xInc1;
+            }
+            if ((ballX1 - radius1) < 0) {
+                xInc1 = (-1) * xInc1;
+            }
+            if ((ballY1 + radius1) > canvas1.height) {
+                yInc1 = (-1) * yInc1;
+            }
+            if ((ballY1 - radius1) < 0) {
+                yInc1 = (-1) * yInc1;
+            }
+        }
+        function clearCanvas1() {
+            ctx1.clearRect(0, 0, canvas1.width, canvas1.height);
+        }
+        function drawBall1() {
+            ctx1.beginPath();
+            ctx1.arc(ballX1, ballY1, radius1, 0, Math.PI * 2, true);
+            ctx1.closePath();
+            ctx1.fill();
+        }
+
+    </script>
+    <script>
+        var indexElem = document.getElementById("index");
+        var outputElem = document.getElementById("output");
+
+        var fibocanniButton = document.getElementById("fibocanni");
+        var fibocanniWorkerButton = document.getElementById("fibocanniWorker");
+
+
+        fibocanniButton.addEventListener("click", function () {
+            outputElem.innerHTML = "Calculating....";
+            var index = indexElem.value;
+            var output = fibonacci(index);
+            outputElem.innerHTML = output;
+        });
+
+        fibocanniWorkerButton.addEventListener("click", function () {
+            outputElem.innerHTML = "Calculating....";
+            var index = indexElem.value;
+            worker.postMessage(index);
+        });
+        var worker = new Worker('js/worker.js');
+        worker.addEventListener('message', function (e) {
+            outputElem.innerHTML = e.data;
+        });
+
+
+    </script>
+</article>
+<article class="twoTxCol">
+    <header>Web Workers - Code </header>
+    <section>
+        <h3>Main JS</h3>
+<pre class="code">
+var worker = new Worker('worker.js');
+button.addEventListener("click",
+function(){
+    outputElem.innerHTML = "Calculating....";
+    var index = indexElem.value;
+    worker.postMessage(index);
+});
+worker.addEventListener('message',
+function(e){
+    outputElem.innerHTML=e.data;
+});
+</pre>
+    </section>
+
+
+    <section>
+        <h3>Worker JS</h3>
+<pre class="code">
+//Web Worker
+importScripts('fibonacci.js');
+addEventListener('message', function(e){
+  var index = parseInt(e.data);
+  var result = fibonacci(index);
+  postMessage(result);
+})
+</pre>
+    </section>
+</article>
+<article class="tx">
+    <header>Storage</header>
+    <section>
+        <h3>Methods</h3>
+        <ol>
+            <li>Local Storage - Persistent Key Value Pair</li>
+            <li>Session Storage - Temporary Key Value Pair</li>
+            <li>Web SQL - SQL Based Storage (deprecated)</li>
+            <li>IndexDB - ObjectStore</li>
+        </ol>
+    </section>
+</article>
+<article class="twoTxCol">
+    <header>Local Storage Vs Session Storage</header>
+    <section>
+        <h3>Local Storage</h3>
+        <ol>
+            <li>Key Value Store</li>
+            <li>Data is persisted even after browser is closed</li>
+            <li>Ideal for storing User Preferences</li>
+        </ol>
+        <pre class="code">
+localStorage.preferredCountry="India";
+localStorage["preferredCountry"]="India";
+console.log("Preferred Country for User is "+localStorage.preferredCountry);
+        </pre>
+    </section>
+    <section>
+        <h3>Session Storage</h3>
+        <ol>
+            <li>Key Value Store</li>
+            <li>Data is lost after browser is closed</li>
+            <li>Ideal for storing session data</li>
+        </ol>
+        <pre class="code">
+sessionStorage.lastPage=10;
+sessionStorage["lastPage"]=10;
+console.log("Last Page User was on is "+sessionStorage.lastPage);
+        </pre>
+
+    </section>
+
+</article>
+<article class="tx">
+<header>IndexDB</header>
+<section>
+<h3>Index DB Demo</h3>
+<style>
+.delete{
+    margin-left:10px;
+    font-family: arial;
+    color:red;
+}
+</style>
+<script>
+    var indexDBns = {};
+    window.indexedDB = window.indexedDB || window.webkitIndexedDB ||
+            window.mozIndexedDB;
+
+    if ('webkitIndexedDB' in window) {
+        window.IDBTransaction = window.webkitIDBTransaction;
+        window.IDBKeyRange = window.webkitIDBKeyRange;
+    }
+
+    indexDBns.indexedDB = {};
+    indexDBns.indexedDB.db = null;
+
+    indexDBns.indexedDB.onerror = function(e) {
+        console.log(e);
+    };
+
+    indexDBns.indexedDB.open = function() {
+        var request = indexedDB.open("todos");
+
+        request.onsuccess = function(e) {
+            var v = 1;
+            indexDBns.indexedDB.db = e.target.result;
+            var db = indexDBns.indexedDB.db;
+            // We can only create Object stores in a setVersion transaction;
+            if (v != db.version) {
+                var setVrequest = db.setVersion(v);
+
+                // onsuccess is the only place we can create Object Stores
+                setVrequest.onerror = indexDBns.indexedDB.onerror;
+                setVrequest.onsuccess = function(e) {
+                    if(db.objectStoreNames.contains("todo")) {
+                        db.deleteObjectStore("todo");
+                    }
+
+                    var store = db.createObjectStore("todo",
+                            {keyPath: "timeStamp"});
+                    e.target.transaction.oncomplete = function() {
+                        indexDBns.indexedDB.getAllTodoItems();
+                    };
+                };
+            } else {
+                request.transaction.oncomplete = function() {
+                    indexDBns.indexedDB.getAllTodoItems();
+                };
+            }
+        };
+        request.onerror = indexDBns.indexedDB.onerror;
+    };
+
+    indexDBns.indexedDB.addTodo = function(todoText) {
+        var db = indexDBns.indexedDB.db;
+        var trans = db.transaction(["todo"], "readwrite");
+        var store = trans.objectStore("todo");
+
+        var data = {
+            "text": todoText,
+            "timeStamp": new Date().getTime()
+        };
+
+        var request = store.put(data);
+
+        request.onsuccess = function(e) {
+            indexDBns.indexedDB.getAllTodoItems();
+        };
+
+        request.onerror = function(e) {
+            console.log("Error Adding: ", e);
+        };
+    };
+
+    indexDBns.indexedDB.deleteTodo = function(id) {
+        var db = indexDBns.indexedDB.db;
+        var trans = db.transaction(["todo"], "readwrite");
+        var store = trans.objectStore("todo");
+
+        var request = store.delete(id);
+
+        request.onsuccess = function(e) {
+            indexDBns.indexedDB.getAllTodoItems();
+        };
+
+        request.onerror = function(e) {
+            console.log("Error Adding: ", e);
+        };
+    };
+
+    indexDBns.indexedDB.getAllTodoItems = function() {
+        var todos = document.getElementById("todoItems");
+        todos.innerHTML = "";
+
+        var db = indexDBns.indexedDB.db;
+        var trans = db.transaction(["todo"], "readwrite");
+        var store = trans.objectStore("todo");
+
+        // Get everything in the store;
+        var cursorRequest = store.openCursor();
+        console.log("Cursor Opened");
+        cursorRequest.onsuccess = function(e) {
+            var result = e.target.result;
+            if(!!result == false)
+                return;
+
+            renderTodo(result.value);
+            console.dir("Read row value "+result.value.text);
+            result.continue();
+            // If more records are present onSuccess will get called again
+        };
+
+        cursorRequest.onerror = indexDBns.indexedDB.onerror;
+    };
+
+    function renderTodo(row) {
+        var todos = document.getElementById("todoItems");
+        var li = document.createElement("li");
+        var a = document.createElement("a");
+        var t = document.createTextNode(row.text);
+
+        a.addEventListener("click", function() {
+            indexDBns.indexedDB.deleteTodo(row.timeStamp);
+        }, false);
+
+        a.textContent = "x";
+        $(a).addClass('delete');
+        li.appendChild(t);
+        li.appendChild(a);
+        todos.appendChild(li);
+    }
+
+    function addTodo() {
+        var todo = document.getElementById("todo");
+        indexDBns.indexedDB.addTodo(todo.value);
+        todo.value = "";
+    }
+
+    $(document).ready(function(){
+        indexDBns.indexedDB.open();
+    })
+
+</script>
+    <ul id="todoItems"></ul>
+    <input type="text" id="todo" name="todo" placeholder="What do you need to do?" style="width: 200px;" />
+    <input type="submit" value="Add Todo Item" onclick="addTodo(); return false;"/>
+    <br/><br/><br/><br/><br/><br/><br/><br/>
+    <p>
+        Code derived from <a target="_blank" href="http://slides.html5rocks.com">HTML5 Rocks</a>
+    </p>
+    </section>
+</article>
+<article class="tx">
+    <header>IndexDB - Open DB</header>
+    <section>
+        <h3>Opening IndexDB</h3>
+        <pre class="code">
+// Open an IndexDB Database
+var openDBRequest = indexedDB.open("dbname");
+
+openDBRequest.onsuccess = function(e) {
+    //Let's store the db in global window
+    window.mydb = e.result.target;
+}
+openDBRequest.onerror = function(e){
+    console.log("Unable to open IndexDB "+e);
+}
+        </pre>
+    </section>
+</article>
+<article class="tx">
+    <header>IndexDB - ObjectStore</header>
+    <section>
+        <h3>Creating an Object Store in IndexDB</h3>
+        <pre class="code">
+// Step 1 : Set a Version to the DB
+var setVersionRequest = indexedDB.db.setVersion(1);
+
+
+// onsuccess is the only place we can create Object Stores
+setVersionRequest.onsuccess = function(e) {
+    // Step 2 : Create Store if not already created
+    var store = db.createObjectStore("todo",{keyPath: "timeStamp"});
+};
+
+setVersionRequest.onerror = function(e){
+    console.log("Got Error while setting DB Version "+e);
+}
+
+</pre>
+    </section>
+</article>
+
+<article class="tx">
+    <header>IndexDB - Add Record</header>
+    <section>
+        <h3>Putting Record in Object Store in IndexDB</h3>
+        <pre class="code">
+//Access window.mydb
+var trans = mydb.transaction(["todo"], "readwrite");
+var store = trans.objectStore("todo");
+
+var data = {
+    "text": todoText,
+    "timeStamp": new Date().getTime()
+};
+
+var putRequest = store.put(data);
+
+putRequest.onsuccess = function(e) {
+    console.log("Record added successfully");
+};
+
+putRequest.onerror = function(e) {
+    console.log("Error Adding: ", e);
+};
+
+</pre>
+    </section>
+</article>
+
+<article class="tx">
+    <header>IndexDB - Delete Record</header>
+    <section>
+        <h3>Deleting Record from Object Store in IndexDB</h3>
+        <pre class="code">
+//Access window.mydb
+var trans = mydb.transaction(["todo"], "readwrite");
+var store = trans.objectStore("todo");
+
+
+var deletRequest = store.delete(id);
+
+deletRequest.onsuccess = function(e) {
+    console.log("Record deleted successfully");
+};
+
+deletRequest.onerror = function(e) {
+    console.log("Error Deleting: ", e);
+};
+
+</pre>
+    </section>
+</article>
+
+<article class="tx">
+    <header>IndexDB - Retreiving Records</header>
+    <section>
+        <h3>Retrieving Record from Object Store in IndexDB</h3>
+        <pre class="code">
+//Access mydb
+var trans = mydb.transaction(["todo"], "readwrite");
+var store = trans.objectStore("todo");
+
+// Get everything in the store;
+var cursorRequest = store.openCursor();
+
+cursorRequest.onsuccess = function(e) {
+    var result = e.target.result;
+    if(!!result == false){
+        return;
+    }
+
+    console.log("Retrieved Row data ="+result.value);
+    result.continue();
+};
+
+cursorRequest.onerror = function(e) {
+    console.log("Error Retrieving: ", e);
+};
+</pre>
+    </section>
+</article>
+
+<article class="tx">
+    <header>Offline Access</header>
+    <section>
+        <style>
+            .website {
+                margin-left: auto;
+                margin-right: auto;
+                left: 0px;
+                right: 0px;
+                border: 1px solid black;
+                width: 600px;
+                height: 400px;
+            }
+
+            .website .address-bar {
+                border: 1px solid black;
+                width: 600px;
+                height: 30px;
+                background: #AAA;
+            }
+
+            .website .browser-body {
+                padding: 20px;
+                border: 1px solid black;
+                width: 600px;
+                height: 370px;
+                background: white;
+
+            }
+
+            @-webkit-keyframes laughout {
+                0% {
+                    -webkit-transform: rotate(0deg)
+                }
+                25% {
+                    -webkit-transform: rotate(15deg)
+                }
+                50% {
+                    -webkit-transform: rotate(-5deg)
+                }
+                55% {
+                    -webkit-transform: rotate(0deg)
+                }
+                75% {
+                    -webkit-transform: rotate(-10deg)
+                }
+                100% {
+                    -webkit-transform: rotate(0deg)
+                }
+            }
+
+            .website .browser-body img {
+                margin: 10px;
+                -webkit-animation-name: laughout;
+                -webkit-animation-duration: 2s;
+                -webkit-animation-iteration-count: infinite;
+            }
+        </style>
+        <h3>Rajnikant Web Site</h3>
+
+        <div id="offline">
+            <div class="website">
+                <div class="address-bar">Address: http://rajnikanth.com</div>
+                <div class="browser-body">
+                    <h1>Ha!! Ha!! Ha!!</h1>
+                    <img src="http://www.poorjokes.in/wp-content/uploads/2012/06/rajni-cartoon1.jpg"></img>
+                </div>
+            </div>
+
+
+        </div>
+        <div id="online">
+            <div class="website">
+                <div class="address-bar">Address: http://rajnikanth.com</div>
+                <div class="browser-body">
+                    <h1>Yanna!! Rascala!! Trying to find me Online!!</h1>
+
+                    <h1>Go Offline!! I tell you!! </h1>
+                </div>
+            </div>
+
+        </div>
+        <script>
+            function goOffline() {
+                $("#offline").show();
+                $("#online").hide();
+            }
+            function goOnline() {
+                $("#offline").hide();
+                $("#online").show();
+            }
+            if (navigator.onLine) {
+                goOnline();
+            }
+            else {
+                goOffline();
+            }
+            window.addEventListener("offline", function (e) {
+                goOffline();
+            }, false);
+
+            window.addEventListener("online", function (e) {
+                goOnline();
+
+            }, false);
+
+        </script>
+    </section>
+</article>
+<article class="tx">
+    <header>Offline/Online Events</header>
+    <section>
+        <pre class="code">
+if (navigator.onLine) {
+   console.log("You are online
+}
+else {
+    console.log("You are offline");
+}
+
+window.addEventListener("offline", function (e) {
+   console.log("You are offline");
+}, false);
+
+window.addEventListener("online", function (e) {
+    console.log("You are online");
+
+}, false);
+        </pre>
+    </section>
+</article>
+<article class="tx">
+    <header>Manifest Cache</header>
+    <section>
+        <p>This WebSite can work even when you go offline, due to a file <b>manifest.cache</b></p>
+<pre class="code">
+CACHE MANIFEST
+index.html
+/js/fibonacci.js
+/js/jquery-1.7.2.min.js
+/js/worker.js
+/js/html5shiv-printshiv.js
+/js/modernizr.js
+/js/html5shiv.js
+/js/slides.js
+css/slide.css
+fonts/junction.otf
+images/next-slide.svg
+images/prev-slide.svg
+
+NETWORK:
+
+FALLBACK:
+
+</pre>
+    </section>
+</article>
+
+<article class="twoTxCol">
+    <header>Geo & Device Sensor</header>
+    <section>
+        <style>
+            #map_canvas {
+                width: 300px;
+                height: 200px;
+                border: 1px solid blue;
+                padding: 100px;
+            }
+        </style>
+        <h1>Map Demo using geo location</h1>
+
+        <div id="map_canvas"></div>
+        <script>
+            var map_canvas = document.getElementById("map_canvas");
+            function success(position) {
+
+                var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+                var myOptions = {
+                    zoom:15,
+                    center:latlng,
+                    mapTypeControl:false,
+                    navigationControlOptions:{style:google.maps.NavigationControlStyle.SMALL},
+                    mapTypeId:google.maps.MapTypeId.ROADMAP
+                };
+                var map = new google.maps.Map(map_canvas, myOptions);
+
+                var marker = new google.maps.Marker({
+                    position:latlng,
+                    map:map,
+                    title:"You are here!"
+                });
+            }
+            function error(errorMsg) {
+                map_canvas.innerHTML = "<div style='color:red'>" + errorMsg.message + "</div>";
+            }
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(success, error);
+            } else {
+                error('not supported');
+            }
+        </script>
+    </section>
+    <section>
+        <style>
+            #iphone {
+                margin-left: 250px;
+            }
+        </style>
+        <h1>Device Orientation Demo</h1>
+        <table border="1">
+            <tr>
+                <td>Alpha</td>
+                <td>
+                    <div id="alpha">..</div>
+                </td>
+            </tr>
+            <tr>
+                <td>Beta</td>
+                <td>
+                    <div id="beta"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>Gamma</td>
+                <td>
+                    <div id="gamma"></div>
+                </td>
+            </tr>
+
+        </table>
+        <img id="iphone" src="images/iphone.gif"></img>
+        <script>
+            var iphone = document.getElementById("iphone");
+            window.addEventListener("deviceorientation", function (event) {
+                document.getElementById("alpha").innerHTML = event.alpha;
+                document.getElementById("beta").innerHTML = event.beta;
+                document.getElementById("gamma").innerHTML = event.gamma;
+                var rotate = 'rotate(' + event.gamma * -1 + 'deg)';
+                var scale = 'scale(' + ((event.beta / 180) * 2 + 1) + ')';
+                iphone.style.webkitTransform = rotate + ' ' + scale;
+
+            });
+        </script>
+    </section>
+</article>
+<article class="tx">
+    <header>Geo - Code </header>
+    <section>
+        <pre class="code">
+//Succes callback
+function success(position) {
+    console.log("Position is "+ position.coords.latitude+" , "+position.coords.longitude);
+}
+
+//Failure callback
+function error(errorMsg) {
+    console.log("Got Error " + errorMsg.message );
+}
+
+if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(success, error);
+} else {
+    error('not supported');
+}
+
+        </pre>
+    </section>
+</article>
+<article class="tx">
+    <header>Sensors - Code </header>
+    <section>
+        <pre class="code">
+window.addEventListener("deviceorientation", function (event) {
+    console.log("alpha :"+event.alpha);
+    console.log("beta :"+event.beta);
+    console.log("gamma :"+event.gamma);
+});
+        </pre>
+    </section>
+</article>
+
+<article class="tx">
+<header>FileSystem & Drag and Drop</header>
+<section>
+<style>
+
+
+    #dropbox {
+        width: 300px;
+        height: 400px;
+        background: #77FFFF;
+        border: 1px solid blue;
+        font-size: 16pt;
+    }
+
+    #commandHistory {
+        width: 500px;
+        height: 400px;
+        background: #FFFF77;
+        border: 1px dotted red;
+        font-size: 16pt;
+    }
+
+    #command {
+        font-size: 16pt;
+        width: 400px;
+    }
+
+    #submit {
+        font-size: 16pt;
+    }
+
+    #instructions {
+        background: white;
+        border-radius: 2px;
+    }
+</style>
+<p id="instructions">Run Chrome with argments: --args --unlimited-quota-for-files --allow-file-access-from-files</p>
+<table>
+    <tr>
+        <td>
+            <input type="text" id="command"></input>
+            <button id="submit">Execute</button>
+        </td>
+        <td>
+            Drag and Drop files below
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div id="commandHistory"></div>
+        </td>
+        <td>
+            <div id="dropbox"></div>
+        </td>
+    </tr>
+</table>
+
+<script>
+try {
+
+    var commandPrompt = document.getElementById("command");
+    var submitButton = document.getElementById("submit");
+    var commandHistory = document.getElementById("commandHistory");
+    var dropbox = document.getElementById("dropbox");
+
+
+    var currentDir = "/";
+    var fileSys = null;
+
+    commandPrompt.addEventListener("change", onCommand, false);
+    submitButton.addEventListener("click", onCommand, false);
+    function log(message) {
+        commandHistory.innerHTML = commandHistory.innerHTML + "<br>" + message;
+    }
+
+    function logDnd(message) {
+        dropbox.innerHTML = dropbox.innerHTML + "<br>" + message;
+    }
+
+    function dragEnter(evt) {
+        evt.stopPropagation();
+        evt.preventDefault();
+    }
+
+    function dragExit(evt) {
+        evt.stopPropagation();
+        evt.preventDefault();
+    }
+
+    function dragOver(evt) {
+        evt.stopPropagation();
+        evt.preventDefault();
+    }
+
+    function drop(event) {
+        event.stopPropagation();
+        event.preventDefault();
+
+
+        clearDnd();
+        if (event.dataTransfer.files) {
+            var files = event.dataTransfer.files;
+            for (var index = 0; index < files.length; index++) {
+                var file = files[index];
+                var fileName = "";
+                if (currentDir == "/") {
+                    fileName = currentDir + file.name;
+                }
+                else {
+                    fileName = currentDir + "/" + file.name;
+                }
+
+                var reader = new FileReader();
+
+                // init the reader event handlers
+                reader.onloadend = function (event) {
+                    fileSys.root.getFile(fileName, {create:true}, function (fileEntry) {
+
+                        // Create a FileWriter object for our FileEntry (log.txt).
+                        fileEntry.createWriter(function (fileWriter) {
+
+                            fileWriter.onwriteend = function (e) {
+                                console.log('Write completed.');
+                                logDnd(fileName);
+                            };
+
+                            fileWriter.onerror = function (e) {
+                                console.log('Write failed: ' + e.toString());
+                            };
+
+                            // Create a new Blob and write it to log.txt.
+                            var bb = new window.WebKitBlobBuilder();
+                            bb.append(event.target.result);
+                            fileWriter.write(bb.getBlob('text/plain'));
+
+                        }, errorHandler);
+                    }, function (err) {
+                        console.dir(err);
+                    });
+                };
+                // begin the read operation
+                reader.readAsDataURL(files[index]);
+            }
+        }
+    }
+
+    dropbox.addEventListener("dragenter", dragEnter, false);
+    dropbox.addEventListener("dragexit", dragExit, false);
+    dropbox.addEventListener("dragover", dragOver, false);
+
+    dropbox.addEventListener("drop", drop, true);
+
+    function clear() {
+        commandHistory.innerHTML = "";
+    }
+
+    function clearDnd() {
+        dropbox.innerHTML = "";
+    }
+
+    function listFiles(entries) {
+        for (var index = 0; index < entries.length; index++) {
+            var isFile = entries[index].isFile;
+            var fileName = entries[index].name;
+            var htmlEntry = "<span style='color:" + (isFile ? 'red' : 'blue') + "'>" + fileName + "</span>";
+            log(htmlEntry);
+        }
+    }
+
+    function onCommand() {
+        var txt = commandPrompt.value;
+        commandPrompt.value = "";
+        var txtArgs = txt.split(" ");
+        command = txtArgs[0];
+        if (txtArgs.length > 1) {
+            txtArgs.shift();
+            arguments = txtArgs;
+        }
+        else {
+            arguments = null;
+        }
+        routeCommand(command, arguments);
+    }
+
+    function handlePwd() {
+        log("$>pwd");
+        log(currentDir);
+        log("$>");
+    }
+
+    function handleCd(arguments) {
+        var targetDir = "";
+        if (currentDir == "/") {
+            targetDir = currentDir
+        }
+        else {
+            targetDir = currentDir + "/";
+        }
+
+        if (arguments) {
+            log("$>cd " + arguments[0]);
+            if (arguments[0] == "/") {
+                targetDir = "/";
+            }
+            else if (arguments[0] == "..") {
+                var arr = currentDir.split("/");
+                if (arr.length > 1) {
+                    arr.pop();
+                    targetDir = arr.join("/");
+                }
+                else {
+                    targetDir = targetDir + arguments[0];
+                }
+            }
+            else {
+                targetDir = targetDir + arguments[0];
+            }
+        }
+        else {
+            log("$>cd ");
+            targetDir = "/";
+        }
+
+        fileSys.root.getDirectory(targetDir, {},
+                function (dirEntry) {
+                    currentDir = targetDir;
+                },
+                function (err) {
+                    log(targetDir + " No such file or directory");
+                });
+    }
+
+    function handleClear() {
+        clear();
+        log("$>");
+    }
+
+    function handleMkdir(arguments) {
+        var targetDir = "";
+        if (currentDir == "/") {
+            targetDir = currentDir
+        }
+        else {
+            targetDir = currentDir + "/";
+        }
+        if (arguments) {
+            log("$>cd " + arguments[0]);
+            targetDir = targetDir + arguments[0];
+        }
+        else {
+            log("$>cd ");
+            targetDir = "/";
+        }
+
+        fileSys.root.getDirectory(targetDir,
+                {create:true},
+                function (dirEntry) {
+                    alert("Directory created");
+                },
+                errorHandler);
+
+    }
+
+
+    function handleLs(arguments) {
+        var targetDir = "";
+        if (currentDir == "/") {
+            targetDir = currentDir
+        }
+        else {
+            targetDir = currentDir + "/";
+        }
+        if (arguments) {
+            log("$>cd " + arguments[0]);
+            targetDir = targetDir + arguments[0];
+        }
+        else {
+            log("$>cd ");
+            targetDir = currentDir
+
+        }
+
+        fileSys.root.getDirectory(targetDir,
+                {create:false},
+                function (dirEntry) {
+                    dirReader = dirEntry.createReader();
+                    dirReader.readEntries(function (entries) {
+                                listFiles(entries);
+                            },
+                            errorHandler);
+                },
+                errorHandler);
+    }
+
+    function handleCat(arguments) {
+        log("$>cat " + arguments[0]);
+
+    }
+
+    function handleHelp(arguments) {
+        log("$>help");
+        log("$>pwd: Print Working Directory");
+        log("$>cd: Change Directory");
+        log("$>clear: Clear Screen");
+        log("$>ls: List Files & Directories");
+        log("$>mkdir: Make Directory");
+        log("$>help");
+
+    }
+
+    function routeCommand(command, arguments) {
+        if (command == "pwd") {
+            handlePwd();
+        }
+        else if (command == "cd") {
+            handleCd(arguments);
+        }
+        else if (command == "clear") {
+            handleClear();
+        }
+        else if (command == "ls") {
+            handleLs(arguments);
+        }
+        else if (command == "mkdir") {
+            handleMkdir(arguments);
+        }
+        else if (command == "cat") {
+            handleCat(arguments);
+        }
+        else if (command == "help") {
+            handleHelp(arguments);
+        }
+    }
+
+    function onInitFs(fs) {
+        console.log("File System initiated");
+        fileSys = fs;
+        console.dir(fileSys);
+        log("$>");
+
+    }
+
+    function errorHandler(err) {
+        console.log("Unable to initiate fs, got error code " + err.code);
+    }
+
+    window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
+    window.requestFileSystem(window.TEMPORARY, 5242880, onInitFs, errorHandler);
+
+}
+catch (err) {
+    console.log("Got error when doing File Operations ");
+    console.dir(err);
+}
+</script>
+</section>
+</article>
+
+<article class="tx">
+    <header>File D&D - Code </header>
+    <section>
+        <pre class="code">
+&ltdiv id="dropbox"&gt;&lt;/div&gt;
+
+var dropbox = document.getElementById("dropbox");
+dropbox.addEventListener("dragenter", dragEnter, false);
+dropbox.addEventListener("dragexit", dragExit, false);
+dropbox.addEventListener("dragover", dragOver, false);
+dropbox.addEventListener("drop", drop, false);
+
+function dragEnter(evt) {
+    evt.stopPropagation();
+    evt.preventDefault();
+}
+
+function drop(evt) {
+    event.stopPropagation();
+    event.preventDefault();
+    if (evt.dataTransfer.files) {
+        var files = event.dataTransfer.files;
+        for (var index = 0; index < files.length; index++) {
+            //Get the file Object
+            var file = files[index];
+            console.log("Dropped "+file.name);
+        }
+    }
+}</pre>
+    </section>
+</article>
+
+<article class="tx">
+    <header>File API - Code </header>
+    <section>
+        <h3>Initialing File System</h3>
+        <pre class="code">
+function onInitFs(fs) {
+    console.log("File System initiated");
+    window.fileSys = fs;
+}
+
+function errorHandler(err) {
+    console.log("Unable to initiate fs, got error code " + err.code);
+}
+
+window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
+
+window.requestFileSystem(window.TEMPORARY, 5242880, onInitFs, errorHandler);
+        </pre>
+    </section>
+</article>
+
+<article class="tx">
+    <header>File API - Code </header>
+    <section>
+        <h3>Listing File</h3>
+        <pre class="code">
+fileSys.root.getDirectory("/",{create:false},
+                    function (dirEntry) {
+                        dirReader = dirEntry.createReader();
+                        dirReader.readEntries(function (entries) {
+                            for (var index = 0; index < entries.length; index++) {
+                                var isFile = entries[index].isFile;
+                                var fileName = entries[index].name;
+                                var type = isFile?"File":"Dir";
+                                console.log(type+"  : "+fileName);
+                            }
+                        },
+                        errorHandler);
+                    },
+                    errorHandler);
+        </pre>
+    </section>
+</article>
+<article class="tx">
+    <header>File API - Code </header>
+    <section>
+        <h3>Create Directory</h3>
+        <pre class="code">
+fileSys.root.getDirectory(targetDir,
+                {create:true},
+                function (dirEntry) {
+                    console.log("Directory created");
+                },
+                errorHandler);
+        </pre>
+    </section>
+</article>
+
+<article class="tx">
+    <header>File API - Code </header>
+    <section>
+        <p>For More Details visit <a target="_blank" href="http://www.html5rocks.com/en/tutorials/file/filesystem/">http://www.html5rocks.com/en/tutorials/file/filesystem/</a></p>
+    </section>
+</article>
+
+<article class="tx">
+    <header>Problems with HTML 5 </header>
+    <section>
+        <ol>
+            <li>Fragmentation of browsers and features</li>
+            <li>Many Features not supported on many browsers</li>
+            <li>Where to find this information?</li>
+            <li>When informed, how to handle this?</li>
+            <li>How to detect which features and missing or present?</li>
+            <li>How to Simulate features?</li>
+        </ol>
+    </section>
+</article>
+<article class="tx">
+    <header>How to solve them? </header>
+    <section>
+        <ol>
+            Decision time
+            <li>Visit <a target="_blank" href="http://html5please.com">http://html5please.com</a> to see which features are safe to be used</li>
+            <li>Alternatively also visit <a target="_blank" href="http://html5test.com">http://html5test.com</a> to see which features are safe to be used</li>
+        </ol>
+        <ol>
+            Development time
+            <li>Make use of Modernizer <a target="_blank" href="http://modernizr.com/" >http://modernizr.com/</a> Library</li>
+            <li>Make use of <a target="_blank" href="https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-browser-Polyfills">Polyfills</a>  (polyfill (n): a JavaScript shim that replicates the standard API for older browsers)</li>
+        </ol>
+    </section>
+</article>
+<article class="titleOnly">
+    <header>Q & A </header>
+    <section>
+    </section>
+</article>
+<article class="tx">
+    <header>Contact Me</header>
+    <section>
+        <ol>
+            <li>Twitter - @rohitghatol</li>
+            <li>Linkedin - <a target="_blank" href="http://in.linkedin.com/in/rohitghatol">http://in.linkedin.com/in/rohitghatol</a></li>
+            <li>HomePage - <a target="_blank" href="http://www.rohitghatol.com/">http://www.rohitghatol.com/</a></li>
+        </ol>
+    </section>
+</article>
+
+</div>
+</section>
+
+</body>
+</html>

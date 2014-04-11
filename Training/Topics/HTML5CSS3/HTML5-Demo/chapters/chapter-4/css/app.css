@@ -1,0 +1,16 @@
+body {
+  background: #EEE;
+  font-family: arial, helvetica, sans-serif;
+}
+
+.controls {
+  position: relative;
+  width: 640px;
+}
+
+#seek {
+  width: 400px;
+  position: absolute;
+  right: 0;
+  top: 0;
+}

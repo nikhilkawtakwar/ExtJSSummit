@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Synerzip's ExtJS Summit</title>
+    <link rel="stylesheet" href="/resources/css/main.css"/>
+</head>
+<body>
+<section class='container'>
+<header class='header'>
+    <img class='logo'
+         src='/resources/images/synerzip-logo-hi-res.gif'></img>
+</header>
+<a href="/index.html">Return to Main Page</a>
+<hr/>
+<section class="content">
+<h1>Architecting Your App in Ext JS 4, Part 2</h1>
+<article>
+    <h1><img src="/resources/images/extlogo.png" height="150"></h1>
+
+</article>
+<article>
+    <h1><a name="TOC">Table of Contents</a></h1>
+    <ul>
+        <li><a href="#Introduction">Introduction</a></li>
+        <li><a href="#mvc_pt2-section-1">Defining our application</a>
+        </li>
+        <li><a href="#mvc_pt2-section-2">The Viewport class</a></li>
+        <li><a href="#mvc_pt2-section-3">Creating the building
+            blocks</a></li>
+        <li><a href="#mvc_pt2-section-4">The models and stores</a></li>
+        <li><a href="#mvc_pt2-section-5">Static data</a></li>
+        <li><a href="#mvc_pt2-section-6">Models</a></li>
+        <li><a href="#mvc_pt2-section-7">Stores</a></li>
+        <li><a href="#mvc_pt2-section-8">Adding the stores and models to
+            our application</a></li>
+        <li><a href="#mvc_pt2-section-9">Applying the glue</a></li>
+        <li><a href="#mvc_pt2-section-10">Application logic</a></li>
+        <li><a href="#mvc_pt2-section-11">Creating our Controllers</a>
+        </li>
+        <li><a href="#mvc_pt2-section-12">Setting up listeners</a></li>
+        <li><a href="#mvc_pt2-section-13">Conclusion</a></li>
+    </ul>
+    <hr/>
+</article>
+
+
+<article>
+    <h3
+            class="topic"><a name="Introduction">Introduction</a>
+    </h3>
+
+
+    <p>In the previous Ext JS Architecture article, we explored how to architect
+        a
+        Pandora-style application using Ext JS. We took a look at the
+        Model-View-Controller architecture and how to apply it to a relatively
+        complex UI application that had multiple views and models. In this
+        article,
+        we’re going to move beyond architecting the application visually, and
+        explore how to design and code the controllers and models, starting with
+        <a
+                href="#api/Ext-method-application"
+                rel="Ext-method-application"
+                class="docClass">Ext.application</a> and the Viewport class.</p>
+
+    <p>Let’s just jump in and start writing the application.</p>
+
+    <a href="#TOC">Table of Contents</a>
+    <hr/>
+</article>
+
+<h3 class="topic"><a name="mvc_pt2-section-1">Defining our application</a></h3>
+
+<p>In Ext JS 3, the <a href="#api/Ext-method-onReady" rel="Ext-method-onReady"
+                       class="docClass">Ext.onReady</a> method was the entry
+    point into your application, and the developer had to come up with an
+    application architecture. In Ext JS 4, we have an introduced an MVC-like
+    pattern. This pattern helps you to follow best practices when creating your
+    applications.</p>
+
+<p>The entry point into an application written with the new MVC package requires
+    that you use the <a href="#api/Ext-method-application"
+                        rel="Ext-method-application" class="docClass">Ext.application</a>
+    method. This method will create an <a href="#api/Ext.app.Application"
+                                          rel="Ext.app.Application"
+                                          class="docClass">Ext.app.Application</a>
+    instance for you and will fire the launch method as soon as the page is
+    ready. This essentially replaces the need to use <a
+            href="#api/Ext-method-onReady" rel="Ext-method-onReady"
+            class="docClass">Ext.onReady</a> while adding new functionality such
+    as automatically creating a viewport and setting up your namespace.</p>
+
+<h3><code>app/Application.js</code></h3>
+
+       <pre id="ext-gen3182" class="code"><code id="ext-gen3183"><a
+               href="#api/Ext-method-application" rel="Ext-method-application"
+               class="docClass"><span class="typ">Ext</span><span
+               class="pun">.</span><span class="pln">application</span></a><span
+               class="pun">({</span><span class="pln">
+           name</span><span class="pun">:</span><span class="pln"> </span><span
+               class="str">'Panda'</span><span class="pun">,</span><span
+               class="pln">
+           autoCreateViewport</span><span class="pun">:</span><span
+               class="pln"> </span><span class="kwd">true</span><span
+               class="pun">,</span><span class="pln">
+           launch</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="kwd">function</span><span class="pun">()</span><span
+               class="pln"> </span><span class="pun">{</span><span class="pln">
+               </span><span
+               class="com">// This is fired as soon as the page is ready</span><span
+               class="pln">
+           </span><span class="pun">}</span><span class="pln">
+       </span><span class="pun">});</span></code></pre>
+
+<p>The name configuration causes a new namespace to be created. All our views,
+    models, stores and controllers will live in this namespace. By setting
+    autoCreateViewport to true, the framework will, by convention, include the
+    app/view/Viewport.js file. In this file, a class should be defined with the
+    name Panda.view.Viewport, matching the namespace that was specified by the
+    name configuration of your application.</p>
+
+<a href="#TOC">Table of Contents</a>
+<hr/>
+</article>
+<article>
+    <h3 class="topic"><a name="mvc_pt2-section-2">The Viewport class</a></h3>
+
+    <p>When we looked at which views we needed for our UI, we were very focused
+        on
+        the individual parts. The Viewport of an application acts as the glue
+        for
+        these individual parts. It loads the required views and defines the
+        configuration needed to achieve your app’s overall layout. We have found
+        that progressively defining your views and adding them to the viewport
+        is
+        the fastest way to create the base structure of your UI.</p>
+
+    <p>It is important during this process to focus on scaffolding your views
+        and
+        not on the individual views themselves. It’s almost like sculpting. We
+        start
+        by creating the very rough shapes of our views and add more detail to
+        them
+        later.</p>
+    <a href="#TOC">Table of Contents</a>
+    <hr/>
+</article>
+<article>
+
+    <h3 class="topic"><a name="mvc_pt2-section-3">Creating the building
+        blocks</a></h3>
+
+    <p>Leveraging the work we already did in the previous article, we are able
+        to
+        define many of the views at once.</p>
+
+    <p></p>
+
+    <p><img src="guides/mvc_pt2/balanced.png" alt="Balanced"></p>
+
+    <p></p>
+
+    <h3><code>app/view/NewStation.js</code></h3>
+
+       <pre id="ext-gen3184" class="code"><code id="ext-gen3185"><a
+               href="#api/Ext-method-define" rel="Ext-method-define"
+               class="docClass"><span class="typ">Ext</span><span
+               class="pun">.</span><span class="pln">define</span></a><span
+               class="pun">(</span><span
+               class="str">'Panda.view.NewStation'</span><span
+               class="pun">,</span><span class="pln"> </span><span
+               class="pun">{</span><span
+               class="pln">
+           extend</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'</span><a href="#api/Ext.form.field.ComboBox"
+                                      rel="Ext.form.field.ComboBox"
+                                      class="docClass"><span class="str">Ext.form.field.ComboBox</span></a><span
+               class="str">'</span><span class="pun">,</span><span class="pln">
+           </span><span class="kwd">alias</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'widget.newstation'</span><span
+               class="pun">,</span><span class="pln">
+           store</span><span class="pun">:</span><span class="pln"> </span><span
+               class="str">'SearchResults'</span><span class="pun">,</span><span
+               class="pln">
+           </span><span class="pun">...</span><span
+               class="pln"> more configuration </span><span
+               class="pun">...</span><span
+               class="pln">
+       </span><span class="pun">});</span></code></pre>
+
+    <h3><code>app/view/SongControls.js</code></h3>
+
+       <pre id="ext-gen3186" class="code"><code id="ext-gen3187"><a
+               href="#api/Ext-method-define" rel="Ext-method-define"
+               class="docClass"><span class="typ">Ext</span><span
+               class="pun">.</span><span class="pln">define</span></a><span
+               class="pun">(</span><span
+               class="str">'Panda.view.SongControls'</span><span
+               class="pun">,</span><span class="pln"> </span><span
+               class="pun">{</span><span
+               class="pln">
+           extend</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'</span><a href="#api/Ext.container.Container"
+                                      rel="Ext.container.Container"
+                                      class="docClass"><span
+               class="str">Ext.Container</span></a><span
+               class="str">'</span><span
+               class="pun">,</span><span class="pln">
+           </span><span class="kwd">alias</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'widget.songcontrols'</span><span
+               class="pun">,</span><span class="pln">
+           </span><span class="pun">...</span><span
+               class="pln"> more configuration </span><span
+               class="pun">...</span><span
+               class="pln">
+       </span><span class="pun">});</span></code></pre>
+
+    <h3><code>app/view/StationsList</code></h3>
+
+       <pre id="ext-gen3188" class="code"><code id="ext-gen3189"><a
+               href="#api/Ext-method-define" rel="Ext-method-define"
+               class="docClass"><span class="typ">Ext</span><span
+               class="pun">.</span><span class="pln">define</span></a><span
+               class="pun">(</span><span
+               class="str">'Panda.view.StationsList'</span><span
+               class="pun">,</span><span class="pln"> </span><span
+               class="pun">{</span><span
+               class="pln">
+           extend</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'</span><a href="#api/Ext.grid.Panel"
+                                      rel="Ext.grid.Panel"
+                                      class="docClass"><span
+               class="str">Ext.grid.Panel</span></a><span
+               class="str">'</span><span
+               class="pun">,</span><span class="pln">
+           </span><span class="kwd">alias</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'widget.stationslist'</span><span
+               class="pun">,</span><span class="pln">
+           store</span><span class="pun">:</span><span class="pln"> </span><span
+               class="str">'Stations'</span><span class="pun">,</span><span
+               class="pln">
+           </span><span class="pun">...</span><span
+               class="pln"> more configuration </span><span
+               class="pun">...</span><span
+               class="pln">
+       </span><span class="pun">});</span></code></pre>
+
+    <h3><code>app/view/RecentlyPlayedScroller.js</code></h3>
+
+       <pre id="ext-gen3190" class="code"><code id="ext-gen3191"><a
+               href="#api/Ext-method-define" rel="Ext-method-define"
+               class="docClass"><span class="typ">Ext</span><span
+               class="pun">.</span><span class="pln">define</span></a><span
+               class="pun">(</span><span class="str">'Panda.view.RecentlyPlayedScroller'</span><span
+               class="pun">,</span><span class="pln"> </span><span
+               class="pun">{</span><span
+               class="pln">
+           extend</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'</span><a href="#api/Ext.view.View"
+                                      rel="Ext.view.View"
+                                      class="docClass"><span
+               class="str">Ext.view.View</span></a><span
+               class="str">'</span><span
+               class="pun">,</span><span class="pln">
+           </span><span class="kwd">alias</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'widget.recentlyplayedscroller'</span><span
+               class="pun">,</span><span class="pln">
+           itemTpl</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'&lt;div&gt;&lt;/div&gt;'</span><span
+               class="pun">,</span><span class="pln">
+           store</span><span class="pun">:</span><span class="pln"> </span><span
+               class="str">'RecentSongs'</span><span class="pun">,</span><span
+               class="pln">
+           </span><span class="pun">...</span><span
+               class="pln"> more configuration </span><span
+               class="pun">...</span><span
+               class="pln">
+       </span><span class="pun">});</span></code></pre>
+
+    <h3><code>app/view/SongInfo.js</code></h3>
+
+       <pre id="ext-gen3192" class="code"><code id="ext-gen3193"><a
+               href="#api/Ext-method-define" rel="Ext-method-define"
+               class="docClass"><span class="typ">Ext</span><span
+               class="pun">.</span><span class="pln">define</span></a><span
+               class="pun">(</span><span
+               class="str">'Panda.view.SongInfo'</span><span
+               class="pun">,</span><span class="pln"> </span><span
+               class="pun">{</span><span
+               class="pln">
+           extend</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'</span><a href="#api/Ext.panel.Panel"
+                                      rel="Ext.panel.Panel"
+                                      class="docClass"><span
+               class="str">Ext.panel.Panel</span></a><span
+               class="str">'</span><span
+               class="pun">,</span><span class="pln">
+           </span><span class="kwd">alias</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'widget.songinfo'</span><span
+               class="pun">,</span><span class="pln">
+           tpl</span><span class="pun">:</span><span class="pln"> </span><span
+               class="str">'&lt;h1&gt;About &lt;/h1&gt;&lt;p&gt;&lt;/p&gt;'</span><span
+               class="pun">,</span><span class="pln">
+           </span><span class="pun">...</span><span
+               class="pln"> more configuration </span><span
+               class="pun">...</span><span
+               class="pln">
+       </span><span class="pun">});</span></code></pre>
+
+    <p>We have left out some of the configuration here since component
+        configurations are not in the scope of this article.</p>
+
+    <p>In the above configurations, you’ll notice that we have three stores
+        configured. These map to the store names prepared in the previous
+        article.
+        At this point we’ll go ahead and create our stores.</p>
+
+    <p></p>
+
+    <p><img src="guides/mvc_pt2/stores.png" alt="Stores"></p>
+
+    <p></p>
+    <a href="#TOC">Table of Contents</a>
+    <hr/>
+</article>
+<article>
+    <h3 class="topic"><a name="mvc_pt2-section-4">The models and stores</a></h3>
+
+    <p>Often, it is useful to start with static json files containing mock data
+        to
+        act as our server side. Later, we can use these static files as a
+        reference
+        when we actually implement a dynamic server side.</p>
+
+    <p>For our app, we decided to use two models, Station and Song. We also need
+        three stores using these two models that will be bound to our data
+        components. Each store will load its data from the server side. The mock
+        data files would look something like the following.</p>
+
+    <a href="#TOC">Table of Contents</a>
+    <hr/>
+</article>
+<article>
+    <h3 class="topic"><a name="mvc_pt2-section-5">Static data</a></h3>
+
+    <h3><code>data/songs.json</code></h3>
+
+       <pre id="ext-gen3194" class="code"><code id="ext-gen3195"><span
+               class="pun">{</span><span class="pln">
+           </span><span class="str">'success'</span><span
+               class="pun">:</span><span
+               class="pln"> </span><span class="kwd">true</span><span
+               class="pun">,</span><span class="pln">
+           </span><span class="str">'results'</span><span
+               class="pun">:</span><span
+               class="pln"> </span><span class="pun">[</span><span class="pln">
+               </span><span class="pun">{</span><span class="pln">
+                   </span><span class="str">'name'</span><span
+               class="pun">:</span><span class="pln"> </span><span class="str">'Blues At Sunrise (Live)'</span><span
+               class="pun">,</span><span class="pln">
+                   </span><span class="str">'artist'</span><span
+               class="pun">:</span><span class="pln"> </span><span class="str">'Stevie Ray Vaughan'</span><span
+               class="pun">,</span><span class="pln">
+                   </span><span class="str">'album'</span><span
+               class="pun">:</span><span class="pln"> </span><span class="str">'Blues At Sunrise'</span><span
+               class="pun">,</span><span class="pln">
+                   </span><span class="str">'description'</span><span
+               class="pun">:</span><span class="pln"> </span><span class="str">'Description for Stevie'</span><span
+               class="pun">,</span><span class="pln">
+                   </span><span class="str">'played_date'</span><span
+               class="pun">:</span><span class="pln"> </span><span
+               class="str">'1'</span><span class="pun">,</span><span
+               class="pln">
+                   </span><span class="str">'station'</span><span
+               class="pun">:</span><span class="pln"> </span><span
+               class="lit">1</span><span
+               class="pln">
+               </span><span class="pun">},</span><span class="pln">
+               </span><span class="pun">...</span><span class="pln">
+           </span><span class="pun">]</span><span class="pln">
+       </span><span class="pun">}</span></code></pre>
+
+    <h3><code>data/stations.json</code></h3>
+
+       <pre id="ext-gen3196" class="code"><code id="ext-gen3197"><span
+               class="pun">{</span><span class="pln">
+           </span><span class="str">'success'</span><span
+               class="pun">:</span><span
+               class="pln"> </span><span class="kwd">true</span><span
+               class="pun">,</span><span class="pln">
+           </span><span class="str">'results'</span><span
+               class="pun">:</span><span
+               class="pln"> </span><span class="pun">[</span><span class="pln">
+               </span><span class="pun">{</span><span
+               class="str">'id'</span><span
+               class="pun">:</span><span class="pln"> </span><span
+               class="lit">1</span><span
+               class="pun">,</span><span class="pln"> </span><span class="str">'played_date'</span><span
+               class="pun">:</span><span class="pln"> </span><span
+               class="lit">4</span><span
+               class="pun">,</span><span class="pln"> </span><span
+               class="str">'name'</span><span class="pun">:</span><span
+               class="pln"> </span><span class="str">'Led Zeppelin'</span><span
+               class="pun">},</span><span class="pln">
+               </span><span class="pun">{</span><span
+               class="str">'id'</span><span
+               class="pun">:</span><span class="pln"> </span><span
+               class="lit">2</span><span
+               class="pun">,</span><span class="pln"> </span><span class="str">'played_date'</span><span
+               class="pun">:</span><span class="pln"> </span><span
+               class="lit">3</span><span
+               class="pun">,</span><span class="pln"> </span><span
+               class="str">'name'</span><span class="pun">:</span><span
+               class="pln"> </span><span class="str">'The Rolling Stones'</span><span
+               class="pun">},</span><span class="pln">
+               </span><span class="pun">{</span><span
+               class="str">'id'</span><span
+               class="pun">:</span><span class="pln"> </span><span
+               class="lit">3</span><span
+               class="pun">,</span><span class="pln"> </span><span class="str">'played_date'</span><span
+               class="pun">:</span><span class="pln"> </span><span
+               class="lit">2</span><span
+               class="pun">,</span><span class="pln"> </span><span
+               class="str">'name'</span><span class="pun">:</span><span
+               class="pln"> </span><span class="str">'Daft Punk'</span><span
+               class="pun">}</span><span class="pln">
+           </span><span class="pun">]</span><span class="pln">
+       </span><span class="pun">}</span></code></pre>
+
+    <h3><code>data/searchresults.json</code></h3>
+
+       <pre id="ext-gen3198" class="code"><code id="ext-gen3199"><span
+               class="pun">{</span><span class="pln">
+           </span><span class="str">'success'</span><span
+               class="pun">:</span><span
+               class="pln"> </span><span class="kwd">true</span><span
+               class="pun">,</span><span class="pln">
+           </span><span class="str">'results'</span><span
+               class="pun">:</span><span
+               class="pln"> </span><span class="pun">[</span><span class="pln">
+               </span><span class="pun">{</span><span
+               class="str">'id'</span><span
+               class="pun">:</span><span class="pln"> </span><span
+               class="lit">1</span><span
+               class="pun">,</span><span class="pln"> </span><span
+               class="str">'name'</span><span class="pun">:</span><span
+               class="pln"> </span><span class="str">'Led Zeppelin'</span><span
+               class="pun">},</span><span class="pln">
+               </span><span class="pun">{</span><span
+               class="str">'id'</span><span
+               class="pun">:</span><span class="pln"> </span><span
+               class="lit">2</span><span
+               class="pun">,</span><span class="pln"> </span><span
+               class="str">'name'</span><span class="pun">:</span><span
+               class="pln"> </span><span class="str">'The Rolling Stones'</span><span
+               class="pun">},</span><span class="pln">
+               </span><span class="pun">{</span><span
+               class="str">'id'</span><span
+               class="pun">:</span><span class="pln"> </span><span
+               class="lit">3</span><span
+               class="pun">,</span><span class="pln"> </span><span
+               class="str">'name'</span><span class="pun">:</span><span
+               class="pln"> </span><span class="str">'Daft Punk'</span><span
+               class="pun">},</span><span class="pln">
+               </span><span class="pun">{</span><span
+               class="str">'id'</span><span
+               class="pun">:</span><span class="pln"> </span><span
+               class="lit">4</span><span
+               class="pun">,</span><span class="pln"> </span><span
+               class="str">'name'</span><span class="pun">:</span><span
+               class="pln"> </span><span class="str">'John Mayer'</span><span
+               class="pun">},</span><span class="pln">
+               </span><span class="pun">{</span><span
+               class="str">'id'</span><span
+               class="pun">:</span><span class="pln"> </span><span
+               class="lit">5</span><span
+               class="pun">,</span><span class="pln"> </span><span
+               class="str">'name'</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'Pete Philly &amp;amp; Perquisite'</span><span
+               class="pun">},</span><span
+               class="pln">
+               </span><span class="pun">{</span><span
+               class="str">'id'</span><span
+               class="pun">:</span><span class="pln"> </span><span
+               class="lit">6</span><span
+               class="pun">,</span><span class="pln"> </span><span
+               class="str">'name'</span><span class="pun">:</span><span
+               class="pln"> </span><span class="str">'Black Star'</span><span
+               class="pun">},</span><span class="pln">
+               </span><span class="pun">{</span><span
+               class="str">'id'</span><span
+               class="pun">:</span><span class="pln"> </span><span
+               class="lit">7</span><span
+               class="pun">,</span><span class="pln"> </span><span
+               class="str">'name'</span><span class="pun">:</span><span
+               class="pln"> </span><span class="str">'Macy Gray'</span><span
+               class="pun">}</span><span class="pln">
+           </span><span class="pun">]</span><span class="pln">
+       </span><span class="pun">}</span></code></pre>
+
+    <a href="#TOC">Table of Contents</a>
+    <hr/>
+</article>
+<article>
+    <h3 class="topic"><a name="mvc_pt2-section-6">Models</a></h3>
+
+    <p>Models in Ext JS 4 are very similar to Records which we had in Ext JS 3.
+        One
+        key difference is that you can now specify a proxy on your model, as
+        well as
+        validations and associations. The Song model for our application in Ext
+        JS 4
+        would look like this.</p>
+
+    <h3><code>app/model/Song.js</code></h3>
+
+       <pre id="ext-gen3200" class="code"><code id="ext-gen3201"><a
+               href="#api/Ext-method-define" rel="Ext-method-define"
+               class="docClass"><span class="typ">Ext</span><span
+               class="pun">.</span><span class="pln">define</span></a><span
+               class="pun">(</span><span
+               class="str">'Panda.model.Song'</span><span
+               class="pun">,</span><span class="pln"> </span><span
+               class="pun">{</span><span
+               class="pln">
+           extend</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'</span><a href="#api/Ext.data.Model"
+                                      rel="Ext.data.Model"
+                                      class="docClass"><span
+               class="str">Ext.data.Model</span></a><span
+               class="str">'</span><span
+               class="pun">,</span><span class="pln">
+           fields</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="pun">[</span><span class="str">'id'</span><span
+               class="pun">,</span><span class="pln"> </span><span
+               class="str">'name'</span><span class="pun">,</span><span
+               class="pln"> </span><span class="str">'artist'</span><span
+               class="pun">,</span><span class="pln"> </span><span
+               class="str">'album'</span><span class="pun">,</span><span
+               class="pln"> </span><span class="str">'played_date'</span><span
+               class="pun">,</span><span class="pln"> </span><span class="str">'station'</span><span
+               class="pun">],</span><span class="pln">
+
+           proxy</span><span class="pun">:</span><span class="pln"> </span><span
+               class="pun">{</span><span class="pln">
+               type</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'ajax'</span><span class="pun">,</span><span
+               class="pln">
+               url</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'data/recentsongs.json'</span><span
+               class="pun">,</span><span class="pln">
+               reader</span><span class="pun">:</span><span class="pln"> </span><span
+               class="pun">{</span><span class="pln">
+                   type</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'json'</span><span class="pun">,</span><span
+               class="pln">
+                   root</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'results'</span><span class="pln">
+               </span><span class="pun">}</span><span class="pln">
+           </span><span class="pun">}</span><span class="pln">
+       </span><span class="pun">});</span></code></pre>
+
+    <p>As you can see, we have defined the proxy on our model. It is generally
+        good
+        practice to do this as it allows you to load and save instances of this
+        model without needing a store. Also, when multiple stores use this same
+        model, you don’t have to redefine your proxy on each one of them.</p>
+
+    <p>Let’s go ahead and also define our Station model.</p>
+
+    <h3><code>app/model/Station.js</code></h3>
+
+       <pre id="ext-gen3202" class="code"><code id="ext-gen3203"><a
+               href="#api/Ext-method-define" rel="Ext-method-define"
+               class="docClass"><span class="typ">Ext</span><span
+               class="pun">.</span><span class="pln">define</span></a><span
+               class="pun">(</span><span
+               class="str">'Panda.model.Station'</span><span
+               class="pun">,</span><span class="pln"> </span><span
+               class="pun">{</span><span
+               class="pln">
+           extend</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'</span><a href="#api/Ext.data.Model"
+                                      rel="Ext.data.Model"
+                                      class="docClass"><span
+               class="str">Ext.data.Model</span></a><span
+               class="str">'</span><span
+               class="pun">,</span><span class="pln">
+           fields</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="pun">[</span><span class="str">'id'</span><span
+               class="pun">,</span><span class="pln"> </span><span
+               class="str">'name'</span><span class="pun">,</span><span
+               class="pln"> </span><span class="str">'played_date'</span><span
+               class="pun">],</span><span class="pln">
+
+           proxy</span><span class="pun">:</span><span class="pln"> </span><span
+               class="pun">{</span><span class="pln">
+               type</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'ajax'</span><span class="pun">,</span><span
+               class="pln">
+               url</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'data/stations.json'</span><span class="pun">,</span><span
+               class="pln">
+               reader</span><span class="pun">:</span><span class="pln"> </span><span
+               class="pun">{</span><span class="pln">
+                   type</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'json'</span><span class="pun">,</span><span
+               class="pln">
+                   root</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'results'</span><span class="pln">
+               </span><span class="pun">}</span><span class="pln">
+           </span><span class="pun">}</span><span class="pln">
+       </span><span class="pun">});</span></code></pre>
+
+    <a href="#TOC">Table of Contents</a>
+    <hr/>
+</article>
+<article>
+    <h3 class="topic"><a name="mvc_pt2-section-7">Stores</a></h3>
+
+    <p>In Ext JS 4, multiple stores can use the same data model, even if the
+        stores
+        will load their data from different sources. In our example, the Station
+        model will be used by the SearchResults and the Stations store, both
+        loading
+        the data from a different location. One returns search results, the
+        other
+        returns the user’s favorite stations. To achieve this, one of our stores
+        will need to override the proxy defined on the model.</p>
+
+    <h3><code>app/store/SearchResults.js</code></h3>
+
+       <pre id="ext-gen3204" class="code"><code id="ext-gen3205"><a
+               href="#api/Ext-method-define" rel="Ext-method-define"
+               class="docClass"><span class="typ">Ext</span><span
+               class="pun">.</span><span class="pln">define</span></a><span
+               class="pun">(</span><span
+               class="str">'Panda.store.SearchResults'</span><span
+               class="pun">,</span><span class="pln"> </span><span
+               class="pun">{</span><span
+               class="pln">
+           extend</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'</span><a href="#api/Ext.data.Store"
+                                      rel="Ext.data.Store"
+                                      class="docClass"><span
+               class="str">Ext.data.Store</span></a><span
+               class="str">'</span><span
+               class="pun">,</span><span class="pln">
+           requires</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'Panda.model.Station'</span><span
+               class="pun">,</span><span
+               class="pln">
+           model</span><span class="pun">:</span><span class="pln"> </span><span
+               class="str">'Panda.model.Station'</span><span
+               class="pun">,</span><span
+               class="pln">
+
+           </span><span
+               class="com">// Overriding the model's default proxy</span><span
+               class="pln">
+           proxy</span><span class="pun">:</span><span class="pln"> </span><span
+               class="pun">{</span><span class="pln">
+               type</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'ajax'</span><span class="pun">,</span><span
+               class="pln">
+               url</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'data/searchresults.json'</span><span
+               class="pun">,</span><span class="pln">
+               reader</span><span class="pun">:</span><span class="pln"> </span><span
+               class="pun">{</span><span class="pln">
+                   type</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'json'</span><span class="pun">,</span><span
+               class="pln">
+                   root</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'results'</span><span class="pln">
+               </span><span class="pun">}</span><span class="pln">
+           </span><span class="pun">}</span><span class="pln">
+       </span><span class="pun">});</span></code></pre>
+
+    <h3><code>app/store/Stations.js</code></h3>
+
+       <pre id="ext-gen3206" class="code"><code id="ext-gen3207"><a
+               href="#api/Ext-method-define" rel="Ext-method-define"
+               class="docClass"><span class="typ">Ext</span><span
+               class="pun">.</span><span class="pln">define</span></a><span
+               class="pun">(</span><span
+               class="str">'Panda.store.Stations'</span><span
+               class="pun">,</span><span class="pln"> </span><span
+               class="pun">{</span><span
+               class="pln">
+           extend</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'</span><a href="#api/Ext.data.Store"
+                                      rel="Ext.data.Store"
+                                      class="docClass"><span
+               class="str">Ext.data.Store</span></a><span
+               class="str">'</span><span
+               class="pun">,</span><span class="pln">
+           requires</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'Panda.model.Station'</span><span
+               class="pun">,</span><span
+               class="pln">
+           model</span><span class="pun">:</span><span class="pln"> </span><span
+               class="str">'Panda.model.Station'</span><span class="pln">
+       </span><span class="pun">});</span></code></pre>
+
+    <p>In the SearchResults store definition, we have overridden the proxy
+        defined
+        on the Station model by providing a different proxy configuration. The
+        store’s proxy is used when calling the store’s load method instead of
+        the
+        proxy defined on the model itself.</p>
+
+    <p>Note that you could implement your server side to have one API for
+        retrieving
+        both search results and the user’s favorite stations in which case both
+        stores could use the default proxy defined on the model, only passing
+        different parameters to the request when loading the stores.</p>
+
+    <p>Lastly, let’s create the RecentSongs store.</p>
+
+    <h3><code>app/store/RecentSongs.js</code></h3>
+
+       <pre id="ext-gen3208" class="code"><code id="ext-gen3209"><a
+               href="#api/Ext-method-define" rel="Ext-method-define"
+               class="docClass"><span class="typ">Ext</span><span
+               class="pun">.</span><span class="pln">define</span></a><span
+               class="pun">(</span><span
+               class="str">'Panda.store.RecentSongs'</span><span
+               class="pun">,</span><span class="pln"> </span><span
+               class="pun">{</span><span
+               class="pln">
+           extend</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'</span><a href="#api/Ext.data.Store"
+                                      rel="Ext.data.Store"
+                                      class="docClass"><span
+               class="str">Ext.data.Store</span></a><span
+               class="str">'</span><span
+               class="pun">,</span><span class="pln">
+           model</span><span class="pun">:</span><span class="pln"> </span><span
+               class="str">'Panda.model.Song'</span><span
+               class="pun">,</span><span
+               class="pln">
+
+           </span><span
+               class="com">// Make sure to require your model if you are</span><span
+               class="pln">
+           </span><span class="com">// not using Ext JS 4.0.5</span><span
+               class="pln">
+           requires</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'Panda.model.Song'</span><span class="pln">
+       </span><span class="pun">});</span></code></pre>
+
+    <p>Note that in the current version of Ext JS, the 'model' property on a
+        store
+        doesn’t automatically create a dependency, which is why we have to
+        specify
+        requires in order to be able to dynamically load the model.</p>
+
+    <p>Also, for convention, we always try to pluralize the store names, while
+        keeping the model names singular.</p>
+
+    <a href="#TOC">Table of Contents</a>
+    <hr/>
+</article>
+<article>
+    <h3 class="topic"><a name="mvc_pt2-section-8">Adding the stores and models
+        to our application</a></h3>
+
+    <p>Now that we have defined our models and stores, it’s time to add them to
+        our
+        application. Let’s revisit our Application.js file.</p>
+
+    <h3><code>app/Application.js</code></h3>
+
+       <pre id="ext-gen3210" class="code"><code id="ext-gen3211"><a
+               href="#api/Ext-method-application" rel="Ext-method-application"
+               class="docClass"><span class="typ">Ext</span><span
+               class="pun">.</span><span class="pln">application</span></a><span
+               class="pun">({</span><span class="pln">
+           </span><span class="pun">...</span><span class="pln">
+           models</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="pun">[</span><span class="str">'Station'</span><span
+               class="pun">,</span><span
+               class="pln"> </span><span class="str">'Song'</span><span
+               class="pun">],</span><span class="pln">
+           stores</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="pun">[</span><span class="str">'Stations'</span><span
+               class="pun">,</span><span class="pln"> </span><span class="str">'RecentSongs'</span><span
+               class="pun">,</span><span class="pln"> </span><span class="str">'SearchResults'</span><span
+               class="pun">]</span><span class="pln">
+           </span><span class="pun">...</span><span class="pln">
+       </span><span class="pun">});</span></code></pre>
+
+    <p>Another advantage of using the new Ext JS 4 MVC package is that the
+        Application will automatically load the stores and models defined in the
+        stores and models configurations. Then, it will create an instance for
+        each
+        store loaded, giving it a storeId equal to its name. This allows us to
+        use
+        the name of the store whenever we bind it to a data component like we
+        did in
+        our views, e.g. store: 'SearchResults'.</p>
+
+    <a href="#TOC">Table of Contents</a>
+    <hr/>
+</article>
+<article>
+    <h3 class="topic"><a name="mvc_pt2-section-9">Applying the glue</a></h3>
+
+    <p>Now that we have our views, models and stores, it’s time to glue them
+        together. You start by adding the views one by one to your viewport.
+        This
+        will make it easier to debug any wrong view configurations. Let’s go
+        through
+        the resulting viewport for the Panda app.</p>
+
+       <pre id="ext-gen3212" class="code"><code id="ext-gen3213"><a
+               href="#api/Ext-method-define" rel="Ext-method-define"
+               class="docClass"><span class="typ">Ext</span><span
+               class="pun">.</span><span class="pln">define</span></a><span
+               class="pun">(</span><span
+               class="str">'Panda.view.Viewport'</span><span
+               class="pun">,</span><span class="pln"> </span><span
+               class="pun">{</span><span
+               class="pln">
+           extend</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'</span><a href="#api/Ext.container.Viewport"
+                                      rel="Ext.container.Viewport"
+                                      class="docClass"><span class="str">Ext.container.Viewport</span></a><span
+               class="str">'</span><span class="pun">,</span></code></pre>
+
+    <p>Your Viewport class will usually want to extend <a
+            href="#api/Ext.container.Viewport" rel="Ext.container.Viewport"
+            class="docClass">Ext.container.Viewport</a>. This will cause your
+        app to
+        take up all the available space in your browser window.</p>
+
+       <pre id="ext-gen3214" class="code"><code id="ext-gen3215"><span
+               class="pln">    requires</span><span class="pun">:</span><span
+               class="pln"> </span><span class="pun">[</span><span class="pln">
+               </span><span class="str">'Panda.view.NewStation'</span><span
+               class="pun">,</span><span class="pln">
+               </span><span class="str">'Panda.view.SongControls'</span><span
+               class="pun">,</span><span class="pln">
+               </span><span class="str">'Panda.view.StationsList'</span><span
+               class="pun">,</span><span class="pln">
+               </span><span
+               class="str">'Panda.view.RecentlyPlayedScroller'</span><span
+               class="pun">,</span><span class="pln">
+               </span><span class="str">'Panda.view.SongInfo'</span><span
+               class="pln">
+           </span><span class="pun">],</span></code></pre>
+
+    <p>We set up all the view dependencies in our viewport. This will allow us
+        to
+        use their xtypes, previously configured in our views using the alias
+        property.</p>
+
+       <pre id="ext-gen3216" class="code"><code id="ext-gen3217"><span
+               class="pln">    layout</span><span class="pun">:</span><span
+               class="pln"> </span><span class="str">'fit'</span><span
+               class="pun">,</span><span class="pln">
+
+           initComponent</span><span class="pun">:</span><span
+               class="pln"> </span><span class="kwd">function</span><span
+               class="pun">()</span><span
+               class="pln"> </span><span class="pun">{</span><span class="pln">
+               </span><span class="kwd">this</span><span
+               class="pun">.</span><span
+               class="pln">items </span><span class="pun">=</span><span
+               class="pln"> </span><span class="pun">{</span><span class="pln">
+                   xtype</span><span class="pun">:</span><span
+               class="pln"> </span><span class="str">'panel'</span><span
+               class="pun">,</span><span class="pln">
+                   dockedItems</span><span class="pun">:</span><span
+               class="pln"> </span><span class="pun">[{</span><span class="pln">
+                       dock</span><span class="pun">:</span><span
+               class="pln"> </span><span class="str">'top'</span><span
+               class="pun">,</span><span class="pln">
+                       xtype</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'toolbar'</span><span class="pun">,</span><span
+               class="pln">
+                       height</span><span class="pun">:</span><span
+               class="pln"> </span><span class="lit">80</span><span
+               class="pun">,</span><span class="pln">
+                       items</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="pun">[{</span><span class="pln">
+                           xtype</span><span class="pun">:</span><span
+               class="pln"> </span><span class="str">'newstation'</span><span
+               class="pun">,</span><span class="pln">
+                           width</span><span class="pun">:</span><span
+               class="pln"> </span><span class="lit">150</span><span
+               class="pln">
+                       </span><span class="pun">},</span><span
+               class="pln"> </span><span class="pun">{</span><span class="pln">
+                           xtype</span><span class="pun">:</span><span
+               class="pln"> </span><span class="str">'songcontrols'</span><span
+               class="pun">,</span><span class="pln">
+                           height</span><span class="pun">:</span><span
+               class="pln"> </span><span class="lit">70</span><span
+               class="pun">,</span><span class="pln">
+                           flex</span><span class="pun">:</span><span
+               class="pln"> </span><span class="lit">1</span><span class="pln">
+                       </span><span class="pun">},</span><span
+               class="pln"> </span><span class="pun">{</span><span class="pln">
+                           xtype</span><span class="pun">:</span><span
+               class="pln"> </span><span class="str">'component'</span><span
+               class="pun">,</span><span class="pln">
+                           html</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'Panda&lt;br&gt;Internet Radio'</span><span
+               class="pln">
+                       </span><span class="pun">}]</span><span class="pln">
+                   </span><span class="pun">}],</span><span class="pln">
+                   layout</span><span class="pun">:</span><span
+               class="pln"> </span><span class="pun">{</span><span class="pln">
+                       type</span><span class="pun">:</span><span
+               class="pln"> </span><span class="str">'hbox'</span><span
+               class="pun">,</span><span class="pln">
+                       align</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'stretch'</span><span class="pln">
+                   </span><span class="pun">},</span><span class="pln">
+                   items</span><span class="pun">:</span><span
+               class="pln"> </span><span class="pun">[{</span><span class="pln">
+                       width</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="lit">250</span><span class="pun">,</span><span
+               class="pln">
+                       xtype</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'panel'</span><span class="pun">,</span><span
+               class="pln">
+                       layout</span><span class="pun">:</span><span
+               class="pln"> </span><span class="pun">{</span><span class="pln">
+                           type</span><span class="pun">:</span><span
+               class="pln"> </span><span class="str">'vbox'</span><span
+               class="pun">,</span><span class="pln">
+                           align</span><span class="pun">:</span><span
+               class="pln"> </span><span class="str">'stretch'</span><span
+               class="pln">
+                       </span><span class="pun">},</span><span class="pln">
+                       items</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="pun">[{</span><span class="pln">
+                           xtype</span><span class="pun">:</span><span
+               class="pln"> </span><span class="str">'stationslist'</span><span
+               class="pun">,</span><span class="pln">
+                           flex</span><span class="pun">:</span><span
+               class="pln"> </span><span class="lit">1</span><span class="pln">
+                       </span><span class="pun">},</span><span
+               class="pln"> </span><span class="pun">{</span><span class="pln">
+                           html</span><span class="pun">:</span><span
+               class="pln"> </span><span class="str">'Ad'</span><span
+               class="pun">,</span><span class="pln">
+                           height</span><span class="pun">:</span><span
+               class="pln"> </span><span class="lit">250</span><span
+               class="pun">,</span><span class="pln">
+                           xtype</span><span class="pun">:</span><span
+               class="pln"> </span><span class="str">'panel'</span><span
+               class="pln">
+                       </span><span class="pun">}]</span><span class="pln">
+                   </span><span class="pun">},</span><span
+               class="pln"> </span><span
+               class="pun">{</span><span class="pln">
+                       xtype</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'container'</span><span class="pun">,</span><span
+               class="pln">
+                       flex</span><span class="pun">:</span><span
+               class="pln"> </span><span class="lit">1</span><span
+               class="pun">,</span><span
+               class="pln">
+                       layout</span><span class="pun">:</span><span
+               class="pln"> </span><span class="pun">{</span><span class="pln">
+                           type</span><span class="pun">:</span><span
+               class="pln"> </span><span class="str">'vbox'</span><span
+               class="pun">,</span><span class="pln">
+                           align</span><span class="pun">:</span><span
+               class="pln"> </span><span class="str">'stretch'</span><span
+               class="pln">
+                       </span><span class="pun">},</span><span class="pln">
+                       items</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="pun">[{</span><span class="pln">
+                           xtype</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'recentlyplayedscroller'</span><span
+               class="pun">,</span><span class="pln">
+                           height</span><span class="pun">:</span><span
+               class="pln"> </span><span class="lit">250</span><span
+               class="pln">
+                       </span><span class="pun">},</span><span
+               class="pln"> </span><span class="pun">{</span><span class="pln">
+                           xtype</span><span class="pun">:</span><span
+               class="pln"> </span><span class="str">'songinfo'</span><span
+               class="pun">,</span><span class="pln">
+                           flex</span><span class="pun">:</span><span
+               class="pln"> </span><span class="lit">1</span><span class="pln">
+                       </span><span class="pun">}]</span><span class="pln">
+                   </span><span class="pun">}]</span><span class="pln">
+               </span><span class="pun">};</span><span class="pln">
+
+               </span><span class="kwd">this</span><span
+               class="pun">.</span><span
+               class="pln">callParent</span><span class="pun">();</span><span
+               class="pln">
+           </span><span class="pun">}</span><span class="pln">
+       </span><span class="pun">});</span></code></pre>
+
+    <p>Since Viewport extends Container, and Containers can’t have docked items
+        (yet), we have added a Panel as the single item of our viewport. We make
+        this panel the same size as our viewport by defining a layout of
+        fit.</p>
+
+    <p>In terms of architecture, one of the most important things to note here
+        is
+        the fact that we have not defined a layout-specific configuration in the
+        actual views. By not defining properties like flex, width, height in the
+        views, we can easily adjust the application’s overall layout in one
+        single
+        place, adding to the maintainability and flexibility of our
+        architecture.</p>
+
+    <a href="#TOC">Table of Contents</a>
+    <hr/>
+</article>
+<article>
+    <h3 class="topic"><a name="mvc_pt2-section-10">Application logic</a></h3>
+
+    <p>In Ext JS 3, we often added our application’s logic to the views
+        themselves
+        using handlers on buttons, binding listeners to subcomponents, and
+        overriding methods on the views when extending them. However, just like
+        you
+        shouldn’t inline CSS styles in your HTML markup, it’s preferrable to
+        separate the application’s logic from the view definitions. In Ext JS 4,
+        we
+        provide controlleres in the MVC package. They are responsible for
+        listening
+        to events fired by the views and other controllers, and for implementing
+        application logic to act on those events. There are several benefits to
+        this
+        design.</p>
+
+    <p>One benefit is that your application logic is not bound to instances of
+        views
+        which means we can destroy and instantiate our views, as needed, while
+        the
+        application logic continues processing other things, like synchronizing
+        data.</p>
+
+    <p>Additionally in Ext JS 3, you might have had many nested views, each
+        adding
+        layers of application logic. By moving the application logic to
+        controllers,
+        it is centralized, making it easier to maintain and change.</p>
+
+    <p>Finally, the Controller base class provides you with lots of
+        functionality,
+        making it easier to implement your application logic.</p>
+
+    <a href="#TOC">Table of Contents</a>
+    <hr/>
+</article>
+<article>
+    <h3 class="topic"><a name="mvc_pt2-section-11">Creating our Controllers</a>
+    </h3>
+
+    <p>Now that we have the basic architecture for our UI, models and stores set
+        up,
+        it’s time to get in control of our application. We planned to have two
+        controllers, Station and Song, so let’s create the definitions for
+        them.</p>
+
+    <h3><code>app/controller/Station.js</code></h3>
+
+       <pre id="ext-gen3218" class="code"><code id="ext-gen3219"><a
+               href="#api/Ext-method-define" rel="Ext-method-define"
+               class="docClass"><span class="typ">Ext</span><span
+               class="pun">.</span><span class="pln">define</span></a><span
+               class="pun">(</span><span
+               class="str">'Panda.controller.Station'</span><span
+               class="pun">,</span><span class="pln"> </span><span
+               class="pun">{</span><span
+               class="pln">
+           extend</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'</span><a href="#api/Ext.app.Controller"
+                                      rel="Ext.app.Controller" class="docClass"><span
+               class="str">Ext.app.Controller</span></a><span
+               class="str">'</span><span
+               class="pun">,</span><span class="pln">
+           init</span><span class="pun">:</span><span class="pln"> </span><span
+               class="kwd">function</span><span class="pun">()</span><span
+               class="pln"> </span><span class="pun">{</span><span class="pln">
+               </span><span class="pun">...</span><span class="pln">
+           </span><span class="pun">},</span><span class="pln">
+           </span><span class="pun">...</span><span class="pln">
+       </span><span class="pun">});</span></code></pre>
+
+    <h3><code>app/controller/Song.js</code></h3>
+
+       <pre id="ext-gen3220" class="code"><code id="ext-gen3221"><a
+               href="#api/Ext-method-define" rel="Ext-method-define"
+               class="docClass"><span class="typ">Ext</span><span
+               class="pun">.</span><span class="pln">define</span></a><span
+               class="pun">(</span><span
+               class="str">'Panda.controller.Song'</span><span
+               class="pun">,</span><span class="pln"> </span><span
+               class="pun">{</span><span
+               class="pln">
+           extend</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'</span><a href="#api/Ext.app.Controller"
+                                      rel="Ext.app.Controller" class="docClass"><span
+               class="str">Ext.app.Controller</span></a><span
+               class="str">'</span><span
+               class="pun">,</span><span class="pln">
+           init</span><span class="pun">:</span><span class="pln"> </span><span
+               class="kwd">function</span><span class="pun">()</span><span
+               class="pln"> </span><span class="pun">{</span><span class="pln">
+               </span><span class="pun">...</span><span class="pln">
+           </span><span class="pun">},</span><span class="pln">
+           </span><span class="pun">...</span><span class="pln">
+       </span><span class="pun">});</span></code></pre>
+
+    <p>When including the controllers in your application, the framework will
+        automatically load the controller and call the init method on it. Inside
+        the
+        init method, you should set up listeners for your view and application
+        events. In larger applications, you might want to load additional
+        controllers at runtime. You can do this by using the getController
+        method.</p>
+
+       <pre id="ext-gen3222" class="code"><code id="ext-gen3223"><span
+               class="pln">someAction</span><span class="pun">:</span><span
+               class="pln"> </span><span class="kwd">function</span><span
+               class="pun">()</span><span
+               class="pln"> </span><span class="pun">{</span><span class="pln">
+           </span><span class="kwd">var</span><span
+               class="pln"> controller </span><span class="pun">=</span><span
+               class="pln"> </span><span class="kwd">this</span><span
+               class="pun">.</span><span class="pln">getController</span><span
+               class="pun">(</span><span
+               class="str">'AnotherController'</span><span
+               class="pun">);</span><span class="pln">
+
+           </span><span
+               class="com">// Remember to call the init method manually</span><span
+               class="pln">
+           controller</span><span class="pun">.</span><span
+               class="pln">init</span><span class="pun">();</span><span
+               class="pln">
+       </span><span class="pun">}</span></code></pre>
+
+    <p>When you load additional controllers at runtime, you have to remember to
+        call
+        the init method on the loaded controller manually.</p>
+
+    <p>For the purposes of our example application, we’ll let the framework load
+        and
+        initialize our controllers by adding them to the controllers array in
+        our
+        application definition.</p>
+
+    <h3><code>app/Application.js</code></h3>
+
+       <pre id="ext-gen3224" class="code"><code id="ext-gen3225"><a
+               href="#api/Ext-method-application" rel="Ext-method-application"
+               class="docClass"><span class="typ">Ext</span><span
+               class="pun">.</span><span class="pln">application</span></a><span
+               class="pun">({</span><span class="pln">
+           </span><span class="pun">...</span><span class="pln">
+           controllers</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="pun">[</span><span class="str">'Station'</span><span
+               class="pun">,</span><span
+               class="pln"> </span><span class="str">'Song'</span><span
+               class="pun">]</span><span class="pln">
+       </span><span class="pun">});</span></code></pre>
+
+    <a href="#TOC">Table of Contents</a>
+    <hr/>
+</article>
+<article>
+    <h3 class="topic"><a name="mvc_pt2-section-12">Setting up listeners</a></h3>
+
+    <p>Let’s start controlling some parts of our UI by using the control method
+        inside of the controller’s init function.</p>
+
+    <h3><code>app/controller/Station.js</code></h3>
+
+       <pre id="ext-gen3226" class="code"><code id="ext-gen3227"><span
+               class="pun">...</span><span class="pln">
+       init</span><span class="pun">:</span><span class="pln"> </span><span
+               class="kwd">function</span><span class="pun">()</span><span
+               class="pln"> </span><span class="pun">{</span><span class="pln">
+           </span><span class="kwd">this</span><span class="pun">.</span><span
+               class="pln">control</span><span class="pun">({</span><span
+               class="pln">
+               </span><span class="str">'stationslist'</span><span
+               class="pun">:</span><span
+               class="pln"> </span><span class="pun">{</span><span class="pln">
+                   selectionchange</span><span class="pun">:</span><span
+               class="pln"> </span><span class="kwd">this</span><span
+               class="pun">.</span><span class="pln">onStationSelect
+               </span><span class="pun">},</span><span class="pln">
+               </span><span class="str">'newstation'</span><span
+               class="pun">:</span><span class="pln"> </span><span
+               class="pun">{</span><span
+               class="pln">
+                   </span><span class="kwd">select</span><span
+               class="pun">:</span><span class="pln"> </span><span
+               class="kwd">this</span><span class="pun">.</span><span
+               class="pln">onNewStationSelect
+               </span><span class="pun">}</span><span class="pln">
+           </span><span class="pun">});</span><span class="pln">
+       </span><span class="pun">}</span><span class="pln">
+       </span><span class="pun">...</span></code></pre>
+
+    <p>The control method is passed an object where the keys are component
+        queries.
+        In our example, the component queries are just using the xtypes of our
+        views. However, using these component queries, you can target very
+        specific
+        parts of your UI. To learn more about advanced component queries, you
+        can
+        refer to the API docs.</p>
+
+    <p>Each query is bound to a listener configuration. Inside each listener
+        configuration, we want to listen for the key which is the event name.
+        The
+        events available are the ones provided by the component that is targeted
+        by
+        your query. In this case, we use the selectionchange event provided by
+        Grid
+        (from which our StationsList view extends) and the select event provided
+        by
+        ComboBox (from which our NewStation view extends). To find out which
+        events
+        are available for a particular component, you can look in the events
+        section
+        available for each component in the API docs.</p>
+
+    <p></p>
+
+    <p><img src="guides/mvc_pt2/apidocs-events.png" alt="API Docs Events"></p>
+
+    <p></p>
+
+    <p>The value in the listener configuration is the function that gets
+        executed
+        whenever that event fires. The scope of this function is always the
+        controller itself.</p>
+
+    <p>Let’s also set up some listeners in our Song controller.</p>
+
+    <h3><code>app/controller/Song.js</code></h3>
+
+       <pre id="ext-gen3228" class="code"><code id="ext-gen3229"><span
+               class="pun">...</span><span class="pln">
+       init</span><span class="pun">:</span><span class="pln"> </span><span
+               class="kwd">function</span><span class="pun">()</span><span
+               class="pln"> </span><span class="pun">{</span><span class="pln">
+           </span><span class="kwd">this</span><span class="pun">.</span><span
+               class="pln">control</span><span class="pun">({</span><span
+               class="pln">
+               </span><span class="str">'recentlyplayedscroller'</span><span
+               class="pun">:</span><span class="pln"> </span><span
+               class="pun">{</span><span
+               class="pln">
+                   selectionchange</span><span class="pun">:</span><span
+               class="pln"> </span><span class="kwd">this</span><span
+               class="pun">.</span><span class="pln">onSongSelect
+               </span><span class="pun">}</span><span class="pln">
+           </span><span class="pun">});</span><span class="pln">
+
+           </span><span class="kwd">this</span><span class="pun">.</span><span
+               class="pln">application</span><span class="pun">.</span><span
+               class="pln">on</span><span class="pun">({</span><span
+               class="pln">
+               stationstart</span><span class="pun">:</span><span
+               class="pln"> </span><span class="kwd">this</span><span
+               class="pun">.</span><span class="pln">onStationStart</span><span
+               class="pun">,</span><span class="pln">
+               scope</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="kwd">this</span><span class="pln">
+           </span><span class="pun">});</span><span class="pln">
+       </span><span class="pun">}</span><span class="pln">
+       </span><span class="pun">...</span></code></pre>
+
+    <p>In addition to listening for the selectionchange event on our
+        RecentlyPlayedScroller view, we also set up a listener for an
+        application
+        event here. We do this by using the on method on the application
+        instance.
+        Each controller has access to the application instance using the
+        this.application reference.</p>
+
+    <p>Application events are extremely useful for events that have many
+        controllers. Instead of listening for the same view event in each of
+        these
+        controllers, only one controller listens for the view event and fires an
+        application-wide event that the others can listen for. This also allows
+        controllers to communicate with one another without knowing about or
+        depending on each other’s existence.</p>
+
+    <p>Our Song controller is interested in a new station being started because
+        it
+        needs to update the song scroller and song info whenever this
+        happens.</p>
+
+    <p>Let’s take a look at how the Station controller, which will be the one
+        responsible for firing this stationstart application event, actually
+        does
+        this.</p>
+
+    <h3><code>app/controller/Station.js</code></h3>
+
+       <pre id="ext-gen3230" class="code"><code id="ext-gen3231"><span
+               class="pun">...</span><span class="pln">
+       onStationSelect</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="kwd">function</span><span class="pun">(</span><span
+               class="pln">selModel</span><span
+               class="pun">,</span><span class="pln"> selection</span><span
+               class="pun">)</span><span class="pln"> </span><span
+               class="pun">{</span><span
+               class="pln">
+           </span><span class="kwd">this</span><span class="pun">.</span><span
+               class="pln">application</span><span class="pun">.</span><span
+               class="pln">fireEvent</span><span class="pun">(</span><span
+               class="str">'stationstart'</span><span
+               class="pun">,</span><span class="pln"> selection</span><span
+               class="pun">[</span><span class="lit">0</span><span
+               class="pun">]);</span><span class="pln">
+       </span><span class="pun">}</span><span class="pln">
+       </span><span class="pun">...</span></code></pre>
+
+    <p>We simply get the single selected item provided by the selectionchange
+        event
+        and pass it as the single argument when firing the stationstart
+        event.</p>
+
+    <a href="#TOC">Table of Contents</a>
+    <hr/>
+</article>
+<article>
+    <h3 class="topic"><a name="mvc_pt2-section-13">Conclusion</a></h3>
+
+    <p>In this article, we have looked at the basic techniques of architecting
+        your
+        application. Of course, there is a lot to it, and in the next part of
+        this
+        series we will take a look at some more advanced controller techniques
+        and
+        continue wiring up our Panda app by implementing our controller actions
+        and
+        adding some more details to our views.</p>
+    <a href="#TOC">Table of Contents</a>
+    <hr/>
+</article>
+</section>
+</section>
+
+</body>
+</html>

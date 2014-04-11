@@ -1,0 +1,65 @@
+<!DocType HTML> 
+<html>
+    <head>
+        <title>HTML 5 Demo</title>
+        <link rel="stylesheet" href="main.css">
+        </link>
+        <script type="text/javascript" src="../../js/modernizr.js">
+        </script>
+    </head>
+    <body>
+        <div id="stage">
+            <img src="logo.png" alt="HTML 5" />
+            <p id="far-far-away">
+                Not so long time ago
+                <br/>
+                in the world of browsers. . . .
+            </p>
+            <div id="crawl">
+                <p class="episode">
+                    Episode V (HTML 5)
+                </p>
+                <p class="title">
+                    A     New       Hope
+                </p>
+                <p>
+                    Finally   HTML5    brings
+                    new    life   to    web
+                </p>
+                <p>
+                     Article, Section, Aside Tags,
+                     Support for Audio/Video
+            	</p>
+            	</p>
+                     Drawing with Canvas
+                     Drawing with SVG
+                     
+                </p>
+                <p>
+                     Web Workers and Web Sockets
+                </p>
+            </div>
+        </div>
+        <p id="warning">
+            I'm sorry, your browser doesn't support the <a href="http://www.w3.org/TR/css3-3d-transforms/">
+                <abbr>
+                    CSS
+                </abbr>
+                <abbr>
+                    3D
+                </abbr>
+                transforms
+            </a>
+            needed to display this demo. You need <a href="http://www.apple.com/safari/">Safari</a>
+            or a <a href="http://www.chromium.org/getting-involved/dev-channel">dev version</a>
+            of <a href="http://www.google.com/chrome">Chrome</a>
+            to view it.
+        </p>
+        <audio src="star-wars.m4a" id="audio" autobuffer="autobuffer" />
+        <script type="text/javascript">
+            if (Modernizr.csstransforms3d) {
+                setTimeout("document.getElementById('audio').play()", 12000);
+            }
+        </script>
+    </body>
+</html>

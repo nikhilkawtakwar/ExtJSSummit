@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script>
+    function init(){
+      var keyElem = document.getElementById("key");
+      var valueElem = document.getElementById("value");
+      var readButton= document.getElementById("read");
+      var writeButton= document.getElementById("write");
+      
+     readButton.addEventListener("click", function(){
+             var key = keyElem.value;
+             valueElem.value=localStorage.getItem(key);             
+          }, false);
+     writeButton.addEventListener("click", function(){
+             var key = keyElem.value;
+             var value = valueElem.value;
+             localStorage.setItem(key,value); 
+          }, false);
+    }
+  </script>
+  <style>
+    table{
+      padding:10px;
+      -webkit-border-radius:20px;
+      background:#77FFFF;
+    }
+    textarea{
+      padding:10px;
+      -webkit-border-radius:10px;
+      background:#777777;
+      color:white;
+    }
+  </style>
+</head>
+<body onload="init()">
+  <h1>Local Storage Example</h1>
+  <table>
+    <tr>
+      <td>Enter Key</td>
+      <td><input type="text" id="key"></input>
+    </tr>
+    <tr>
+      <td>Enter Value</td>
+      <td><input type="text" id="value"></input>
+    </tr>
+    <tr>
+      <td><button id="read">Read</button></td>
+      <td><button id="write">Write</button></td>
+    </tr>
+  </table>
+
+  <h1>Usage:</h1>
+  <textarea rows="10" cols="60">
+    var val = localStorage.getItem("a");
+    var val = localStorage["a"]
+    var val = localStorage.a
+
+    localStorage.setItem("a","A");
+    localStorage["a"]="A";
+    localStorage.a="A";
+  </textarea>
+</body>
+</html>

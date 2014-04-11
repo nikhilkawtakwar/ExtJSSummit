@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Synerzip's ExtJS Summit</title>
+    <link rel="stylesheet" href="/resources/css/main.css"/>
+</head>
+<body>
+<section class='container'>
+    <header class='header'>
+        <img class='logo' src='/resources/images/synerzip-logo-hi-res.gif'></img>
+    </header>
+    <a href="/index.html">Return to Main Page</a>
+    <hr/>
+    <section class="content">
+        <article>
+            <h1><img src="resources/jasmine_logo.png" height="100"></h1>
+        </article>
+        <article>
+            <h1><a name="TOC">Table of Contents</a></h1>
+            <ul>
+                <li><a href="#jasmine">What is Jasmine ?</a></li>
+                <li><a href="#installation">Installation</a></li>
+                <li><a href="#presentation">Presentation</a></li>
+                <li><a href="#example">Jasmine Example</a></li>
+                <li><a href="#run-example">Run Example</a></li>
+                <li><a href="#references">References</a></li>
+            </ul>
+            <hr/>
+        </article>
+        <article>
+            <h3 class="topic"><a name="jasmine">What is Jasmine ?</a></h3>
+            <p>
+                Jasmine is a behavior-driven development framework for testing JavaScript code.
+                It does not depend on any other JavaScript frameworks. It does not require a DOM.
+                And it has a clean, obvious syntax so that you can easily write tests.
+            </p>
+            <a href="#TOC">Table of Contents</a>
+            <hr/>
+        </article>
+        <article>
+            <h3 class="topic"><a name="installation">Installation</a></h3>
+             <p>You can simply download latest version from <a
+                     href="https://github.com/pivotal/jasmine/downloads">here</a>
+             and arrange your folder structure shown in following figure.</p>
+             <img src='resources/jasmineFolderStructure.png'></img>
+             </p>
+             <a href="#TOC">Table of Contents</a>
+             <hr/>
+        </article>
+        <article>
+            <p>
+            <h3 class="topic"><a name="presentation">Presentation</a></h3>
+            <a  href="resources/Jasmine.pptx">View Powerpoint Presentation</a>
+            </p>
+            <br/>
+            <a href="#TOC">Table of Contents</a>
+            <hr/>
+
+        </article>
+        <article>
+            <h3 class="topic"><a name="example">Simple Example</a></h3>
+            <p>Simple Javascript method for addition.</p>
+
+            <pre class="code">
+var addition = function (a, b) {
+    if (a && b) {
+        return a + b;
+    }
+    else {
+        return undefined;
+    }
+};
+
+<a href="src/addition.js">View Source</a>
+            </pre>
+            <br>
+            <p>Possible unit test cases for above function.</p>
+
+            <pre class="code">
+describe('Unit Tests for blah-blah addition function', function () {
+    it('should return undefined if no argument(s) supplied to it.', function () {
+        expect(addition()).toBe(undefined);
+        expect(addition()).toBeUndefined();
+    });
+    it('should return undefined if either of argument(s) is supplied as undefined.', function () {
+        expect(addition(4)).toBe(undefined);
+        expect(addition(4)).toBeUndefined();
+    });
+    it('should return sum if int or float type arguments are supplied.', function () {
+        expect(addition(4, 5)).not.toBeUndefined();
+        expect(addition(4, 5)).toBe(9);
+        expect(addition(4.5, 5.6)).not.toBeUndefined();
+        expect(addition(4.5, 5.6)).toBe(10.1);
+    });
+    it('should return concatenated string if string type arguments are supplied.', function () {
+        expect(addition('QuickOffice', ' Google')).not.toBeUndefined();
+        expect(addition('QuickOffice', ' Google')).toBe('QuickOffice Google');
+    });
+
+    it('should return undefined if either of argument(s) is supplied as object.', function () {
+        var a = {name:'alok', empId:'1'};
+        expect(addition(a, 4)).toBe(undefined);
+        expect(addition(4, a)).toBeUndefined();
+    });
+});
+
+
+<a href="spec/additionSpec.js">View Source</a>
+            </pre>
+            <br/><br/>
+            <a href="#TOC">Table of Contents</a>
+            <hr/>
+        </article>
+        <article>
+            <h3 class="topic"><a name="run-example">Run Live Example</a></h3>
+            <a href="SpecRunner.html">Run Test Cases</a></li>
+            <br/><br/>
+            <a href="#TOC">Table of Contents</a>
+            <hr/>
+        </article>
+        <article>
+            <h3 class="topic"><a name="references">References</a></h3>
+            <ul>
+                <li><a href="http://jasmine.github.io/">Jasmine doc</a></li>
+                <li><a href="http://evanhahn.com/how-do-i-jasmine/">How do I ?</a></li>
+                <li><a href="http://try-jasmine.heroku.com/">Try Jasmine</a></li>
+            </ul>
+            <a href="#TOC">Table of Contents</a>
+            <hr/>
+        </article>
+
+    </section>
+</section>
+
+</body>
+</html>

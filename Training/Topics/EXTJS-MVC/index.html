@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Synerzip's ExtJS Summit</title>
+    <link rel="stylesheet" href="/resources/css/main.css"/>
+</head>
+<body>
+<section class='container'>
+    <header class='header'>
+        <img class='logo' src='/resources/images/synerzip-logo-hi-res.gif'/>
+    </header>
+    <a href="/index.html">Return to Main Page</a>
+    <hr/>
+    <section class="content">
+        <article>
+            <h1><img src="/resources/images/extlogo.png" height="150"></h1>
+
+        </article>
+        <article>
+            <h1><a name="TOC">Table of Contents</a></h1>
+            <ul>
+                <li><a href="#Introduction">Introduction</a></li>
+                <li><a href="#File_Structure">File Structure</a></li>
+                <li><a href="#Creating_the_application_in_app.js">Creating the application in app.js</a></li>
+                <li><a href="#Defining_a_Controller">Defining a Controller</a></li>
+                <li><a href="#Defining_a_View">Defining a View</a></li>
+                <li><a href="#Controlling_the_grid">Controlling the grid</a></li>
+                <li><a href="#Creating_a_Model_and_a_Store">Creating a Model and a Store</a></li>
+                <li><a href="#Saving_data_with_the_Model">Saving data with the Model</a></li>
+                <li><a href="#run-example">Example</a></li>
+                <li><a href="#Deployment">Deployment</a></li>
+                <li><a href="#Next_Steps">Next Steps</a></li>
+                <li><a href="#references">References</a></li>
+            </ul>
+            <hr/>
+        </article>
+
+
+
+        <article>
+            <h3
+                    class="topic"><a name="Introduction">Introduction</a>
+            </h3>
+            <h1>MVC Architecture</h1>
+            <p>Large client side applications have always been hard to write, hard to
+            organize and hard to maintain. They tend to quickly grow out of
+            control as you add more functionality and developers to a project. Ext
+            JS 4 comes with a new application architecture that not only organizes
+            your code but reduces the amount you have to write.</p>
+            <p>Our application architecture follows an MVC-like pattern with Models
+            and Controllers being introduced for the first time. There are many
+            MVC architectures, most of which are slightly different from one
+            another. Here's how we define ours:</p>
+
+            <ul>
+            <li><p><strong>Model</strong> is a collection of fields and their data (e.g. a User
+            model with username and password fields). Models know how to
+            persist themselves through the data package, and can be linked to
+            other models through associations. Models work a lot like the Ext
+            JS 3 Record class, and are normally used with
+            <a href="#!/api/Ext.data.Store" rel="Ext.data.Store" class="docClass">Stores</a> to present data into grids and
+            other components</p></li>
+            <li><p><strong>View</strong> is any type of component - grids, trees and panels are all
+            views.</p></li>
+            <li><p><strong>Controllers</strong> are special places to put all of the code that makes
+            your app work - whether that's rendering views, instantiating
+            Models, or any other app logic.</p></li>
+            </ul>
+
+
+            <p>In this guide we'll be creating a very simple application that manages
+            User data. By the end you will know how to put simple applications
+            together using the new Ext JS 4 application architecture.</p>
+
+            <p>The application architecture is as much about providing structure and
+            consistency as it is about actual classes and framework
+            code. Following the conventions unlocks a number of important
+            benefits:</p>
+
+            <ul>
+            <li>Every application works the same way so you only have to learn it once</li>
+            <li>It's easy to share code between apps because they all work the same way</li>
+            <li>You can use our build tools to create optimized versions of your
+            applications for production use</li>
+            </ul>
+
+
+            <a href="#TOC">Table of Contents</a>
+            <hr/>
+        </article>
+
+
+
+        <article>
+                           <h3
+                                   class="topic"><a name="File_Structure">File Structure</a>
+                           </h3>
+            <p>Ext JS 4 applications follow a unified directory structure that is the
+            same for every app. Please check out the <a href="#/guide/getting_started">Getting Started
+            guide</a> for a detailed explanation on the
+            basic file structure of an application. In MVC layout, all classes are
+            placed into the <code>app/</code> folder, which in turn contains sub-folders to
+            namespace your models, views, controllers and stores. Here is how the
+            folder structure for the simple example app will look when we're done:</p>
+
+            <p></p>
+
+            <p><img src="guides/application_architecture/folderStructure.png" alt="Folder Structure"></p>
+
+            <p></p>
+
+            <p>In this example, we are encapsulating the whole application inside one
+            folder called '<code>account_manager</code>'. Essential files from the <a href="http://www.sencha.com/products/extjs/">Ext JS 4
+            SDK</a> are wrapped inside <code>ext-4/</code>
+            folder. Hence the content of our <code>index.html</code> looks like this:</p>
+
+            <pre id="ext-gen1326" class="code">
+                <code><span
+                        class="tag">&lt;html&gt;</span><span class="pln">
+            </span><span class="tag">&lt;head&gt;</span><span class="pln">
+                </span><span class="tag">&lt;title&gt;</span><span class="pln">Account Manager</span><span
+                        class="tag">&lt;/title&gt;</span><span class="pln">
+
+                </span><span class="tag">&lt;link</span><span
+                        class="pln"> </span><span class="atn">rel</span><span
+                        class="pun">=</span><span
+                        class="atv">"stylesheet"</span><span
+                        class="pln"> </span><span class="atn">type</span><span
+                        class="pun">=</span><span
+                        class="atv">"text/css"</span><span
+                        class="pln"> </span><span class="atn">href</span><span
+                        class="pun">=</span><span class="atv">"ext-4/resources/css/ext-all.css"</span><span
+                        class="tag">&gt;</span><span class="pln">
+
+                </span><span class="tag">&lt;script</span><span
+                        class="pln"> </span><span class="atn">type</span><span
+                        class="pun">=</span><span
+                        class="atv">"text/javascript"</span><span
+                        class="pln"> </span><span class="atn">src</span><span
+                        class="pun">=</span><span class="atv">"ext-4/ext-debug.js"</span><span
+                        class="tag">&gt;&lt;/script&gt;</span><span class="pln">
+
+                </span><span class="tag">&lt;script</span><span
+                        class="pln"> </span><span class="atn">type</span><span
+                        class="pun">=</span><span
+                        class="atv">"text/javascript"</span><span
+                        class="pln"> </span><span class="atn">src</span><span
+                        class="pun">=</span><span
+                        class="atv">"app.js"</span><span class="tag">&gt;&lt;/script&gt;</span><span
+                        class="pln">
+            </span><span class="tag">&lt;/head&gt;</span><span class="pln">
+            </span><span class="tag">&lt;body&gt;&lt;/body&gt;</span><span
+                        class="pln">
+            </span><span class="tag">&lt;/html&gt;</span></code>
+            </pre>
+
+
+
+                           <a href="#TOC">Table of Contents</a>
+                           <hr/>
+                       </article>
+
+
+
+
+
+
+
+
+
+
+
+
+        <article>
+                           <h3
+                                   class="topic"><a name="Creating_the_application_in_app.js">Creating the application in
+                                       app.js</a>
+                           </h3>
+
+            <p>Every Ext JS 4 application starts with an instance of <a
+                    href="#!/api/Ext.app.Application" rel="Ext.app.Application"
+                    class="docClass">Application</a> class. The Application contains
+                global settings for your application (such as the app's name), as well
+                as maintains references to all of the models, views and controllers
+                used by the app. An Application also contains a launch function, which
+                is run automatically when everything is loaded.</p>
+
+            <p>Let's create a simple Account Manager app that will help us manage
+                User accounts. First we need to pick a global namespace for this
+                application. All Ext JS 4 applications should only use a single global
+                variable, with all of the application's classes nested inside
+                it. Usually we want a short global variable so in this case we're
+                going to use "AM":</p>
+
+            <pre id="ext-gen1328" class="code"><code id="ext-gen1329"><a
+                    href="#!/api/Ext-method-application" rel="Ext-method-application"
+                    class="docClass"><span class="typ">Ext</span><span
+                    class="pun">.</span><span class="pln">application</span></a><span
+                    class="pun">({</span><span class="pln">
+                requires</span><span class="pun">:</span><span class="pln"> </span><span
+                    class="pun">[</span><span class="str">'</span><a
+                    href="#!/api/Ext.container.Viewport" rel="Ext.container.Viewport"
+                    class="docClass"><span
+                    class="str">Ext.container.Viewport</span></a><span
+                    class="str">'</span><span class="pun">],</span><span class="pln">
+                name</span><span class="pun">:</span><span class="pln"> </span><span
+                    class="str">'AM'</span><span class="pun">,</span><span class="pln">
+
+                appFolder</span><span class="pun">:</span><span class="pln"> </span><span
+                    class="str">'app'</span><span class="pun">,</span><span class="pln">
+
+                launch</span><span class="pun">:</span><span class="pln"> </span><span
+                    class="kwd">function</span><span class="pun">()</span><span
+                    class="pln"> </span><span class="pun">{</span><span class="pln">
+                    </span><a href="#!/api/Ext-method-create" rel="Ext-method-create"
+                              class="docClass"><span class="typ">Ext</span><span
+                    class="pun">.</span><span class="pln">create</span></a><span
+                    class="pun">(</span><span class="str">'</span><a
+                    href="#!/api/Ext.container.Viewport" rel="Ext.container.Viewport"
+                    class="docClass"><span
+                    class="str">Ext.container.Viewport</span></a><span
+                    class="str">'</span><span class="pun">,</span><span class="pln"> </span><span
+                    class="pun">{</span><span class="pln">
+                        layout</span><span class="pun">:</span><span
+                    class="pln"> </span><span class="str">'fit'</span><span
+                    class="pun">,</span><span class="pln">
+                        items</span><span class="pun">:</span><span
+                    class="pln"> </span><span class="pun">[</span><span class="pln">
+                            </span><span class="pun">{</span><span class="pln">
+                                xtype</span><span class="pun">:</span><span
+                    class="pln"> </span><span class="str">'panel'</span><span
+                    class="pun">,</span><span class="pln">
+                                title</span><span class="pun">:</span><span
+                    class="pln"> </span><span class="str">'Users'</span><span
+                    class="pun">,</span><span class="pln">
+                                html </span><span class="pun">:</span><span
+                    class="pln"> </span><span
+                    class="str">'List of users will go here'</span><span class="pln">
+                            </span><span class="pun">}</span><span class="pln">
+                        </span><span class="pun">]</span><span class="pln">
+                    </span><span class="pun">});</span><span class="pln">
+                </span><span class="pun">}</span><span class="pln">
+            </span><span class="pun">});</span></code></pre>
+
+            <p>There are a few things going on here. First we invoked
+                <code><a href="#!/api/Ext-method-application" rel="Ext-method-application"
+                         class="docClass">Ext.application</a></code> to create a new
+                instance of Application class, to
+                which we passed the name <code>'AM'</code>. This automatically sets up a
+                global
+                variable <code>AM</code> for us, and registers the namespace to <code><a
+                        href="#!/api/Ext.Loader" rel="Ext.Loader" class="docClass">Ext.Loader</a></code>,
+                with the corresponding path of '<code>app</code>' set via the <code>appFolder</code>
+                config
+                option. We also provided a simple launch function that just creates a
+                <a href="#!/api/Ext.container.Viewport" rel="Ext.container.Viewport"
+                   class="docClass">Viewport</a> which contains a single
+                <a href="#!/api/Ext.panel.Panel" rel="Ext.panel.Panel" class="docClass">Panel</a>
+                that will fill the screen.</p>
+
+            <p></p>
+
+            <p><img src="guides/application_architecture/panelView.png"
+                    alt="Initial view with a simple Panel"></p>
+
+            <p></p>
+
+                           <a href="#TOC">Table of Contents</a>
+                           <hr/>
+                       </article>
+
+
+
+
+
+
+
+
+        <article>
+                           <h3
+                                   class="topic"><a name="Defining_a_Controller">Defining a Controller</a>
+                           </h3>
+
+            <p>Controllers are the glue that binds an application together. All they
+                really do is listen for events (usually from views) and take some
+                actions. Continuing our Account Manager application, lets create a
+                controller. Create a file called <code>app/controller/Users.js</code> and
+                add
+                the following code:</p>
+
+            <pre id="ext-gen1330" class="code"><code id="ext-gen1331"><a
+                    href="#!/api/Ext-method-define" rel="Ext-method-define"
+                    class="docClass"><span class="typ">Ext</span><span
+                    class="pun">.</span><span class="pln">define</span></a><span
+                    class="pun">(</span><span class="str">'AM.controller.Users'</span><span
+                    class="pun">,</span><span class="pln"> </span><span class="pun">{</span><span
+                    class="pln">
+                extend</span><span class="pun">:</span><span class="pln"> </span><span
+                    class="str">'</span><a href="#!/api/Ext.app.Controller"
+                                           rel="Ext.app.Controller" class="docClass"><span
+                    class="str">Ext.app.Controller</span></a><span class="str">'</span><span
+                    class="pun">,</span><span class="pln">
+
+                init</span><span class="pun">:</span><span class="pln"> </span><span
+                    class="kwd">function</span><span class="pun">()</span><span
+                    class="pln"> </span><span class="pun">{</span><span class="pln">
+                    console</span><span class="pun">.</span><span
+                    class="pln">log</span><span class="pun">(</span><span class="str">'Initialized Users! This happens before the Application launch function is called'</span><span
+                    class="pun">);</span><span class="pln">
+                </span><span class="pun">}</span><span class="pln">
+            </span><span class="pun">});</span></code></pre>
+
+            <p>Now lets add our newly created Users controller to the application
+                config in app.js:</p>
+
+            <pre id="ext-gen1332" class="code"><code id="ext-gen1333"><a
+                    href="#!/api/Ext-method-application" rel="Ext-method-application"
+                    class="docClass"><span class="typ">Ext</span><span
+                    class="pun">.</span><span class="pln">application</span></a><span
+                    class="pun">({</span><span class="pln">
+                </span><span class="pun">...</span><span class="pln">
+
+                controllers</span><span class="pun">:</span><span class="pln"> </span><span
+                    class="pun">[</span><span class="pln">
+                    </span><span class="str">'Users'</span><span class="pln">
+                </span><span class="pun">],</span><span class="pln">
+
+                </span><span class="pun">...</span><span class="pln">
+            </span><span class="pun">});</span></code></pre>
+
+            <p>When we load our application by visiting <code>index.html</code> inside a
+                browser, the <code>Users</code> controller is automatically loaded (because
+                we
+                specified it in the Application definition above), and its <code>init</code>
+                function is called just before the Application's <code>launch</code>
+                function.</p>
+
+            <p>The <code>init</code> function is a great place to set up how your controller
+                interacts with the view, and is usually used in conjunction with
+                another Controller function - <a
+                        href="#!/api/Ext.app.Controller-method-control"
+                        rel="Ext.app.Controller-method-control" class="docClass">control</a>.
+                The <code>control</code> function makes it easy to listen to events on
+                your view classes and take some action with a handler function. Let's
+                update our <code>Users</code> controller to tell us when the panel is
+                rendered:</p>
+
+            <pre id="ext-gen1334" class="code"><code id="ext-gen1335"><a
+                    href="#!/api/Ext-method-define" rel="Ext-method-define"
+                    class="docClass"><span class="typ">Ext</span><span
+                    class="pun">.</span><span class="pln">define</span></a><span
+                    class="pun">(</span><span class="str">'AM.controller.Users'</span><span
+                    class="pun">,</span><span class="pln"> </span><span class="pun">{</span><span
+                    class="pln">
+                extend</span><span class="pun">:</span><span class="pln"> </span><span
+                    class="str">'</span><a href="#!/api/Ext.app.Controller"
+                                           rel="Ext.app.Controller" class="docClass"><span
+                    class="str">Ext.app.Controller</span></a><span class="str">'</span><span
+                    class="pun">,</span><span class="pln">
+
+                init</span><span class="pun">:</span><span class="pln"> </span><span
+                    class="kwd">function</span><span class="pun">()</span><span
+                    class="pln"> </span><span class="pun">{</span><span class="pln">
+                    </span><span class="kwd">this</span><span class="pun">.</span><span
+                    class="pln">control</span><span class="pun">({</span><span class="pln">
+                        </span><span class="str">'viewport &gt; panel'</span><span
+                    class="pun">:</span><span class="pln"> </span><span class="pun">{</span><span
+                    class="pln">
+                            render</span><span class="pun">:</span><span
+                    class="pln"> </span><span class="kwd">this</span><span
+                    class="pun">.</span><span class="pln">onPanelRendered
+                        </span><span class="pun">}</span><span class="pln">
+                    </span><span class="pun">});</span><span class="pln">
+                </span><span class="pun">},</span><span class="pln">
+
+                onPanelRendered</span><span class="pun">:</span><span
+                    class="pln"> </span><span class="kwd">function</span><span class="pun">()</span><span
+                    class="pln"> </span><span class="pun">{</span><span class="pln">
+                    console</span><span class="pun">.</span><span
+                    class="pln">log</span><span class="pun">(</span><span class="str">'The panel was rendered'</span><span
+                    class="pun">);</span><span class="pln">
+                </span><span class="pun">}</span><span class="pln">
+            </span><span class="pun">});</span></code></pre>
+
+            <p>We've updated the <code>init</code> function to use <code>this.control</code>
+                to set up
+                listeners on views in our application. The <code>control</code> function
+                uses the
+                new ComponentQuery engine to quickly and easily get references to
+                components on the page. If you are not familiar with ComponentQuery
+                yet, be sure to check out the <a href="#!/api/Ext.ComponentQuery"
+                                                 rel="Ext.ComponentQuery" class="docClass">ComponentQuery
+                    documentation</a> for a full explanation. In brief though, it allows us
+                to pass a CSS-like selector that will find every matching component on
+                the page.</p>
+
+            <p>In our init function above we supplied <code>'viewport &gt; panel'</code>,
+                which
+                translates to "find me every Panel that is a direct child of a
+                Viewport". We then supplied an object that maps event names (just
+                <code>render</code> in this case) to handler functions. The overall effect
+                is
+                that whenever any component that matches our selector fires a
+                <code>render</code>
+                event, our <code>onPanelRendered</code> function is called.</p>
+
+            <p>When we run our application now we see the following:</p>
+
+            <p></p>
+
+            <p><img src="guides/application_architecture/firstControllerListener.png"
+                    alt="Controller listener"></p>
+
+            <p></p>
+
+            <p>Not exactly the most exciting application ever, but it shows how easy
+                it is to get started with organized code. Let's flesh the app out a
+                little now by adding a grid.</p>
+                           <a href="#TOC">Table of Contents</a>
+                           <hr/>
+                       </article>
+
+
+
+
+
+
+        <article>
+                           <h3
+                                   class="topic"><a name="Defining_a_View">Defining a View</a>
+                           </h3>
+
+                           <p>Until now our application has only been a few lines long and only
+                               inhabits two files - <code>app.js</code> and
+                               <code>app/controller/Users.js</code>. Now that
+                               we want to add a grid showing all of the users in our system, it's
+                               time to organize our logic a little better and start using views.</p>
+
+                           <p>A View is nothing more than a Component, usually defined as a subclass
+                               of an Ext JS component. We're going to create our Users grid now by
+                               creating a new file called <code>app/view/user/List.js</code> and putting
+                               the
+                               following into it:</p>
+
+                           <pre id="ext-gen1336" class="code"><code id="ext-gen1337"><a
+                                   href="#!/api/Ext-method-define" rel="Ext-method-define"
+                                   class="docClass"><span class="typ">Ext</span><span
+                                   class="pun">.</span><span class="pln">define</span></a><span
+                                   class="pun">(</span><span class="str">'AM.view.user.List'</span><span
+                                   class="pln"> </span><span class="pun">,{</span><span class="pln">
+                               extend</span><span class="pun">:</span><span class="pln"> </span><span
+                                   class="str">'</span><a href="#!/api/Ext.grid.Panel" rel="Ext.grid.Panel"
+                                                          class="docClass"><span
+                                   class="str">Ext.grid.Panel</span></a><span class="str">'</span><span
+                                   class="pun">,</span><span class="pln">
+                               </span><span class="kwd">alias</span><span class="pun">:</span><span
+                                   class="pln"> </span><span class="str">'widget.userlist'</span><span
+                                   class="pun">,</span><span class="pln">
+
+                               title</span><span class="pun">:</span><span class="pln"> </span><span
+                                   class="str">'All Users'</span><span class="pun">,</span><span
+                                   class="pln">
+
+                               initComponent</span><span class="pun">:</span><span
+                                   class="pln"> </span><span class="kwd">function</span><span class="pun">()</span><span
+                                   class="pln"> </span><span class="pun">{</span><span class="pln">
+                                   </span><span class="kwd">this</span><span class="pun">.</span><span
+                                   class="pln">store </span><span class="pun">=</span><span
+                                   class="pln"> </span><span class="pun">{</span><span class="pln">
+                                       fields</span><span class="pun">:</span><span
+                                   class="pln"> </span><span class="pun">[</span><span
+                                   class="str">'name'</span><span class="pun">,</span><span
+                                   class="pln"> </span><span class="str">'email'</span><span
+                                   class="pun">],</span><span class="pln">
+                                       data  </span><span class="pun">:</span><span
+                                   class="pln"> </span><span class="pun">[</span><span class="pln">
+                                           </span><span class="pun">{</span><span
+                                   class="pln">name</span><span class="pun">:</span><span
+                                   class="pln"> </span><span class="str">'Ed'</span><span
+                                   class="pun">,</span><span class="pln">    email</span><span class="pun">:</span><span
+                                   class="pln"> </span><span class="str">'ed@sencha.com'</span><span
+                                   class="pun">},</span><span class="pln">
+                                           </span><span class="pun">{</span><span
+                                   class="pln">name</span><span class="pun">:</span><span
+                                   class="pln"> </span><span class="str">'Tommy'</span><span
+                                   class="pun">,</span><span class="pln"> email</span><span
+                                   class="pun">:</span><span class="pln"> </span><span class="str">'tommy@sencha.com'</span><span
+                                   class="pun">}</span><span class="pln">
+                                       </span><span class="pun">]</span><span class="pln">
+                                   </span><span class="pun">};</span><span class="pln">
+
+                                   </span><span class="kwd">this</span><span class="pun">.</span><span
+                                   class="pln">columns </span><span class="pun">=</span><span
+                                   class="pln"> </span><span class="pun">[</span><span class="pln">
+                                       </span><span class="pun">{</span><span
+                                   class="pln">header</span><span class="pun">:</span><span
+                                   class="pln"> </span><span class="str">'Name'</span><span
+                                   class="pun">,</span><span class="pln">  dataIndex</span><span
+                                   class="pun">:</span><span class="pln"> </span><span
+                                   class="str">'name'</span><span class="pun">,</span><span class="pln">  flex</span><span
+                                   class="pun">:</span><span class="pln"> </span><span class="lit">1</span><span
+                                   class="pun">},</span><span class="pln">
+                                       </span><span class="pun">{</span><span
+                                   class="pln">header</span><span class="pun">:</span><span
+                                   class="pln"> </span><span class="str">'Email'</span><span
+                                   class="pun">,</span><span class="pln"> dataIndex</span><span
+                                   class="pun">:</span><span class="pln"> </span><span
+                                   class="str">'email'</span><span class="pun">,</span><span class="pln"> flex</span><span
+                                   class="pun">:</span><span class="pln"> </span><span class="lit">1</span><span
+                                   class="pun">}</span><span class="pln">
+                                   </span><span class="pun">];</span><span class="pln">
+
+                                   </span><span class="kwd">this</span><span class="pun">.</span><span
+                                   class="pln">callParent</span><span class="pun">(</span><span
+                                   class="pln">arguments</span><span class="pun">);</span><span
+                                   class="pln">
+                               </span><span class="pun">}</span><span class="pln">
+                           </span><span class="pun">});</span></code></pre>
+
+                           <p>Our View class is nothing more than a normal class. In this case we
+                               happen to extend the Grid Component and set up an alias so that we can
+                               use it as an xtype (more on that in a moment). We also passed in the
+                               <a href="#!/api/Ext.data.Store" rel="Ext.data.Store"
+                                  class="docClass">store</a> configuration and the <a
+                                       href="#!/api/Ext.grid.Panel-cfg-columns"
+                                       rel="Ext.grid.Panel-cfg-columns" class="docClass">columns</a> that
+                               the grid should render.</p>
+
+                           <p>Next we need to add this view to our <code>Users</code> controller. Because
+                               we
+                               set an alias using the special <code>'widget.'</code> format, we can use
+                               'userlist' as an xtype now, just like we had used <code>'panel'</code>
+                               previously.</p>
+
+                           <pre id="ext-gen1338" class="code"><code id="ext-gen1339"><a
+                                   href="#!/api/Ext-method-define" rel="Ext-method-define"
+                                   class="docClass"><span class="typ">Ext</span><span
+                                   class="pun">.</span><span class="pln">define</span></a><span
+                                   class="pun">(</span><span class="str">'AM.controller.Users'</span><span
+                                   class="pun">,</span><span class="pln"> </span><span class="pun">{</span><span
+                                   class="pln">
+                               extend</span><span class="pun">:</span><span class="pln"> </span><span
+                                   class="str">'</span><a href="#!/api/Ext.app.Controller"
+                                                          rel="Ext.app.Controller" class="docClass"><span
+                                   class="str">Ext.app.Controller</span></a><span class="str">'</span><span
+                                   class="pun">,</span><span class="pln">
+
+                               views</span><span class="pun">:</span><span class="pln"> </span><span
+                                   class="pun">[</span><span class="pln">
+                                   </span><span class="str">'user.List'</span><span class="pln">
+                               </span><span class="pun">],</span><span class="pln">
+
+                               init</span><span class="pun">:</span><span class="pln"> </span><span
+                                   class="pun">...</span><span class="pln">
+
+                               onPanelRendered</span><span class="pun">:</span><span
+                                   class="pln"> </span><span class="pun">...</span><span class="pln">
+                           </span><span class="pun">});</span></code></pre>
+
+                           <p>And then render it inside the main viewport by modifying the launch
+                               method in <code>app.js</code> to:</p>
+
+                           <pre id="ext-gen1340" class="code"><code id="ext-gen1341"><a
+                                   href="#!/api/Ext-method-application" rel="Ext-method-application"
+                                   class="docClass"><span class="typ">Ext</span><span
+                                   class="pun">.</span><span class="pln">application</span></a><span
+                                   class="pun">({</span><span class="pln">
+                               </span><span class="pun">...</span><span class="pln">
+
+                               launch</span><span class="pun">:</span><span class="pln"> </span><span
+                                   class="kwd">function</span><span class="pun">()</span><span
+                                   class="pln"> </span><span class="pun">{</span><span class="pln">
+                                   </span><a href="#!/api/Ext-method-create" rel="Ext-method-create"
+                                             class="docClass"><span class="typ">Ext</span><span
+                                   class="pun">.</span><span class="pln">create</span></a><span
+                                   class="pun">(</span><span class="str">'</span><a
+                                   href="#!/api/Ext.container.Viewport" rel="Ext.container.Viewport"
+                                   class="docClass"><span
+                                   class="str">Ext.container.Viewport</span></a><span
+                                   class="str">'</span><span class="pun">,</span><span class="pln"> </span><span
+                                   class="pun">{</span><span class="pln">
+                                       layout</span><span class="pun">:</span><span
+                                   class="pln"> </span><span class="str">'fit'</span><span
+                                   class="pun">,</span><span class="pln">
+                                       items</span><span class="pun">:</span><span
+                                   class="pln"> </span><span class="pun">{</span><span class="pln">
+                                           xtype</span><span class="pun">:</span><span class="pln"> </span><span
+                                   class="str">'userlist'</span><span class="pln">
+                                       </span><span class="pun">}</span><span class="pln">
+                                   </span><span class="pun">});</span><span class="pln">
+                               </span><span class="pun">}</span><span class="pln">
+                           </span><span class="pun">});</span></code></pre>
+
+                           <p>The only other thing to note here is that we specified
+                               <code>'user.List'</code>
+                               inside the views array. This tells the application to load that file
+                               automatically so that we can use it when we launch. The application
+                               uses Ext JS 4's new dynamic loading system to automatically pull this
+                               file from the server. Here's what we see when we refresh the page now:</p>
+
+                           <p></p>
+
+                           <p><img src="guides/application_architecture/firstView.png"
+                                   alt="Our first View"></p>
+
+                           <p></p>
+            <a href="#TOC">Table of Contents</a>
+                                                                  <hr/>
+                                                              </article>
+
+
+
+
+
+
+
+
+
+
+
+
+                           <article>
+                                                      <h3
+                                                              class="topic"><a name="Controlling_the_grid">Controlling the grid</a>
+                                                      </h3>
+
+                           <p>Note that our <code>onPanelRendered</code> function is still being called.
+                               This
+                               is because our grid class still matches the <code>'viewport &gt;
+                                   panel'</code>
+                               selector. The reason for this is that our class extends Grid, which in
+                               turn extends Panel.</p>
+
+                           <p>At the moment, the listeners we add to this selector will actually be
+                               called for every Panel or Panel subclass that is a direct child of the
+                               viewport, so let's tighten that up a bit using our new xtype. While
+                               we're at it, let's instead listen for double clicks on rows in the
+                               grid so that we can later edit that User:</p>
+
+                           <pre id="ext-gen1342" class="code"><code id="ext-gen1343"><a
+                                   href="#!/api/Ext-method-define" rel="Ext-method-define"
+                                   class="docClass"><span class="typ">Ext</span><span
+                                   class="pun">.</span><span class="pln">define</span></a><span
+                                   class="pun">(</span><span class="str">'AM.controller.Users'</span><span
+                                   class="pun">,</span><span class="pln"> </span><span class="pun">{</span><span
+                                   class="pln">
+                               extend</span><span class="pun">:</span><span class="pln"> </span><span
+                                   class="str">'</span><a href="#!/api/Ext.app.Controller"
+                                                          rel="Ext.app.Controller" class="docClass"><span
+                                   class="str">Ext.app.Controller</span></a><span class="str">'</span><span
+                                   class="pun">,</span><span class="pln">
+
+                               views</span><span class="pun">:</span><span class="pln"> </span><span
+                                   class="pun">[</span><span class="pln">
+                                   </span><span class="str">'user.List'</span><span class="pln">
+                               </span><span class="pun">],</span><span class="pln">
+
+                               init</span><span class="pun">:</span><span class="pln"> </span><span
+                                   class="kwd">function</span><span class="pun">()</span><span
+                                   class="pln"> </span><span class="pun">{</span><span class="pln">
+                                   </span><span class="kwd">this</span><span class="pun">.</span><span
+                                   class="pln">control</span><span class="pun">({</span><span class="pln">
+                                       </span><span class="str">'userlist'</span><span class="pun">:</span><span
+                                   class="pln"> </span><span class="pun">{</span><span class="pln">
+                                           itemdblclick</span><span class="pun">:</span><span
+                                   class="pln"> </span><span class="kwd">this</span><span
+                                   class="pun">.</span><span class="pln">editUser
+                                       </span><span class="pun">}</span><span class="pln">
+                                   </span><span class="pun">});</span><span class="pln">
+                               </span><span class="pun">},</span><span class="pln">
+
+                               editUser</span><span class="pun">:</span><span class="pln"> </span><span
+                                   class="kwd">function</span><span class="pun">(</span><span class="pln">grid</span><span
+                                   class="pun">,</span><span class="pln"> record</span><span
+                                   class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span
+                                   class="pln">
+                                   console</span><span class="pun">.</span><span
+                                   class="pln">log</span><span class="pun">(</span><span class="str">'Double clicked on '</span><span
+                                   class="pln"> </span><span class="pun">+</span><span
+                                   class="pln"> record</span><span class="pun">.</span><span class="kwd">get</span><span
+                                   class="pun">(</span><span class="str">'name'</span><span
+                                   class="pun">));</span><span class="pln">
+                               </span><span class="pun">}</span><span class="pln">
+                           </span><span class="pun">});</span></code></pre>
+
+                           <p>Note that we changed the ComponentQuery selector (to simply
+                               <code>'userlist'</code>), the event name (to <code>'itemdblclick'</code>)
+                               and the handler
+                               function name (to <code>'editUser'</code>). For now we're just logging out
+                               the
+                               name of the User we double clicked:</p>
+
+                           <p></p>
+
+                           <p><img src="guides/application_architecture/doubleClickHandler.png"
+                                   alt="Double click handler"></p>
+
+                           <p></p>
+
+                           <p>Logging to the console is all well and good but we really want to edit
+                               our Users. Let's do that now, starting with a new view in
+                               <code>app/view/user/Edit.js</code>:</p>
+
+                           <pre id="ext-gen1344" class="code"><code id="ext-gen1345"><a
+                                   href="#!/api/Ext-method-define" rel="Ext-method-define"
+                                   class="docClass"><span class="typ">Ext</span><span
+                                   class="pun">.</span><span class="pln">define</span></a><span
+                                   class="pun">(</span><span class="str">'AM.view.user.Edit'</span><span
+                                   class="pun">,</span><span class="pln"> </span><span class="pun">{</span><span
+                                   class="pln">
+                               extend</span><span class="pun">:</span><span class="pln"> </span><span
+                                   class="str">'</span><a href="#!/api/Ext.window.Window"
+                                                          rel="Ext.window.Window" class="docClass"><span
+                                   class="str">Ext.window.Window</span></a><span class="str">'</span><span
+                                   class="pun">,</span><span class="pln">
+                               </span><span class="kwd">alias</span><span class="pun">:</span><span
+                                   class="pln"> </span><span class="str">'widget.useredit'</span><span
+                                   class="pun">,</span><span class="pln">
+
+                               title</span><span class="pun">:</span><span class="pln"> </span><span
+                                   class="str">'Edit User'</span><span class="pun">,</span><span
+                                   class="pln">
+                               layout</span><span class="pun">:</span><span class="pln"> </span><span
+                                   class="str">'fit'</span><span class="pun">,</span><span class="pln">
+                               autoShow</span><span class="pun">:</span><span class="pln"> </span><span
+                                   class="kwd">true</span><span class="pun">,</span><span class="pln">
+
+                               initComponent</span><span class="pun">:</span><span
+                                   class="pln"> </span><span class="kwd">function</span><span class="pun">()</span><span
+                                   class="pln"> </span><span class="pun">{</span><span class="pln">
+                                   </span><span class="kwd">this</span><span class="pun">.</span><span
+                                   class="pln">items </span><span class="pun">=</span><span
+                                   class="pln"> </span><span class="pun">[</span><span class="pln">
+                                       </span><span class="pun">{</span><span class="pln">
+                                           xtype</span><span class="pun">:</span><span class="pln"> </span><span
+                                   class="str">'form'</span><span class="pun">,</span><span class="pln">
+                                           items</span><span class="pun">:</span><span class="pln"> </span><span
+                                   class="pun">[</span><span class="pln">
+                                               </span><span class="pun">{</span><span class="pln">
+                                                   xtype</span><span class="pun">:</span><span
+                                   class="pln"> </span><span class="str">'textfield'</span><span
+                                   class="pun">,</span><span class="pln">
+                                                   name </span><span class="pun">:</span><span
+                                   class="pln"> </span><span class="str">'name'</span><span
+                                   class="pun">,</span><span class="pln">
+                                                   fieldLabel</span><span class="pun">:</span><span
+                                   class="pln"> </span><span class="str">'Name'</span><span class="pln">
+                                               </span><span class="pun">},</span><span class="pln">
+                                               </span><span class="pun">{</span><span class="pln">
+                                                   xtype</span><span class="pun">:</span><span
+                                   class="pln"> </span><span class="str">'textfield'</span><span
+                                   class="pun">,</span><span class="pln">
+                                                   name </span><span class="pun">:</span><span
+                                   class="pln"> </span><span class="str">'email'</span><span
+                                   class="pun">,</span><span class="pln">
+                                                   fieldLabel</span><span class="pun">:</span><span
+                                   class="pln"> </span><span class="str">'Email'</span><span class="pln">
+                                               </span><span class="pun">}</span><span class="pln">
+                                           </span><span class="pun">]</span><span class="pln">
+                                       </span><span class="pun">}</span><span class="pln">
+                                   </span><span class="pun">];</span><span class="pln">
+
+                                   </span><span class="kwd">this</span><span class="pun">.</span><span
+                                   class="pln">buttons </span><span class="pun">=</span><span
+                                   class="pln"> </span><span class="pun">[</span><span class="pln">
+                                       </span><span class="pun">{</span><span class="pln">
+                                           text</span><span class="pun">:</span><span
+                                   class="pln"> </span><span class="str">'Save'</span><span
+                                   class="pun">,</span><span class="pln">
+                                           action</span><span class="pun">:</span><span
+                                   class="pln"> </span><span class="str">'save'</span><span class="pln">
+                                       </span><span class="pun">},</span><span class="pln">
+                                       </span><span class="pun">{</span><span class="pln">
+                                           text</span><span class="pun">:</span><span
+                                   class="pln"> </span><span class="str">'Cancel'</span><span
+                                   class="pun">,</span><span class="pln">
+                                           scope</span><span class="pun">:</span><span class="pln"> </span><span
+                                   class="kwd">this</span><span class="pun">,</span><span class="pln">
+                                           handler</span><span class="pun">:</span><span
+                                   class="pln"> </span><span class="kwd">this</span><span
+                                   class="pun">.</span><span class="pln">close
+                                       </span><span class="pun">}</span><span class="pln">
+                                   </span><span class="pun">];</span><span class="pln">
+
+                                   </span><span class="kwd">this</span><span class="pun">.</span><span
+                                   class="pln">callParent</span><span class="pun">(</span><span
+                                   class="pln">arguments</span><span class="pun">);</span><span
+                                   class="pln">
+                               </span><span class="pun">}</span><span class="pln">
+                           </span><span class="pun">});</span></code></pre>
+
+                           <p>Again we're just defining a subclass of an existing component - this
+                               time <code><a href="#!/api/Ext.window.Window" rel="Ext.window.Window"
+                                             class="docClass">Ext.window.Window</a></code>. Once more we
+                               used <code>initComponent</code> to specify
+                               the complex objects <code>items</code> and <code>buttons</code>. We used a
+                               <code>'fit'</code> layout
+                               and a form as the single item, which contains fields to edit the name
+                               and the email address. Finally we created two buttons, one which just
+                               closes the window, and the other that will be used to save our
+                               changes.</p>
+
+                           <p>All we have to do now is add the view to the controller, render it and
+                               load the User into it:</p>
+
+                           <pre id="ext-gen1346" class="code"><code id="ext-gen1347"><a
+                                   href="#!/api/Ext-method-define" rel="Ext-method-define"
+                                   class="docClass"><span class="typ">Ext</span><span
+                                   class="pun">.</span><span class="pln">define</span></a><span
+                                   class="pun">(</span><span class="str">'AM.controller.Users'</span><span
+                                   class="pun">,</span><span class="pln"> </span><span class="pun">{</span><span
+                                   class="pln">
+                               extend</span><span class="pun">:</span><span class="pln"> </span><span
+                                   class="str">'</span><a href="#!/api/Ext.app.Controller"
+                                                          rel="Ext.app.Controller" class="docClass"><span
+                                   class="str">Ext.app.Controller</span></a><span class="str">'</span><span
+                                   class="pun">,</span><span class="pln">
+
+                               views</span><span class="pun">:</span><span class="pln"> </span><span
+                                   class="pun">[</span><span class="pln">
+                                   </span><span class="str">'user.List'</span><span
+                                   class="pun">,</span><span class="pln">
+                                   </span><span class="str">'user.Edit'</span><span class="pln">
+                               </span><span class="pun">],</span><span class="pln">
+
+                               init</span><span class="pun">:</span><span class="pln"> </span><span
+                                   class="pun">...</span><span class="pln">
+
+                               editUser</span><span class="pun">:</span><span class="pln"> </span><span
+                                   class="kwd">function</span><span class="pun">(</span><span class="pln">grid</span><span
+                                   class="pun">,</span><span class="pln"> record</span><span
+                                   class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span
+                                   class="pln">
+                                   </span><span class="kwd">var</span><span class="pln"> view </span><span
+                                   class="pun">=</span><span class="pln"> </span><a
+                                   href="#!/api/Ext-method-widget" rel="Ext-method-widget"
+                                   class="docClass"><span class="typ">Ext</span><span
+                                   class="pun">.</span><span class="pln">widget</span></a><span
+                                   class="pun">(</span><span class="str">'useredit'</span><span
+                                   class="pun">);</span><span class="pln">
+
+                                   view</span><span class="pun">.</span><span class="pln">down</span><span
+                                   class="pun">(</span><span class="str">'form'</span><span
+                                   class="pun">).</span><span class="pln">loadRecord</span><span
+                                   class="pun">(</span><span class="pln">record</span><span
+                                   class="pun">);</span><span class="pln">
+                               </span><span class="pun">}</span><span class="pln">
+                           </span><span class="pun">});</span></code></pre>
+
+                           <p>First we created the view using the convenient method <code><a
+                                   href="#!/api/Ext-method-widget" rel="Ext-method-widget"
+                                   class="docClass">Ext.widget</a></code>,
+                               which is equivalent to <code><a href="#!/api/Ext-method-create"
+                                                               rel="Ext-method-create" class="docClass">Ext.create</a>('widget.useredit')</code>.
+                               Then we
+                               leveraged ComponentQuery once more to quickly get a reference to the
+                               edit window's form. Every component in Ext JS 4 has a <code>down</code>
+                               function,
+                               which accepts a ComponentQuery selector to quickly find any child
+                               component.</p>
+
+                           <p>Double clicking a row in our grid now yields something like this:</p>
+
+                           <p></p>
+
+                           <p><img src="guides/application_architecture/loadedForm.png"
+                                   alt="Loading the form"></p>
+
+                           <p></p>
+
+                           <a href="#TOC">Table of Contents</a>
+                           <hr/>
+                       </article>
+
+        <article>
+                                  <h3
+                                          class="topic"><a name="Creating_a_Model_and_a_Store">Creating a Model and a Store</a>
+                                  </h3>
+
+        <p>Now that we have our edit form it's almost time to start editing our
+            users and saving those changes. Before we do that though, we should
+            refactor our code a little.</p>
+
+        <p>At the moment the <code>AM.view.user.List</code> component creates a Store
+            inline. This works well but we'd like to be able to reference that
+            Store elsewhere in the application so that we can update the data in
+            it. We'll start by breaking the Store out into its own file -
+            <code>app/store/Users.js</code>:</p>
+
+        <pre id="ext-gen1348" class="code"><code id="ext-gen1349"><a
+                href="#!/api/Ext-method-define" rel="Ext-method-define"
+                class="docClass"><span class="typ">Ext</span><span
+                class="pun">.</span><span class="pln">define</span></a><span
+                class="pun">(</span><span class="str">'AM.store.Users'</span><span
+                class="pun">,</span><span class="pln"> </span><span class="pun">{</span><span
+                class="pln">
+            extend</span><span class="pun">:</span><span class="pln"> </span><span
+                class="str">'</span><a href="#!/api/Ext.data.Store" rel="Ext.data.Store"
+                                       class="docClass"><span
+                class="str">Ext.data.Store</span></a><span class="str">'</span><span
+                class="pun">,</span><span class="pln">
+            fields</span><span class="pun">:</span><span class="pln"> </span><span
+                class="pun">[</span><span class="str">'name'</span><span
+                class="pun">,</span><span class="pln"> </span><span
+                class="str">'email'</span><span class="pun">],</span><span class="pln">
+            data</span><span class="pun">:</span><span class="pln"> </span><span
+                class="pun">[</span><span class="pln">
+                </span><span class="pun">{</span><span class="pln">name</span><span
+                class="pun">:</span><span class="pln"> </span><span
+                class="str">'Ed'</span><span class="pun">,</span><span class="pln">    email</span><span
+                class="pun">:</span><span class="pln"> </span><span class="str">'ed@sencha.com'</span><span
+                class="pun">},</span><span class="pln">
+                </span><span class="pun">{</span><span class="pln">name</span><span
+                class="pun">:</span><span class="pln"> </span><span
+                class="str">'Tommy'</span><span class="pun">,</span><span class="pln"> email</span><span
+                class="pun">:</span><span class="pln"> </span><span class="str">'tommy@sencha.com'</span><span
+                class="pun">}</span><span class="pln">
+            </span><span class="pun">]</span><span class="pln">
+        </span><span class="pun">});</span></code></pre>
+
+        <p>Now we'll just make 2 small changes - first we'll ask our <code>Users</code>
+            controller to include this Store when it loads:</p>
+
+        <pre id="ext-gen1350" class="code"><code id="ext-gen1351"><a
+                href="#!/api/Ext-method-define" rel="Ext-method-define"
+                class="docClass"><span class="typ">Ext</span><span
+                class="pun">.</span><span class="pln">define</span></a><span
+                class="pun">(</span><span class="str">'AM.controller.Users'</span><span
+                class="pun">,</span><span class="pln"> </span><span class="pun">{</span><span
+                class="pln">
+            extend</span><span class="pun">:</span><span class="pln"> </span><span
+                class="str">'</span><a href="#!/api/Ext.app.Controller"
+                                       rel="Ext.app.Controller" class="docClass"><span
+                class="str">Ext.app.Controller</span></a><span class="str">'</span><span
+                class="pun">,</span><span class="pln">
+            stores</span><span class="pun">:</span><span class="pln"> </span><span
+                class="pun">[</span><span class="pln">
+                </span><span class="str">'Users'</span><span class="pln">
+            </span><span class="pun">],</span><span class="pln">
+            </span><span class="pun">...</span><span class="pln">
+        </span><span class="pun">});</span></code></pre>
+
+        <p>then we'll update <code>app/view/user/List.js</code> to simply reference the
+            Store by id:</p>
+
+        <pre id="ext-gen1352" class="code"><code id="ext-gen1353"><a
+                href="#!/api/Ext-method-define" rel="Ext-method-define"
+                class="docClass"><span class="typ">Ext</span><span
+                class="pun">.</span><span class="pln">define</span></a><span
+                class="pun">(</span><span class="str">'AM.view.user.List'</span><span
+                class="pln"> </span><span class="pun">,{</span><span class="pln">
+            extend</span><span class="pun">:</span><span class="pln"> </span><span
+                class="str">'</span><a href="#!/api/Ext.grid.Panel" rel="Ext.grid.Panel"
+                                       class="docClass"><span
+                class="str">Ext.grid.Panel</span></a><span class="str">'</span><span
+                class="pun">,</span><span class="pln">
+            </span><span class="kwd">alias</span><span class="pun">:</span><span
+                class="pln"> </span><span class="str">'widget.userlist'</span><span
+                class="pun">,</span><span class="pln">
+            title</span><span class="pun">:</span><span class="pln"> </span><span
+                class="str">'All Users'</span><span class="pun">,</span><span
+                class="pln">
+
+            </span><span class="com">// we no longer define the Users store in the `initComponent` method</span><span
+                class="pln">
+            store</span><span class="pun">:</span><span class="pln"> </span><span
+                class="str">'Users'</span><span class="pun">,</span><span class="pln">
+
+            initComponent</span><span class="pun">:</span><span
+                class="pln"> </span><span class="kwd">function</span><span class="pun">()</span><span
+                class="pln"> </span><span class="pun">{</span><span class="pln">
+
+                </span><span class="kwd">this</span><span class="pun">.</span><span
+                class="pln">columns </span><span class="pun">=</span><span
+                class="pln"> </span><span class="pun">[</span><span class="pln">
+                </span><span class="pun">...</span><span class="pln">
+        </span><span class="pun">});</span></code></pre>
+
+        <p>By including the stores that our <code>Users</code> controller cares about in
+            its
+            definition they are automatically loaded onto the page and given a
+            <a href="#!/api/Ext.data.Store-cfg-storeId" rel="Ext.data.Store-cfg-storeId"
+               class="docClass">storeId</a>, which makes them really easy
+            to reference in our views (by simply configuring <code>store: 'Users'</code>
+            in
+            this case).</p>
+
+        <p>At the moment we've just defined our fields (<code>'name'</code> and <code>'email'</code>)
+            inline on the store. This works well enough but in Ext JS 4 we have a
+            powerful <code><a href="#!/api/Ext.data.Model" rel="Ext.data.Model"
+                              class="docClass">Ext.data.Model</a></code> class that we'd
+            like to take advantage of
+            when it comes to editing our Users. We'll finish this section by
+            refactoring our Store to use a Model, which we'll put in
+            <code>app/model/User.js</code>:</p>
+
+        <pre id="ext-gen1354" class="code"><code id="ext-gen1355"><a
+                href="#!/api/Ext-method-define" rel="Ext-method-define"
+                class="docClass"><span class="typ">Ext</span><span
+                class="pun">.</span><span class="pln">define</span></a><span
+                class="pun">(</span><span class="str">'AM.model.User'</span><span
+                class="pun">,</span><span class="pln"> </span><span class="pun">{</span><span
+                class="pln">
+            extend</span><span class="pun">:</span><span class="pln"> </span><span
+                class="str">'</span><a href="#!/api/Ext.data.Model" rel="Ext.data.Model"
+                                       class="docClass"><span
+                class="str">Ext.data.Model</span></a><span class="str">'</span><span
+                class="pun">,</span><span class="pln">
+            fields</span><span class="pun">:</span><span class="pln"> </span><span
+                class="pun">[</span><span class="str">'name'</span><span
+                class="pun">,</span><span class="pln"> </span><span
+                class="str">'email'</span><span class="pun">]</span><span class="pln">
+        </span><span class="pun">});</span></code></pre>
+
+        <p>That's all we need to do to define our Model. Now we'll just update
+            our Store to reference the Model name instead of providing fields
+            inline...</p>
+
+        <pre id="ext-gen1356" class="code"><code id="ext-gen1357"><a
+                href="#!/api/Ext-method-define" rel="Ext-method-define"
+                class="docClass"><span class="typ">Ext</span><span
+                class="pun">.</span><span class="pln">define</span></a><span
+                class="pun">(</span><span class="str">'AM.store.Users'</span><span
+                class="pun">,</span><span class="pln"> </span><span class="pun">{</span><span
+                class="pln">
+            extend</span><span class="pun">:</span><span class="pln"> </span><span
+                class="str">'</span><a href="#!/api/Ext.data.Store" rel="Ext.data.Store"
+                                       class="docClass"><span
+                class="str">Ext.data.Store</span></a><span class="str">'</span><span
+                class="pun">,</span><span class="pln">
+            model</span><span class="pun">:</span><span class="pln"> </span><span
+                class="str">'AM.model.User'</span><span class="pun">,</span><span
+                class="pln">
+
+            data</span><span class="pun">:</span><span class="pln"> </span><span
+                class="pun">[</span><span class="pln">
+                </span><span class="pun">{</span><span class="pln">name</span><span
+                class="pun">:</span><span class="pln"> </span><span
+                class="str">'Ed'</span><span class="pun">,</span><span class="pln">    email</span><span
+                class="pun">:</span><span class="pln"> </span><span class="str">'ed@sencha.com'</span><span
+                class="pun">},</span><span class="pln">
+                </span><span class="pun">{</span><span class="pln">name</span><span
+                class="pun">:</span><span class="pln"> </span><span
+                class="str">'Tommy'</span><span class="pun">,</span><span class="pln"> email</span><span
+                class="pun">:</span><span class="pln"> </span><span class="str">'tommy@sencha.com'</span><span
+                class="pun">}</span><span class="pln">
+            </span><span class="pun">]</span><span class="pln">
+        </span><span class="pun">});</span></code></pre>
+
+        <p>And we'll ask the <code>Users</code> controller to get a reference to the
+            <code>User</code>
+            model too:</p>
+
+        <pre id="ext-gen1358" class="code"><code id="ext-gen1359"><a
+                href="#!/api/Ext-method-define" rel="Ext-method-define"
+                class="docClass"><span class="typ">Ext</span><span
+                class="pun">.</span><span class="pln">define</span></a><span
+                class="pun">(</span><span class="str">'AM.controller.Users'</span><span
+                class="pun">,</span><span class="pln"> </span><span class="pun">{</span><span
+                class="pln">
+            extend</span><span class="pun">:</span><span class="pln"> </span><span
+                class="str">'</span><a href="#!/api/Ext.app.Controller"
+                                       rel="Ext.app.Controller" class="docClass"><span
+                class="str">Ext.app.Controller</span></a><span class="str">'</span><span
+                class="pun">,</span><span class="pln">
+            stores</span><span class="pun">:</span><span class="pln"> </span><span
+                class="pun">[</span><span class="str">'Users'</span><span
+                class="pun">],</span><span class="pln">
+            models</span><span class="pun">:</span><span class="pln"> </span><span
+                class="pun">[</span><span class="str">'User'</span><span
+                class="pun">],</span><span class="pln">
+            </span><span class="pun">...</span><span class="pln">
+        </span><span class="pun">});</span></code></pre>
+
+        <p>Our refactoring will make the next section easier but should not have
+            affected the application's current behavior. If we reload the page now
+            and double click on a row we see that the edit User window still
+            appears as expected. Now it's time to finish the editing
+            functionality:</p>
+
+        <p></p>
+
+        <p><img src="guides/application_architecture/loadedForm.png"
+                alt="Loading the form"></p>
+
+        <p></p>
+
+
+
+
+                                  <a href="#TOC">Table of Contents</a>
+                                  <hr/>
+        </article>
+        <article>
+                                   <h3
+                                           class="topic"><a name="Saving_data_with_the_Model">Saving data with the Model</a>
+                                   </h3>
+
+        <p>Now that we have our users grid loading data and opening an edit
+            window when we double click each row, we'd like to save the changes
+            that the user makes. The Edit User window that the defined above
+            contains a form (with fields for name and email), and a save
+            button. First let's update our controller's init function to listen
+            for clicks to that save button:</p>
+
+        <pre id="ext-gen1360" class="code"><code id="ext-gen1361"><a
+                href="#!/api/Ext-method-define" rel="Ext-method-define"
+                class="docClass"><span class="typ">Ext</span><span
+                class="pun">.</span><span class="pln">define</span></a><span
+                class="pun">(</span><span class="str">'AM.controller.Users'</span><span
+                class="pun">,</span><span class="pln"> </span><span class="pun">{</span><span
+                class="pln">
+            </span><span class="pun">...</span><span class="pln">
+            init</span><span class="pun">:</span><span class="pln"> </span><span
+                class="kwd">function</span><span class="pun">()</span><span
+                class="pln"> </span><span class="pun">{</span><span class="pln">
+                </span><span class="kwd">this</span><span class="pun">.</span><span
+                class="pln">control</span><span class="pun">({</span><span class="pln">
+                    </span><span class="str">'viewport &gt; userlist'</span><span
+                class="pun">:</span><span class="pln"> </span><span class="pun">{</span><span
+                class="pln">
+                        itemdblclick</span><span class="pun">:</span><span
+                class="pln"> </span><span class="kwd">this</span><span
+                class="pun">.</span><span class="pln">editUser
+                    </span><span class="pun">},</span><span class="pln">
+                    </span><span class="str">'useredit button[action=save]'</span><span
+                class="pun">:</span><span class="pln"> </span><span class="pun">{</span><span
+                class="pln">
+                        click</span><span class="pun">:</span><span class="pln"> </span><span
+                class="kwd">this</span><span class="pun">.</span><span class="pln">updateUser
+                    </span><span class="pun">}</span><span class="pln">
+                </span><span class="pun">});</span><span class="pln">
+            </span><span class="pun">},</span><span class="pln">
+            </span><span class="pun">...</span><span class="pln">
+            updateUser</span><span class="pun">:</span><span class="pln"> </span><span
+                class="kwd">function</span><span class="pun">(</span><span class="pln">button</span><span
+                class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span
+                class="pln">
+                console</span><span class="pun">.</span><span
+                class="pln">log</span><span class="pun">(</span><span class="str">'clicked the Save button'</span><span
+                class="pun">);</span><span class="pln">
+            </span><span class="pun">}</span><span class="pln">
+            </span><span class="pun">...</span><span class="pln">
+        </span><span class="pun">});</span></code></pre>
+
+        <p>We added a second ComponentQuery selector to our <code>this.control</code>
+            call -
+            this time <code>'useredit button[action=save]'</code>. This works the same
+            way as
+            the first selector - it uses the <code>'useredit'</code> xtype that we
+            defined
+            above to focus in on our edit user window, and then looks for any
+            buttons with the <code>'save'</code> action inside that window. When we
+            defined
+            our edit user window we passed <code>{action: 'save'}</code> to the save
+            button,
+            which gives us an easy way to target that button.</p>
+
+        <p>We can satisfy ourselves that the <code>updateUser</code> function is called
+            when
+            we click the Save button:</p>
+
+        <p></p>
+
+        <p><img src="guides/application_architecture/saveHandler.png"
+                alt="Seeing the save handler"></p>
+
+        <p></p>
+
+        <p>Now that we've seen our handler is correctly attached to the Save
+            button's click event, let's fill in the real logic for the
+            <code>updateUser</code> function. In this function we need to get the data
+            out of
+            the form, update our User with it and then save that back to the Users
+            store we created above. Let's see how we might do that:</p>
+
+        <pre id="ext-gen1362" class="code"><code id="ext-gen1363"><span
+                class="pln">updateUser</span><span class="pun">:</span><span
+                class="pln"> </span><span class="kwd">function</span><span
+                class="pun">(</span><span class="pln">button</span><span
+                class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span
+                class="pln">
+            </span><span class="kwd">var</span><span class="pln"> win    </span><span
+                class="pun">=</span><span class="pln"> button</span><span
+                class="pun">.</span><span class="pln">up</span><span
+                class="pun">(</span><span class="str">'window'</span><span class="pun">),</span><span
+                class="pln">
+                form   </span><span class="pun">=</span><span
+                class="pln"> win</span><span class="pun">.</span><span
+                class="pln">down</span><span class="pun">(</span><span class="str">'form'</span><span
+                class="pun">),</span><span class="pln">
+                record </span><span class="pun">=</span><span
+                class="pln"> form</span><span class="pun">.</span><span class="pln">getRecord</span><span
+                class="pun">(),</span><span class="pln">
+                values </span><span class="pun">=</span><span
+                class="pln"> form</span><span class="pun">.</span><span class="pln">getValues</span><span
+                class="pun">();</span><span class="pln">
+
+            record</span><span class="pun">.</span><span class="kwd">set</span><span
+                class="pun">(</span><span class="pln">values</span><span
+                class="pun">);</span><span class="pln">
+            win</span><span class="pun">.</span><span class="pln">close</span><span
+                class="pun">();</span><span class="pln">
+        </span><span class="pun">}</span></code></pre>
+
+        <p>Let's break down what's going on here. Our click event gave us a
+            reference to the button that the user clicked on, but what we really
+            want is access to the form that contains the data and the window
+            itself. To get things working quickly we'll just use ComponentQuery
+            again here, first using <code>button.up('window')</code> to get a reference
+            to
+            the Edit User window, then <code>win.down('form')</code> to get the form.
+        </p>
+
+        <p>After that we simply fetch the record that's currently loaded into the
+            form and update it with whatever the user has typed into the
+            form. Finally we close the window to bring attention back to the
+            grid. Here's what we see when we run our app again, change the name
+            field to <code>'Ed Spencer'</code> and click save:</p>
+
+        <p></p>
+
+        <p><img src="guides/application_architecture/updatedGridRecord.png"
+                alt="The record in the grid has been updated"></p>
+
+        <p></p>
+
+        <h3>Saving to the server</h3>
+
+        <p>Easy enough. Let's finish this up now by making it interact with our
+            server side. At the moment we are hard coding the two User records
+            into the Users Store, so let's start by reading those over AJAX
+            instead:</p>
+
+        <pre id="ext-gen1364" class="code"><code id="ext-gen1365"><a
+                href="#!/api/Ext-method-define" rel="Ext-method-define"
+                class="docClass"><span class="typ">Ext</span><span
+                class="pun">.</span><span class="pln">define</span></a><span
+                class="pun">(</span><span class="str">'AM.store.Users'</span><span
+                class="pun">,</span><span class="pln"> </span><span class="pun">{</span><span
+                class="pln">
+            extend</span><span class="pun">:</span><span class="pln"> </span><span
+                class="str">'</span><a href="#!/api/Ext.data.Store" rel="Ext.data.Store"
+                                       class="docClass"><span
+                class="str">Ext.data.Store</span></a><span class="str">'</span><span
+                class="pun">,</span><span class="pln">
+            model</span><span class="pun">:</span><span class="pln"> </span><span
+                class="str">'AM.model.User'</span><span class="pun">,</span><span
+                class="pln">
+            autoLoad</span><span class="pun">:</span><span class="pln"> </span><span
+                class="kwd">true</span><span class="pun">,</span><span class="pln">
+
+            proxy</span><span class="pun">:</span><span class="pln"> </span><span
+                class="pun">{</span><span class="pln">
+                type</span><span class="pun">:</span><span class="pln"> </span><span
+                class="str">'ajax'</span><span class="pun">,</span><span class="pln">
+                url</span><span class="pun">:</span><span class="pln"> </span><span
+                class="str">'data/users.json'</span><span class="pun">,</span><span
+                class="pln">
+                reader</span><span class="pun">:</span><span class="pln"> </span><span
+                class="pun">{</span><span class="pln">
+                    type</span><span class="pun">:</span><span class="pln"> </span><span
+                class="str">'json'</span><span class="pun">,</span><span class="pln">
+                    root</span><span class="pun">:</span><span class="pln"> </span><span
+                class="str">'users'</span><span class="pun">,</span><span class="pln">
+                    successProperty</span><span class="pun">:</span><span
+                class="pln"> </span><span class="str">'success'</span><span class="pln">
+                </span><span class="pun">}</span><span class="pln">
+            </span><span class="pun">}</span><span class="pln">
+        </span><span class="pun">});</span></code></pre>
+
+        <p>Here we removed the <code>'data'</code> property and replaced it with a
+            <a href="#!/api/Ext.data.proxy.Proxy" rel="Ext.data.proxy.Proxy"
+               class="docClass">Proxy</a>. Proxies are the way to load and
+            save data from a Store or a Model in Ext JS 4. There are proxies for
+            AJAX, JSON-P and HTML5 localStorage among others. Here we've used a
+            simple AJAX proxy, which we've told to load data from the url
+            <code>'data/users.json'</code>.</p>
+
+        <p>We also attached a <a href="#!/api/Ext.data.reader.Reader"
+                                 rel="Ext.data.reader.Reader"
+                                 class="docClass">Reader</a> to the
+            Proxy. The reader is responsible for decoding the server response into
+            a format the Store can understand. This time we used a <a
+                    href="#!/api/Ext.data.reader.Json" rel="Ext.data.reader.Json"
+                    class="docClass">JSON Reader</a>, and specified the root and
+            <code>successProperty</code> configurations. Finally we'll create our
+            <code>data/users.json</code> file and paste our previous data into it:</p>
+
+        <pre id="ext-gen1366" class="code"><code id="ext-gen1367"><span
+                class="pun">{</span><span class="pln">
+            </span><span class="str">"success"</span><span class="pun">:</span><span
+                class="pln"> </span><span class="kwd">true</span><span
+                class="pun">,</span><span class="pln">
+            </span><span class="str">"users"</span><span class="pun">:</span><span
+                class="pln"> </span><span class="pun">[</span><span class="pln">
+                </span><span class="pun">{</span><span class="str">"id"</span><span
+                class="pun">:</span><span class="pln"> </span><span class="lit">1</span><span
+                class="pun">,</span><span class="pln"> </span><span
+                class="str">"name"</span><span class="pun">:</span><span
+                class="pln"> </span><span class="str">'Ed'</span><span
+                class="pun">,</span><span class="pln">    </span><span class="str">"email"</span><span
+                class="pun">:</span><span class="pln"> </span><span class="str">"ed@sencha.com"</span><span
+                class="pun">},</span><span class="pln">
+                </span><span class="pun">{</span><span class="str">"id"</span><span
+                class="pun">:</span><span class="pln"> </span><span class="lit">2</span><span
+                class="pun">,</span><span class="pln"> </span><span
+                class="str">"name"</span><span class="pun">:</span><span
+                class="pln"> </span><span class="str">'Tommy'</span><span
+                class="pun">,</span><span class="pln"> </span><span
+                class="str">"email"</span><span class="pun">:</span><span
+                class="pln"> </span><span class="str">"tommy@sencha.com"</span><span
+                class="pun">}</span><span class="pln">
+            </span><span class="pun">]</span><span class="pln">
+        </span><span class="pun">}</span></code></pre>
+
+        <p>The only other change we made to the Store was to set <code>autoLoad</code>
+            to
+            <code>true</code>, which means the Store will ask its Proxy to load that
+            data
+            immediately. If we refresh the page now we'll see the same outcome as
+            before, except that we're now no longer hard coding the data into our
+            application.</p>
+
+        <p>The last thing we want to do here is send our changes back to the
+            server. For this example we're just using static JSON files on the
+            server side so we won't see any database changes but we can at least
+            verify that everything is plugged together correctly. First we'll make
+            a small change to our new proxy to tell it to send updates back to a
+            different url:</p>
+
+        <pre id="ext-gen1368" class="code"><code id="ext-gen1369"><span
+                class="pln">proxy</span><span class="pun">:</span><span
+                class="pln"> </span><span class="pun">{</span><span class="pln">
+            type</span><span class="pun">:</span><span class="pln"> </span><span
+                class="str">'ajax'</span><span class="pun">,</span><span class="pln">
+            api</span><span class="pun">:</span><span class="pln"> </span><span
+                class="pun">{</span><span class="pln">
+                read</span><span class="pun">:</span><span class="pln"> </span><span
+                class="str">'data/users.json'</span><span class="pun">,</span><span
+                class="pln">
+                update</span><span class="pun">:</span><span class="pln"> </span><span
+                class="str">'data/updateUsers.json'</span><span class="pln">
+            </span><span class="pun">},</span><span class="pln">
+            reader</span><span class="pun">:</span><span class="pln"> </span><span
+                class="pun">{</span><span class="pln">
+                type</span><span class="pun">:</span><span class="pln"> </span><span
+                class="str">'json'</span><span class="pun">,</span><span class="pln">
+                root</span><span class="pun">:</span><span class="pln"> </span><span
+                class="str">'users'</span><span class="pun">,</span><span class="pln">
+                successProperty</span><span class="pun">:</span><span
+                class="pln"> </span><span class="str">'success'</span><span class="pln">
+            </span><span class="pun">}</span><span class="pln">
+        </span><span class="pun">}</span></code></pre>
+
+        <p>We're still reading the data from <code>users.json</code> but any updates
+            will be
+            sent to <code>updateUsers.json</code>. This is just so we know things are
+            working
+            without overwriting our test data. After updating a record, the
+            <code>updateUsers.json</code> file just contains <code>{"success":
+                true}</code>. Since it is
+            updated through a HTTP POST command, you may have to create an empty
+            file to avoid receiving a 404 error.</p>
+
+        <p>The only other change we need to make is to tell our Store to
+            synchronize itself after editing, which we do by adding one more line
+            inside the updateUser function, which now looks like this:</p>
+
+        <pre id="ext-gen1370" class="code"><code id="ext-gen1371"><span
+                class="pln">updateUser</span><span class="pun">:</span><span
+                class="pln"> </span><span class="kwd">function</span><span
+                class="pun">(</span><span class="pln">button</span><span
+                class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span
+                class="pln">
+            </span><span class="kwd">var</span><span class="pln"> win    </span><span
+                class="pun">=</span><span class="pln"> button</span><span
+                class="pun">.</span><span class="pln">up</span><span
+                class="pun">(</span><span class="str">'window'</span><span class="pun">),</span><span
+                class="pln">
+                form   </span><span class="pun">=</span><span
+                class="pln"> win</span><span class="pun">.</span><span
+                class="pln">down</span><span class="pun">(</span><span class="str">'form'</span><span
+                class="pun">),</span><span class="pln">
+                record </span><span class="pun">=</span><span
+                class="pln"> form</span><span class="pun">.</span><span class="pln">getRecord</span><span
+                class="pun">(),</span><span class="pln">
+                values </span><span class="pun">=</span><span
+                class="pln"> form</span><span class="pun">.</span><span class="pln">getValues</span><span
+                class="pun">();</span><span class="pln">
+
+            record</span><span class="pun">.</span><span class="kwd">set</span><span
+                class="pun">(</span><span class="pln">values</span><span
+                class="pun">);</span><span class="pln">
+            win</span><span class="pun">.</span><span class="pln">close</span><span
+                class="pun">();</span><span class="pln">
+            </span><span
+                class="com">// synchronize the store after editing the record</span><span
+                class="pln">
+            </span><span class="kwd">this</span><span class="pun">.</span><span
+                class="pln">getUsersStore</span><span class="pun">().</span><span
+                class="pln">sync</span><span class="pun">();</span><span class="pln">
+        </span><span class="pun">}</span></code></pre>
+
+        <p>Now we can run through our full example and make sure that everything
+            works. We'll edit a row, hit the Save button and see that the request
+            is correctly sent to <code>updateUser.json</code></p>
+
+        <p></p>
+
+        <p><img src="guides/application_architecture/postUpdatesToServer.png"
+                alt="The record in the grid has been updated"></p>
+
+        <p></p>
+
+
+        <a href="#TOC">Table of Contents</a>
+                                  <hr/>
+        </article>
+        <article>
+                                   <h3
+                                           class="topic"><a name="Deployment">Deployment</a>
+                                   </h3>
+
+        <p>The newly introduced Sencha SDK Tools (<a
+                href="http://www.sencha.com/products/extjs/download/">download
+            here</a>) makes
+            deployment of any Ext JS 4 application easier than ever. The tools
+            allows you to generate a manifest of all dependencies in the form of a
+            JSB3 (JSBuilder file format) file, and create a minimal custom build
+            of just what your application needs within minutes.</p>
+
+        <p>Please refer to the <a href="#/guide/getting_started">Getting Started
+            guide</a>
+            for detailed instructions.</p>
+
+            <a href="#TOC">Table of Contents</a>
+                                      <hr/>
+            </article>
+            <article>
+                                       <h3
+                                               class="topic"><a name="Next_Steps">Next Steps</a>
+                                       </h3>
+        <p>We've created a very simple application that manages User data and
+            sends any updates back to the server. We started out simple and
+            gradually refactored our code to make it cleaner and more
+            organized. At this point it's easy to add more functionality to our
+            application without creating spaghetti code. The full source code for
+            this application can be found in the Ext JS 4 SDK download, inside the
+            examples/app/simple folder.</p>
+
+                <a href="#TOC">Table of Contents</a>
+                                          <hr/>
+                </article>
+
+        <article>
+                    <h3 class="topic"><a name="run-example">Run Live Example</a></h3>
+                    <li><a href="simple/simple.html">Example 1</a></li>
+                    <br/><br/>
+                    <a href="#TOC">Table of Contents</a>
+                    <hr/>
+                </article>
+                <article>
+                    <h3 class="topic"><a name="references">References</a></h3>
+                    <ul>
+                        <li><a href="http://localhost:4000/extzip/ext-4.2.1.883/docs/index.html#!/guide/application_architecture">Ext MVC docs</a></li>
+                    </ul>
+                    <a href="#TOC">Table of Contents</a>
+                    <hr/>
+                </article>
+
+    </section>
+</section>
+
+</body>
+</html>

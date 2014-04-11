@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+  <h1>Canvas Drawing Bricks (canvas save and restore)</h1>
+  <canvas id="canvas" width="500px" height="500px" style="border:1px solid black"></canvas>
+  <script>
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+    var rowcolors = ["#FF1C0A", "#FFFD0A", "#00A308", "#0008DB", "#EB0093"];
+    var WIDTH=100;
+    var HEIGHT=100;
+
+    function gameLoop(){
+       //drawBricks();
+       drawBricksSaveRestore();
+    }
+   
+    function drawBricks(){
+      for(var row=0;row<5;row++){
+        for(var col=0;col<5;col++){
+          drawBrick(row*WIDTH,col*HEIGHT,WIDTH,HEIGHT,rowcolors[row]); 
+        }
+      }
+    }
+    function drawBrick(x,y,width,height, color){
+       ctx.fillStyle = color;
+       ctx.beginPath();
+       ctx.rect(x+2,y+2,width-2,height-2);
+       ctx.closePath();
+       ctx.fill();
+    }
+
+    function drawBricksSaveRestore(){
+      for(var row=0;row<5;row++){
+        ctx.save();
+        ctx.fillStyle = rowcolors[row];
+        for(var col=0;col<5;col++){
+          ctx.save();
+          ctx.translate(row*WIDTH,col*HEIGHT); 
+          drawBrick();
+          ctx.restore();
+        }
+        ctx.restore();
+      }
+
+    }
+
+    function drawBrick(){
+       ctx.beginPath();
+       ctx.rect(2,2,WIDTH-2,HEIGHT-2);
+       ctx.closePath();
+       ctx.fill();
+    }
+        
+        
+    gameLoop();
+  </script>
+</body>
+</html>

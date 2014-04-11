@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <script type="text/javascript" src="../../../js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript">
+        var now = new Date();
+    </script>
+    <link type="text/css" rel="stylesheet" href="css/app.css" media="screen">
+    <title>Tech Next Blog</title>
+    <script>
+        $(document).ready(function () {
+            $(".highlight").click(function(){
+                var thisCheck = $(this);
+                var type = $(thisCheck).val();
+                console.log(type);
+                if (thisCheck.is (':checked'))
+                {
+                    $(type).css('border','1px solid red');
+                }
+                else {
+                    $(type).css('border','0px solid black');
+                }
+
+
+            });
+
+        });
+    </script>
+</head>
+<body>
+<div class="highlights">
+    <input class="highlight" type="checkbox" name="highlight" value="div">Div</input>
+    <input class="highlight" type="checkbox" name="highlight" value="h1">H1</input>
+    <input class="highlight" type="checkbox" name="highlight" value="h2">H2</input>
+    <input class="highlight" type="checkbox" name="highlight" value="ul">UL</input>
+    <input class="highlight" type="checkbox" name="highlight" value="li">LI</input>
+    <input class="highlight" type="checkbox" name="highlight" value="a">Anchor</input>
+    <input class="highlight" type="checkbox" name="highlight" value="img">Image</input>
+</div>
+<div id="header">
+    <h1>TechNext</h1>
+
+    <h2>Tech Meet for Dev, QA and Agile practisioner!</h2>
+
+    <div id="navigation">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/archive">Archive</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </div>
+</div>
+<div id="meets">
+    <div class="meet">
+        <div class="headline">
+            <h2><a href="http://www.meetup.com/TechNext/events/21562131/">HTML 5 Actually Hands On</a></h2>
+
+            <h3>30th July 2011</h3>
+        </div>
+
+        <p>
+
+        <h3>Topic</h3>
+
+        <p>People have been talking about HTML 5 for ling. I think the wait is over and HTML 5 is now a reality.This
+            session is all hands on coding of HTML 5. The topics include</p>
+        <ol>
+            <li>DocType, New Tags and New Form Types (Better Markup)</li>
+            <li>Audio, Video, Canvas and SVG</li>
+            <li>CSS 3</li>
+            <li>Web Workers and Web Sockets</li>
+            <li>File System API and Drag and Drop</li>
+            <li>Geo, Device Orientation</li>
+            <li>Offline/Storage API</li>
+            <li>Chrome Frame</li>
+        </ol>
+
+        </p>
+        <h3> Venue</h3>
+
+        <p>
+            Synerzip Softech Recreational Area
+            3rd Flior, Revliution Mall, next to CityPride Kothrud, Sheth U M Rathi Path, Pune, Maharashtra, India, Pune
+            (map)
+        </p>
+
+        <div class="footer">
+            <a class="comments" href="/posts/1/comments">3 Reviews</a>
+            <span class="posted_at">Posted at 12:01 AM July 10, 2011</span>
+        </div>
+
+    </div>
+    <!-- More Posts...-->
+
+    <div class="meet">
+        <div class="headline">
+            <h2><a href="http://www.meetup.com/TechNext/events/20652031/">Digging Deeper into ORM and Hibernate</a></h2>
+
+            <h3>13th August 2011</h3>
+        </div>
+
+        <p>
+
+        <h3>Topic</h3>
+
+        <p>Although many of us have used Hibernate and JPA, our understanding of it is limited to its usage alone. This
+            talk digs deeper into what ORM is and compares Hibernate framework Vs the JPA standard and their
+            relationship. This talks also focuses on what can not be done using ORM and what are the best practices when
+            it comes to using ORM</p>
+        <ol>
+            <li>ORM : What exactly it solves</li>
+            <li>Hibernate - Where it fits into picture</li>
+            <li>Hibernate vs JPA</li>
+            <li>Limitations of ORM</li>
+            <li>Good practices of using ORM in context of JPA and Hibernate</li>
+        </ol>
+
+        </p>
+        <h3> Venue</h3>
+
+        <p>
+            Synerzip Softech Recreational Area
+            3rd Flior, Revliution Mall, next to CityPride Kothrud, Sheth U M Rathi Path, Pune, Maharashtra, India, Pune
+            (map)
+        </p>
+
+        <div class="footer">
+            <a class="comments" href="/posts/1/comments">3 Queries</a>
+            <span class="posted_at">Posted at 12:01 AM July 3, 2011</span>
+        </div>
+
+
+    </div>
+</div>
+
+<div id="sidebar">
+    <div id="bligrlil">
+        <h2>What's new</h2>
+
+        <div class="figure">
+            <img src="http://photos3.meetupstatic.com/photos/event/2/4/c/d/highres_40689421.jpeg">
+            <span class="caption">Group Photo</span>
+        </div>
+        <ul>
+            <li><a href="http://www.meetup.com/technext">Tech Next</a></li>
+        </ul>
+    </div>
+
+    <div id="calendar">
+        <h2>Calendar</h2>
+        <ul>
+            <li><a href="http://www.meetup.com/TechNext/#calendar">Upcoming events</a></li>
+        </ul>
+    </div>
+</div>
+
+<div id="footer">
+    &copy; 2011 <a href="http://www.meetup.com/technext">Tech Next </a>
+</div>
+
+
+</body>
+</html>

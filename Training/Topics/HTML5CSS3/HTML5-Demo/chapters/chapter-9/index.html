@@ -1,0 +1,349 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>FileSystem and Drag and Drop</title>
+    <style>
+        input {
+            width: 400px;
+        }
+
+        #dropbox {
+            width: 300px;
+            height: 400px;
+            background: #77FFFF;
+            border: 1px solid blue;
+        }
+
+        #commandHistory {
+            width: 500px;
+            height: 400px;
+            background: #FFFF77;
+            border: 1px dotted red;
+        }
+    </style>
+</head>
+<body>
+<h1>File System Shell with Drag and Drop</h1>
+<table>
+    <tr>
+        <td>
+            <input type="text" id="command"></input>
+            <button id="submit">Execute</button>
+        </td>
+        <td>
+            Drag and Drop files below
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div id="commandHistory"></div>
+        </td>
+        <td>
+            <div id="dropbox"></div>
+        </td>
+    </tr>
+</table>
+
+<script>
+try {
+    var commandPrompt = document.getElementById("command");
+    var submitButton = document.getElementById("submit");
+    var commandHistory = document.getElementById("commandHistory");
+    var dropbox = document.getElementById("dropbox");
+
+
+
+    var currentDir = "/";
+    var fileSys = null;
+
+    commandPrompt.addEventListener("change", onCommand, false);
+    submitButton.addEventListener("click", onCommand, false);
+    function log(message) {
+        commandHistory.innerHTML = commandHistory.innerHTML + "<br>" + message;
+    }
+
+    function logDnd(message) {
+        dropbox.innerHTML = dropbox.innerHTML + "<br>" + message;
+    }
+
+    function dragEnter(evt) {
+        evt.stopPropagation();
+        evt.preventDefault();
+    }
+
+    function dragExit(evt) {
+        evt.stopPropagation();
+        evt.preventDefault();
+    }
+
+    function dragOver(evt) {
+        evt.stopPropagation();
+        evt.preventDefault();
+    }
+
+    function drop(event) {
+        event.stopPropagation();
+        event.preventDefault();
+
+
+        clearDnd();
+        if (event.dataTransfer.files) {
+            var files = event.dataTransfer.files;
+            for (var index = 0; index < files.length; index++) {
+                var file = files[index];
+                var fileName = "";
+                if (currentDir == "/") {
+                    fileName = currentDir + file.name;
+                }
+                else {
+                    fileName = currentDir + "/" + file.name;
+                }
+
+                var reader = new FileReader();
+
+                // init the reader event handlers
+                reader.onloadend = function (event) {
+                    console.log("1");
+                    console.dir(fileSys);
+                    fileSys.root.getFile(fileName, {create:true}, function (fileEntry) {
+
+                        // Create a FileWriter object for our FileEntry (log.txt).
+                        fileEntry.createWriter(function (fileWriter) {
+
+                            fileWriter.onwriteend = function (e) {
+                                console.log('Write completed.');
+                                logDnd(fileName);
+                            };
+
+                            fileWriter.onerror = function (e) {
+                                console.log('Write failed: ' + e.toString());
+                            };
+
+                            // Create a new Blob and write it to log.txt.
+                            var bb = new window.WebKitBlobBuilder();
+                            bb.append(event.target.result);
+                            fileWriter.write(bb.getBlob('text/plain'));
+
+                        }, errorHandler);
+                    }, function(err){
+                        console.dir(err);
+                    });
+                };
+                // begin the read operation
+                reader.readAsDataURL(files[index]);
+            }
+        }
+    }
+
+    dropbox.addEventListener("dragenter", dragEnter, false);
+    dropbox.addEventListener("dragexit", dragExit, false);
+    dropbox.addEventListener("dragover", dragOver, false);
+
+    dropbox.addEventListener("drop", drop, true);
+
+    function clear() {
+        commandHistory.innerHTML = "";
+    }
+
+    function clearDnd() {
+        dropbox.innerHTML = "";
+    }
+
+    function listFiles(entries) {
+        for (var index = 0; index < entries.length; index++) {
+            var isFile = entries[index].isFile;
+            var fileName = entries[index].name;
+            var htmlEntry = "<span style='color:" + (isFile ? 'red' : 'blue') + "'>" + fileName + "</span>";
+            log(htmlEntry);
+        }
+    }
+
+    function onCommand() {
+        var txt = commandPrompt.value;
+        commandPrompt.value = "";
+        var txtArgs = txt.split(" ");
+        command = txtArgs[0];
+        if (txtArgs.length > 1) {
+            txtArgs.shift();
+            arguments = txtArgs;
+        }
+        else {
+            arguments = null;
+        }
+        routeCommand(command, arguments);
+    }
+
+    function handlePwd() {
+        log("$>pwd");
+        log(currentDir);
+        log("$>");
+    }
+
+    function handleCd(arguments) {
+        var targetDir = "";
+        if (currentDir == "/") {
+            targetDir = currentDir
+        }
+        else {
+            targetDir = currentDir + "/";
+        }
+
+        if (arguments) {
+            log("$>cd " + arguments[0]);
+            if (arguments[0] == "/") {
+                targetDir = "/";
+            }
+            else if (arguments[0] == "..") {
+                var arr = currentDir.split("/");
+                if (arr.length > 1) {
+                    arr.pop();
+                    targetDir = arr.join("/");
+                }
+                else {
+                    targetDir = targetDir + arguments[0];
+                }
+            }
+            else {
+                targetDir = targetDir + arguments[0];
+            }
+        }
+        else {
+            log("$>cd ");
+            targetDir = "/";
+        }
+
+        fileSys.root.getDirectory(targetDir, {},
+                function (dirEntry) {
+                    currentDir = targetDir;
+                },
+                function (err) {
+                    log(targetDir + " No such file or directory");
+                });
+    }
+
+    function handleClear() {
+        clear();
+        log("$>");
+    }
+
+    function handleMkdir(arguments) {
+        var targetDir = "";
+        if (currentDir == "/") {
+            targetDir = currentDir
+        }
+        else {
+            targetDir = currentDir + "/";
+        }
+        if (arguments) {
+            log("$>cd " + arguments[0]);
+            targetDir = targetDir + arguments[0];
+        }
+        else {
+            log("$>cd ");
+            targetDir = "/";
+        }
+
+        fileSys.root.getDirectory(targetDir,
+                {create:true},
+                function (dirEntry) {
+                    alert("Directory created");
+                },
+                errorHandler);
+
+    }
+
+
+    function handleLs(arguments) {
+        var targetDir = "";
+        if (currentDir == "/") {
+            targetDir = currentDir
+        }
+        else {
+            targetDir = currentDir + "/";
+        }
+        if (arguments) {
+            log("$>cd " + arguments[0]);
+            targetDir = targetDir + arguments[0];
+        }
+        else {
+            log("$>cd ");
+            targetDir = currentDir
+
+        }
+
+        fileSys.root.getDirectory(targetDir,
+                {create:false},
+                function (dirEntry) {
+                    dirReader = dirEntry.createReader();
+                    dirReader.readEntries(function (entries) {
+                                listFiles(entries);
+                            },
+                            errorHandler);
+                },
+                errorHandler);
+    }
+
+    function handleCat(arguments) {
+        log("$>cat " + arguments[0]);
+
+    }
+
+    function routeCommand(command, arguments) {
+        if (command == "pwd") {
+            handlePwd();
+        }
+        else if (command == "cd") {
+            handleCd(arguments);
+        }
+        else if (command == "clear") {
+            handleClear();
+        }
+        else if (command == "ls") {
+            handleLs(arguments);
+        }
+        else if (command == "mkdir") {
+            handleMkdir(arguments);
+        }
+        else if (command == "cat") {
+            handleCat(arguments);
+        }
+    }
+
+    function onInitFs(fs) {
+
+        console.dir(fileSys);
+        fileSys = fs;
+
+        console.dir(fileSys);
+
+        document.querySelector('#dropzone').addEventListener('drop', function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            var reader = new FileReader();
+            reader.onload = function(evt) {
+                document.querySelector('img').src = evt.target.result;
+            };
+
+            reader.readAsDataURL(e.dataTransfer.files[0]);
+        }, false);
+
+        log("$>");
+
+    }
+
+    function errorHandler(err) {
+        alert("Unable to initiate fs, got error code " + err.code);
+    }
+
+    window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
+
+    console.dir(window.requestFileSystem);
+    window.requestFileSystem(window.TEMPORARY, 5242880, onInitFs, errorHandler);
+
+}
+catch (err) {
+    console.dir(err);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+@font-face {
+    font-family: 'oldmonk';
+    src: url('/fonts/Daru_Sans/DaruSans-Regular.ttf'); /* GOOGLE WEB FONTS */
+}
+
+@font-face {
+    font-family: 'kingfisher';
+    src: url('/fonts/Fauna_One/FaunaOne-Regular.ttf'); /* GOOGLE WEB FONTS */
+}
+
+
+
+body{
+    font-family: oldmonk;
+    background: #78b5fd;
+    padding:20px;
+}
+
+.logo{
+    display: block;
+    margin-left: auto;
+    width:275px;
+    height:46px;
+}
+
+.container{
+    border: 1px solid black;
+    border-radius: 5px 45px 5px 45px;
+    background: #EFEFEF;
+    padding:20px;
+    box-shadow: 10px 10px 5px #7e909e;
+
+}
+
+hr {
+    color: #1e0d9e;
+    background-color: #1e0d9e;
+    height: 0.5px;
+}
+
+.productLogo{
+
+
+}
+
+.header{
+
+}
+
+.content{
+
+}
+
+.topic{
+    border:1px solid #1e0d9e;
+    border-radius:45px;
+    background: #78b5fd;
+    padding:10px;
+
+}
+
+.code{
+    border:1px solid black;
+    margin:20px;
+    padding:20px;
+    background: white;
+
+}
+
+
+/*pre{*/
+    /*font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;*/
+    /*margin-bottom: 10px;*/
+    /*overflow: auto;*/
+    /*width: auto;*/
+    /*padding: 5px;*/
+    /*background-color: #ffffff;*/
+    /*width: 650px;*/
+    /*padding-bottom: 20px;*/
+    /*max-height: 600px;*/
+    /*background:  : white;*/
+/*}*/
+
+

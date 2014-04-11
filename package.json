@@ -1,0 +1,15 @@
+{
+    "name":"HTML5-Summit",
+    "version": "0.0.1",
+    "dependencies":{
+        "express": "latest",
+        "requirejs":"latest"
+    },
+    "engines":{
+        "node":"0.8.x",
+        "npm":"1.1.x"
+    },
+    "scripts":{
+        "start": "node server.js"
+    }
+}

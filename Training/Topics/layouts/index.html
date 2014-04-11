@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Synerzip's ExtJS Summit</title>
+    <link rel="stylesheet" href="/resources/css/main.css"/>
+</head>
+<body>
+<section class='container'>
+<header class='header'>
+    <img class='logo'
+         src='/resources/images/synerzip-logo-hi-res.gif'></img>
+</header>
+<a href="/index.html">Return to Main Page</a>
+<hr/>
+<section class="content">
+<article>
+    <h1><img src="/resources/images/extlogo.png" height="150"></h1>
+
+</article>
+<article>
+    <h1><a name="TOC">Table of Contents</a></h1>
+    <ul>
+        <li><a href="#what_is_Layouts">What is Layouts ?</a></li>
+        <li><a href="#Using_Layouts">Using Layouts</a></li>
+        <li><a href="#How_the_layout_system_works">How the layout system
+            works</a></li>
+        <li><a href="#run-example">Example</a></li>
+        <li><a href="#references">References</a></li>
+    </ul>
+    <hr/>
+</article>
+<article>
+    <h3
+            class="topic"><a href="#what_is_Layouts">What is Layouts
+        ?</a>
+    </h3>
+
+    <p>
+        Every Container has a Layout that manages the sizing and
+        positioning of its child Components. In this section we're going
+        to discuss how to configure a Container to use a specific type
+        of Layout, and how the layout system keeps everything in sync.
+
+    </p>
+
+            <pre class="code" id="ext-gen1628"><code id="ext-gen1629"><a
+                    href="#!/api/Ext-method-create" rel="Ext-method-create"
+                    class="docClass"><span class="typ">Ext</span><span
+                    class="pun">.</span><span class="pln">create</span></a><span
+                    class="pun">(</span><span class="str">'</span><a
+                    href="#!/api/Ext.panel.Panel" rel="Ext.panel.Panel"
+                    class="docClass"><span
+                    class="str">Ext.panel.Panel</span></a><span
+                    class="str">'</span><span class="pun">,</span><span
+                    class="pln"> </span><span class="pun">{</span><span
+                    class="pln">
+                renderTo</span><span class="pun">:</span><span
+                    class="pln"> </span><a href="#!/api/Ext-method-getBody"
+                                           rel="Ext-method-getBody"
+                                           class="docClass"><span class="typ">Ext</span><span
+                    class="pun">.</span><span
+                    class="pln">getBody</span></a><span
+                    class="pun">(),</span><span class="pln">
+                width</span><span class="pun">:</span><span class="pln"> </span><span
+                    class="lit">400</span><span class="pun">,</span><span
+                    class="pln">
+                height</span><span class="pun">:</span><span
+                    class="pln"> </span><span class="lit">300</span><span
+                    class="pun">,</span><span class="pln">
+                title</span><span class="pun">:</span><span class="pln"> </span><span
+                    class="str">'Container Panel'</span><span
+                    class="pun">,</span><span class="pln">
+                items</span><span class="pun">:</span><span class="pln"> </span><span
+                    class="pun">[</span><span class="pln">
+                    </span><span class="pun">{</span><span class="pln">
+                        xtype</span><span class="pun">:</span><span
+                    class="pln"> </span><span class="str">'panel'</span><span
+                    class="pun">,</span><span class="pln">
+                        title</span><span class="pun">:</span><span
+                    class="pln"> </span><span class="str">'Child Panel 1'</span><span
+                    class="pun">,</span><span class="pln">
+                        height</span><span class="pun">:</span><span
+                    class="pln"> </span><span class="lit">100</span><span
+                    class="pun">,</span><span class="pln">
+                        width</span><span class="pun">:</span><span
+                    class="pln"> </span><span class="str">'75%'</span><span
+                    class="pln">
+                    </span><span class="pun">},</span><span class="pln">
+                    </span><span class="pun">{</span><span class="pln">
+                        xtype</span><span class="pun">:</span><span
+                    class="pln"> </span><span class="str">'panel'</span><span
+                    class="pun">,</span><span class="pln">
+                        title</span><span class="pun">:</span><span
+                    class="pln"> </span><span class="str">'Child Panel 2'</span><span
+                    class="pun">,</span><span class="pln">
+                        height</span><span class="pun">:</span><span
+                    class="pln"> </span><span class="lit">100</span><span
+                    class="pun">,</span><span class="pln">
+                        width</span><span class="pun">:</span><span
+                    class="pln"> </span><span class="str">'75%'</span><span
+                    class="pln">
+                    </span><span class="pun">}</span><span class="pln">
+                </span><span class="pun">]</span><span class="pln">
+            </span><span class="pun">});</span></code></pre>
+    <a href="#TOC">Table of Contents</a>
+    <hr/>
+</article>
+<article>
+    <h3 class="topic"><a href="#Using_Layouts">Using Layouts</a></h3>
+
+    <p>
+        In the above example we did not specify a layout for the
+        Container Panel. Notice how the child Panels are laid out one
+        after the other, just as normal block elements would be in the
+        DOM. This happens because the default layout for all Containers
+        is Auto Layout. Auto Layout does not specify any special
+        positioning or sizing rules for child elements. Let's assume,
+        for example, we want our two child Panels to be positioned side
+        by side, and to each take up exactly 50% of the width of the
+        Container - we can use a Column Layout simply by providing a
+        layout config on the Container:
+
+    </p>
+            <pre class="code" id="ext-gen1630"><code id="ext-gen1631"><a
+                    href="#!/api/Ext-method-create" rel="Ext-method-create"
+                    class="docClass"><span class="typ">Ext</span><span
+                    class="pun">.</span><span class="pln">create</span></a><span
+                    class="pun">(</span><span class="str">'</span><a
+                    href="#!/api/Ext.panel.Panel" rel="Ext.panel.Panel"
+                    class="docClass"><span
+                    class="str">Ext.panel.Panel</span></a><span
+                    class="str">'</span><span class="pun">,</span><span
+                    class="pln"> </span><span class="pun">{</span><span
+                    class="pln">
+                renderTo</span><span class="pun">:</span><span
+                    class="pln"> </span><a href="#!/api/Ext-method-getBody"
+                                           rel="Ext-method-getBody"
+                                           class="docClass"><span class="typ">Ext</span><span
+                    class="pun">.</span><span
+                    class="pln">getBody</span></a><span
+                    class="pun">(),</span><span class="pln">
+                width</span><span class="pun">:</span><span class="pln"> </span><span
+                    class="lit">400</span><span class="pun">,</span><span
+                    class="pln">
+                height</span><span class="pun">:</span><span
+                    class="pln"> </span><span class="lit">200</span><span
+                    class="pun">,</span><span class="pln">
+                title</span><span class="pun">:</span><span class="pln"> </span><span
+                    class="str">'Container Panel'</span><span
+                    class="pun">,</span><span class="pln">
+                layout</span><span class="pun">:</span><span
+                    class="pln"> </span><span class="str">'column'</span><span
+                    class="pun">,</span><span class="pln">
+                items</span><span class="pun">:</span><span class="pln"> </span><span
+                    class="pun">[</span><span class="pln">
+                    </span><span class="pun">{</span><span class="pln">
+                        xtype</span><span class="pun">:</span><span
+                    class="pln"> </span><span class="str">'panel'</span><span
+                    class="pun">,</span><span class="pln">
+                        title</span><span class="pun">:</span><span
+                    class="pln"> </span><span class="str">'Child Panel 1'</span><span
+                    class="pun">,</span><span class="pln">
+                        height</span><span class="pun">:</span><span
+                    class="pln"> </span><span class="lit">100</span><span
+                    class="pun">,</span><span class="pln">
+                        columnWidth</span><span class="pun">:</span><span
+                    class="pln"> </span><span class="lit">0.5</span><span
+                    class="pln">
+                    </span><span class="pun">},</span><span class="pln">
+                    </span><span class="pun">{</span><span class="pln">
+                        xtype</span><span class="pun">:</span><span
+                    class="pln"> </span><span class="str">'panel'</span><span
+                    class="pun">,</span><span class="pln">
+                        title</span><span class="pun">:</span><span
+                    class="pln"> </span><span class="str">'Child Panel 2'</span><span
+                    class="pun">,</span><span class="pln">
+                        height</span><span class="pun">:</span><span
+                    class="pln"> </span><span class="lit">100</span><span
+                    class="pun">,</span><span class="pln">
+                        columnWidth</span><span class="pun">:</span><span
+                    class="pln"> </span><span class="lit">0.5</span><span
+                    class="pln">
+                    </span><span class="pun">}</span><span class="pln">
+                </span><span class="pun">]</span><span class="pln">
+            </span><span class="pun">});</span></code></pre>
+    <a href="#TOC">Table of Contents</a>
+    <hr/>
+</article>
+
+<article>
+    <h3
+            class="topic"><a href="#How_the_layout_system_works">How the
+        layout system works</a>
+    </h3>
+
+    <p>A Container's Layout is responsible for the initial positioning
+        and sizing of all of the Container's children. Internally the
+        framework calls the Container's doLayout method which triggers
+        the Layout to calculate the correct sizes and positions for all
+        of the Container's children and update the DOM. The doLayout
+        method is fully recursive, so any of the Container's children
+        will have their doLayout method called as well. This continues
+        until the bottom of the Component hierarchy is reached. You
+        typically will not have to ever call doLayout() in your
+        application code since the framework should handle it for
+        you.</p>
+
+    <p>A re-layout is triggered when the Container is resized, or when
+        child Component items are added or removed. Normally we can just
+        rely on the framework to handle updating the layout for us, but
+        sometimes we want to prevent the framework from automatically
+        laying out so we can batch multiple operations together and then
+        manually trigger a layout when we're done. To do this we use the
+        suspendLayout flag on the Container to prevent it from laying
+        out while we perform our operations that would normally trigger
+        a layout (adding or removing items for example). When we're done
+        all we have to do is turn the suspendLayout flag off and
+        manually trigger a layout by calling the Container's doLayout
+        method:</p>
+
+            <pre class="code" id="ext-gen1632"><code id="ext-gen1633"><span
+                    class="kwd">var</span><span
+                    class="pln"> containerPanel </span><span
+                    class="pun">=</span><span class="pln"> </span><a
+                    href="#!/api/Ext-method-create" rel="Ext-method-create"
+                    class="docClass"><span class="typ">Ext</span><span
+                    class="pun">.</span><span class="pln">create</span></a><span
+                    class="pun">(</span><span class="str">'</span><a
+                    href="#!/api/Ext.panel.Panel" rel="Ext.panel.Panel"
+                    class="docClass"><span
+                    class="str">Ext.panel.Panel</span></a><span
+                    class="str">'</span><span class="pun">,</span><span
+                    class="pln"> </span><span class="pun">{</span><span
+                    class="pln">
+                renderTo</span><span class="pun">:</span><span
+                    class="pln"> </span><a href="#!/api/Ext-method-getBody"
+                                           rel="Ext-method-getBody"
+                                           class="docClass"><span class="typ">Ext</span><span
+                    class="pun">.</span><span
+                    class="pln">getBody</span></a><span
+                    class="pun">(),</span><span class="pln">
+                width</span><span class="pun">:</span><span class="pln"> </span><span
+                    class="lit">400</span><span class="pun">,</span><span
+                    class="pln">
+                height</span><span class="pun">:</span><span
+                    class="pln"> </span><span class="lit">200</span><span
+                    class="pun">,</span><span class="pln">
+                title</span><span class="pun">:</span><span class="pln"> </span><span
+                    class="str">'Container Panel'</span><span
+                    class="pun">,</span><span class="pln">
+                layout</span><span class="pun">:</span><span
+                    class="pln"> </span><span class="str">'column'</span><span
+                    class="pun">,</span><span class="pln">
+                suspendLayout</span><span class="pun">:</span><span
+                    class="pln"> </span><span class="kwd">true</span><span
+                    class="pln"> </span><span class="com">// Suspend automatic layouts while we do several different things that could trigger a layout on their own</span><span
+                    class="pln">
+            </span><span class="pun">});</span><span class="pln">
+            </span><span class="com">// Add a couple of child items.  We could add these both at the same time by passing an array to add(),</span><span
+                    class="pln">
+            </span><span class="com">// but lets pretend we needed to add them separately for some reason.</span><span
+                    class="pln">
+            containerPanel</span><span class="pun">.</span><span
+                    class="pln">add</span><span class="pun">({</span><span
+                    class="pln">
+                xtype</span><span class="pun">:</span><span class="pln"> </span><span
+                    class="str">'panel'</span><span class="pun">,</span><span
+                    class="pln">
+                title</span><span class="pun">:</span><span class="pln"> </span><span
+                    class="str">'Child Panel 1'</span><span class="pun">,</span><span
+                    class="pln">
+                height</span><span class="pun">:</span><span
+                    class="pln"> </span><span class="lit">100</span><span
+                    class="pun">,</span><span class="pln">
+                columnWidth</span><span class="pun">:</span><span
+                    class="pln"> </span><span class="lit">0.5</span><span
+                    class="pln">
+            </span><span class="pun">});</span><span class="pln">
+            containerPanel</span><span class="pun">.</span><span
+                    class="pln">add</span><span class="pun">({</span><span
+                    class="pln">
+                xtype</span><span class="pun">:</span><span class="pln"> </span><span
+                    class="str">'panel'</span><span class="pun">,</span><span
+                    class="pln">
+                title</span><span class="pun">:</span><span class="pln"> </span><span
+                    class="str">'Child Panel 2'</span><span class="pun">,</span><span
+                    class="pln">
+                height</span><span class="pun">:</span><span
+                    class="pln"> </span><span class="lit">100</span><span
+                    class="pun">,</span><span class="pln">
+                columnWidth</span><span class="pun">:</span><span
+                    class="pln"> </span><span class="lit">0.5</span><span
+                    class="pln">
+            </span><span class="pun">});</span><span class="pln">
+            </span><span
+                    class="com">// Turn the suspendLayout flag off.</span><span
+                    class="pln">
+            containerPanel</span><span class="pun">.</span><span class="pln">suspendLayout </span><span
+                    class="pun">=</span><span class="pln"> </span><span
+                    class="kwd">false</span><span class="pun">;</span><span
+                    class="pln">
+            </span><span class="com">// Trigger a layout.</span><span
+                    class="pln">
+            containerPanel</span><span class="pun">.</span><span class="pln">doLayout</span><span
+                    class="pun">();</span></code></pre>
+
+</article>
+
+
+<article>
+    <h3 class="topic"><a name="run-example">Run Live Example</a></h3>
+    <li><a href="example1/simpleLayout.html">Example 1</a></li>
+    <li><a
+            href="example2/containerLayout.html">Example 2</a></li>
+    <br/><br/>
+    <a href="#TOC">Table of Contents</a>
+    <hr/>
+</article>
+<article>
+    <h3 class="topic"><a name="references">References</a></h3>
+    <ul>
+        <li>
+            <a href="http://localhost:4000/extzip/ext-4.2.1.883/docs/index.html#!/api/Ext.layout.Layout">Ext
+                Layout docs</a></li>
+    </ul>
+    <a href="#TOC">Table of Contents</a>
+    <hr/>
+</article>
+
+</section>
+</section>
+
+</body>
+</html>

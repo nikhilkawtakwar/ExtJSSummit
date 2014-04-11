@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Index DB </title>
+    <script>
+        if ("webkitIndexedDB" in window) {
+            window.indexedDB = window.webkitIndexedDB;
+            window.IDBTransaction = window.webkitIDBTransaction;
+            window.IDBKeyRange = window.webkitIDBKeyRange;
+        } else if ("moz_indexedDB" in window) {
+            window.indexedDB = window.moz_indexedDB;
+        }
+        var db = null;
+        function init() {
+            var request = indexedDB.open("todos");
+
+            request.onsuccess = function (e) {
+                db = e.target.result;
+                //Hitting first time and we dont have any database yet
+                if (db.version == "") {
+                    var versionReq = db.setVersion("1.0");
+                    versionReq.onsuccess = function (e) {
+                        var store = db.createObjectStore("contacts",
+                                "id",
+                                true);
+                        store.createIndex("CellPhone", //Name of the Index
+                                "cell", //Property to be indexed
+                                false);     //unique constraint
+
+                    }
+                }
+                else if (db.version == "1.0") {
+                    alert("all ok");
+                }
+            };
+
+            request.onfailure = function (err) {
+                alert(err);
+            }
+
+            var nameElem = document.getElementById("name");
+            var emailElem = document.getElementById("email");
+            var phoneElem = document.getElementById("phone");
+            var cellElem = document.getElementById("mobile");
+            var faxElem = document.getElementById("fax");
+
+            var writeButton = document.getElementById("write");
+
+            writeButton.addEventListener("click", function () {
+                try {
+                    var writeTransaction = db.transaction(
+                            ["contacts"],
+                            IDBTransaction.READ_WRITE
+                    );
+                    var store = writeTransaction.objectStore("contacts");
+
+                    var writeRequest = store.add({
+                        "id":0,
+                        "name":nameElem.value,
+                        "email":emailElem.value,
+                        "phone":phoneElem.value,
+                        "cell":cellElem.value,
+                        "fax":faxElem.value
+                    });
+
+                    writeTransaction.oncomplete = function (e) {
+                        alert("Write successful");
+                    };
+
+                    writeTransaction.onerror = function (e) {
+                        alert("unable to write " + e.target.webkitErrorMessage);
+                    };
+                }
+                catch (err) {
+                    alert(err);
+                }
+            }, false);
+        }
+    </script>
+    <style>
+        table {
+            padding: 10px;
+            -webkit-border-radius: 20px;
+            background: #77FFFF;
+        }
+
+        textarea {
+            padding: 10px;
+            -webkit-border-radius: 10px;
+            background: #777777;
+            color: white;
+        }
+    </style>
+</head>
+<body onload="init()">
+<h1>IndexDB Example - Contacts Demo </h1>
+<table>
+    <tr>
+        <td>Name</td>
+        <td>Email</td>
+        <td>Phone</td>
+        <td>Mobile</td>
+        <td>Fax</td>
+    </tr>
+    <tr>
+        <td><input type="text" id="name"></input>
+        <td><input type="text" id="email"></input>
+        <td><input type="text" id="phone"></input>
+        <td><input type="text" id="mobile"></input>
+        <td><input type="text" id="fax"></input>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <button id="write">Write</button>
+        </td>
+    </tr>
+</table>
+<hr>
+<button id="query">Query</button>
+<h1>Query Result</h1>
+<table id="result">
+    <tr>
+        <td>Name</td>
+        <td>Email</td>
+        <td>Phone</td>
+        <td>Mobile</td>
+        <td>Fax</td>
+    </tr>
+</table>
+</body>
+</html>

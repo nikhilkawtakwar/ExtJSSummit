@@ -1,0 +1,120 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <style>
+    div {
+      background:red;
+      color:white;
+      padding:10px;
+    }
+    textarea{
+      width:600px;
+      height:80px;
+    }
+    .solidshadow{
+        -webkit-box-shadow: 10px 10px #000;
+  		-moz-box-shadow: 10px 10px #000;
+    }
+    .blurshadow{
+		-webkit-box-shadow: 10px 10px 20px #000;
+		-moz-box-shadow: 10px 10px 20px #000;
+    }
+    .blurrrgbashadow{
+		-webkit-box-shadow: 10px 10px 20px rgba(200,0,0,0.8);
+  		-moz-box-shadow: 10px 10px 20px rgba(200,0,0,0.8);
+	}
+	.twoshadow{
+		-webkit-box-shadow: 
+			10px 10px 20px rgba(200,0,0,0.5),
+			-10px -10px 20px rgba(0,0,200,0.5);
+		
+		-moz-box-shadow: 
+			10px 10px 20px rgba(200,0,0,0.5),
+        	-10px -10px 20px rgba(0,0,2000,0.5);	
+	}
+	.innershadow{
+		-webkit-box-shadow: inset 0px 2px 4px rgba(0,0,0,0.4);
+  		-moz-box-shadow: inset 0px 2px 4px rgba(0,0,0,0.4);
+  		-webkit-border-radius: 5px;
+  		-moz-border-radius: 5px;
+	}
+  </style>
+</head>
+<body>
+  <table width="100%" cellspacing="10px">
+   <tr>
+     <td><h1>Example</h1></td>
+     <td><h1>CSS Code</h1></td>
+   </tr>
+   <tr>
+     <td>
+     	<div class="solidshadow">Solid Shadow</div>
+     </td>
+     <td>
+     	<textarea>
+     		.solidshadow{
+        		-webkit-box-shadow: 10px 10px #000;
+		  		-moz-box-shadow: 10px 10px #000;
+    		}
+		</textarea>
+	</td>
+   </tr>
+   <tr>
+     <td>
+     	<div class="blurshadow">Blurr Shadow</div>
+     </td>
+     <td>
+     	<textarea>
+     		.blurshadow{
+				-webkit-box-shadow: 10px 10px 20px #000;
+				-moz-box-shadow: 10px 10px 20px #000;
+    		}
+		</textarea>
+	 </td>
+   </tr>  
+   <tr>
+     <td>
+     	<div class="blurrrgbashadow">Blurr Shadow using rgba</div>
+     </td>
+     <td>
+     	<textarea>
+     		.blurrrgbashadow{
+				-webkit-box-shadow: 10px 10px 20px rgba(200,0,0,0.8);
+  				-moz-box-shadow: 10px 10px 20px rgba(200,0,0,0.8);
+			}
+		</textarea>
+	 </td>
+   </tr>  
+   <tr>
+     <td>
+     	<div class="twoshadow">Two Shadows</div>
+     </td>
+     <td>
+     	<textarea>
+     		.twoshadow{
+				-webkit-box-shadow: 10px 10px 20px rgba(200,0,0,0.5),
+					-10px -10px 20px rgba(0,0,200,0.5);
+				-moz-box-shadow: 10px 10px 20px rgba(200,0,0,0.5),
+					-10px -10px 20px rgba(0,0,2000,0.5);	
+			}
+		</textarea>
+	 </td>
+   </tr>  
+<tr>
+     <td>
+     	<div class="innershadow">Inner Shadow</div>
+     </td>
+     <td>
+     	<textarea>
+     		.innershadow{
+				-webkit-box-shadow: inset 0px 2px 4px rgba(0,0,0,0.4);
+  				-moz-box-shadow: inset 0px 2px 4px rgba(0,0,0,0.4);
+		  		-webkit-border-radius: 5px;
+  				-moz-border-radius: 5px;
+			}
+		</textarea>
+	 </td>
+   </tr>  
+   </table>
+</body>
+</html>

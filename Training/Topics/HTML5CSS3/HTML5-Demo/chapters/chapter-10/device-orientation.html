@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>Device Orientation</title>
+   <style>
+     #iphone{
+       margin-left:250px;
+     }
+   </style>
+</head>
+<body>
+  <h1>Device Orientation Demo</h1>
+  <table border="1">
+    <tr>
+      <td>Alpha</td><td><div id="alpha">..</div></td>
+    </tr>
+    <tr>
+      <td>Beta</td><td><div id="beta"></div></td>
+    </tr>
+    <tr>
+      <td>Gamma</td><td><div id="gamma"></div></td>
+    </tr>
+    
+  </table>
+  <img id="iphone" src="iphone.gif"></img>
+  <script>
+    var iphone = document.getElementById("iphone");
+    window.addEventListener("deviceorientation",function(event){
+      document.getElementById("alpha").innerHTML = event.alpha;
+      document.getElementById("beta").innerHTML  = event.beta;
+      document.getElementById("gamma").innerHTML = event.gamma;
+      var rotate = 'rotate(' + event.gamma*-1 + 'deg)';
+      var scale = 'scale(' + ((event.beta/180)*2 + 1) + ')';
+      iphone.style.webkitTransform = rotate + ' ' + scale;
+
+    });
+  </script>   
+</body>
+</html>

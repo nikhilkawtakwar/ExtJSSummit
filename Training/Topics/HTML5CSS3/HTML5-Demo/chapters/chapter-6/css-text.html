@@ -1,0 +1,134 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <style>
+ 	 @font-face {
+  		font-family: 'Junction';
+  		src: url(Junction.otf);
+	}
+	
+    div {
+      background:red;
+      color:white;
+      padding:10px;
+    }
+    textarea{
+      width:400px;
+      height:80px;
+    }
+    .textShadow{
+       text-shadow: 15px 15px 5px black;
+    }
+    .textInShadow {
+  		color: #CCC;
+  		text-shadow: 0px -1px 1px #000;
+	}
+    .textStroke {
+		color: #FFF;
+		text-shadow:
+			-1px -1px 0 #CCC,
+			1px -1px 0 #CCC,
+			-2px  2px 0 #555,
+			2px  2px 0 #555;
+    }
+    .textreflection{
+         -webkit-box-reflect: below -10px -webkit-gradient(
+                                                      linear,
+                                                      left top, left bottom,
+                                                      from(transparent),
+                                                      color-stop(0.2, transparent),
+                                                      to(rgba(255,255,255,0.5))
+                                                   );
+	}
+	.webfont {
+		font-family: 'Junction';
+	}
+    
+  </style>
+</head>
+<body>
+  <table width="100%">
+   <tr>
+     <td><h1>Example</h1></td>
+     <td><h1>CSS Code</h1></td>
+   </tr>
+   <tr>
+     <td>
+     	<h1 class="textShadow">Text Shadow </h1>
+     </td>
+     <td>
+     	<textarea>
+     		.textShadow{
+       			text-shadow: 15px 15px 5px black;
+    		}
+		</textarea>
+	</td>
+   </tr>
+   <tr>
+     <td>
+     	<h1 class="textInShadow">Text Inline Shadow </h1>
+     </td>
+     <td>
+     	<textarea>
+     		.textInShadow {
+  				color: #CCC;
+		  		text-shadow: 0px -1px 1px #000;
+			}
+		</textarea>
+	 </td>
+   </tr>  
+   <tr>
+     <td>
+     	<h1 class="textStroke">Text Stroke</h1>
+     </td>
+     <td>
+     	<textarea>
+     		.textStroke {
+				color: #FFF;
+				text-shadow:
+					-1px -1px 0 #CCC,
+					1px -1px 0 #CCC,
+					-2px  2px 0 #555,
+					2px  2px 0 #555;
+    		}
+		</textarea>
+	 </td>
+   </tr>  
+   <tr>
+     <td>
+     	<h1 class="textreflection">Text Reflection</h1>
+     </td>
+     <td>
+     	<textarea>
+     		.textreflection{
+     		    -webkit-box-reflect: below -10px -webkit-gradient(
+                                                      linear,
+                                                      left top, left bottom,
+                                                      from(transparent),
+                                                      color-stop(0.2, transparent),
+                                                      to(rgba(255,255,255,0.5))
+                                                   );
+			}
+		</textarea>
+	 </td>
+   </tr>  
+<tr>
+     <td>
+     	<h1 class="webfont">Web Fonts</h1>
+     </td>
+     <td>
+     	<textarea>
+     		@font-face {
+  				font-family: 'Junction';
+  				src: url(Junction.otf);
+			}
+	
+     		.webfont {
+				font-family: 'Junction';
+			}
+		</textarea>
+	 </td>
+   </tr>  
+   </table>
+</body>
+</html>

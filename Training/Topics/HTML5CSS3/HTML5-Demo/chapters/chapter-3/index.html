@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<style>
+		body{
+		  padding:20px;
+		}
+		.border{
+		    padding:20px;
+			-moz-border-radius: 15px;
+			-webkit-border-radius: 15px;
+			-moz-box-shadow: 10px 10px 5px #888;
+			-webkit-box-shadow: 10px 10px 5px #888;
+			background:red;
+			color:white;
+			
+		}
+	</style>
+	
+</head>
+<body>
+<h1 class="border">HTML 5 Form Elements</h1>
+<form class="border" action="demo_form.asp" method="get">
+	<table>
+		<tr>
+			<td>E-mail</td>
+			<td><input type="email" name="user_email" required placeholder="Enter Email Address"/></td>
+		</tr>
+		<tr>
+   		    <td>Search Box</td>
+			<td><input type="search" /></td>
+		</tr>
+		<tr>
+			<td>Url</td>
+			<td><input type="url" name="url" required autofocus/></td>
+		</tr>
+		<tr>
+			<td>Telephone</td>
+			<td><input type="tel" name="tel" required/></td>
+		</tr>
+		<tr>
+			<td>Number</td>
+			<td><input type="number" name="number" min="1" max="5" step="1" value="3" required/></td>
+		</tr>		
+		<tr>
+			<td>Range</td>
+			<td><input type="range" name="range" min="1" max="5" step="1" value="3" required/></td>
+		</tr>		
+		
+		<tr>
+			<td>DateTime</td>
+			<td><input type="datetime" name="datetime" required/></td>
+		</tr>
+		<tr>
+			<td>Month</td>
+			<td><input type="month" name="month" required/></td>
+		</tr>		
+		<tr>
+			<td colspan="2"><input type="submit" /></td>
+		</tr>
+		
+	</table>
+</form>
+
+</body>
+</html>
+

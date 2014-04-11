@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Synerzip's ExtJS Summit</title>
+    <link rel="stylesheet" href="/resources/css/main.css"/>
+</head>
+<body>
+<section class='container'>
+<header class='header'>
+    <img class='logo'
+         src='/resources/images/synerzip-logo-hi-res.gif'></img>
+</header>
+<a href="/index.html">Return to Main Page</a>
+<hr/>
+<section class="content">
+<h1>Architecting Your App in Ext JS 4, Part 3</h1>
+<article>
+    <h1><img src="/resources/images/extlogo.png" height="150"></h1>
+
+</article>
+<article>
+    <h1><a name="TOC">Table of Contents</a></h1>
+    <ul>
+        <li><a href="#Introduction">Introduction</a></li>
+        <li><a href="#!/guide/mvc_pt3-section-1">Getting References</a></li>
+        <li><a href="#!/guide/mvc_pt3-section-2">Referencing view instances</a>
+        </li>
+        <li><a href="#!/guide/mvc_pt3-section-3">Cascading your controller logic
+            on application launch.</a></li>
+        <li><a href="#!/guide/mvc_pt3-section-4">Starting a new station</a></li>
+        <li><a href="#!/guide/mvc_pt3-section-5">Summary</a></li>
+    </ul>
+    <hr/>
+</article>
+<article>
+    <h3
+            class="topic"><a name="Introduction">Introduction</a>
+    </h3>
+
+    <p>In the previous series of articles <a href="#!/guide/mvc_pt1">Part 1</a>
+        and
+        <a href="#!/guide/mvc_pt2">Part 2</a>, we explored architecting a
+        Pandora-style application using the new features of Ext JS 4. We started
+        by
+        applying the Model-View-Controller architecture to a complex UI that has
+        multiple views, stores and models. We looked at the basic techniques of
+        architecting your application, like controlling your views from
+        Controllers,
+        and firing application-wide events that controllers can listen to. In
+        this
+        part of the series, we will continue implementing controller logic
+        inside of
+        the application’s MVC architecture.</p>
+
+    <a href="#TOC">Table of Contents</a>
+    <hr/>
+</article>
+
+
+<article>
+    <h3
+            class="topic"><a name="mvc_pt3-section-1">Getting References</a>
+    </h3>
+
+    <p>Before we continue implementing our application, we should review some of
+        the
+        more advanced functionality available in the Ext JS 4 MVC package. In
+        the
+        previous part of this series, we showed how you could automatically load
+        <strong>stores</strong> and <strong>models</strong> in your application
+        by
+        adding them to the stores and models arrays in your <a
+                href="#!/api/Ext-method-application"
+                rel="Ext-method-application"
+                class="docClass">Ext.application</a> configuration. We also
+        explained that an instance would be created for each store loaded in
+        this
+        way, giving it a storeId equal to its name.</p>
+
+    <h3><code>app/Application.js</code></h3>
+       
+       <pre id="ext-gen3269" class="code"><code id="ext-gen3270"><a
+               href="#!/api/Ext-method-application" rel="Ext-method-application"
+               class="docClass"><span class="typ">Ext</span><span
+               class="pun">.</span><span class="pln">application</span></a><span
+               class="pun">({</span><span class="pln">
+           </span><span class="pun">...</span><span class="pln">
+           models</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="pun">[</span><span class="str">'Station'</span><span
+               class="pun">,</span><span
+               class="pln"> </span><span class="str">'Song'</span><span
+               class="pun">],</span><span class="pln">
+           stores</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="pun">[</span><span class="str">'Stations'</span><span
+               class="pun">,</span><span class="pln"> </span><span class="str">'RecentSongs'</span><span
+               class="pun">,</span><span class="pln"> </span><span class="str">'SearchResults'</span><span
+               class="pun">]</span><span class="pln">
+           </span><span class="pun">...</span><span class="pln">
+       </span><span class="pun">});</span></code></pre>
+
+    <p>In addition to loading and instantiating these classes, adding stores and
+        models into these arrays also automatically creates getters for you.
+        This is
+        also the case for controllers and views. The stores, models, controllers
+        and
+        views configurations also exist in Controllers and work exactly the same
+        way
+        as they do in the Application instance. This means that in order to get
+        a
+        reference to the Stations store inside of the Station controller, all we
+        need to do is add the store to the stores array.</p>
+
+    <h3><code>app/controller/Station.js</code></h3>
+       
+       <pre id="ext-gen3271" class="code"><code id="ext-gen3272"><span
+               class="pun">...</span><span class="pln">
+       stores</span><span class="pun">:</span><span class="pln"> </span><span
+               class="pun">[</span><span class="str">'Stations'</span><span
+               class="pun">],</span><span class="pln">
+       </span><span class="pun">...</span></code></pre>
+
+    <p>Now we can get a reference to the Stations store from anywhere in the
+        controller using the automatically generated getter named <code>getStationsStore</code>.
+        The convention is straightforward and predictable:</p>
+       
+       <pre id="ext-gen3273" class="code"><code id="ext-gen3274"><span
+               class="pln">views</span><span class="pun">:</span><span
+               class="pln"> </span><span class="pun">[</span><span class="str">'StationsList'</span><span
+               class="pun">]</span><span class="pln"> </span><span class="com">// creates getter named 'getStationsListView' -&gt; returns reference to StationsList class</span><span
+               class="pln">
+       models</span><span class="pun">:</span><span class="pln"> </span><span
+               class="pun">[</span><span class="str">'Station'</span><span
+               class="pun">]</span><span
+               class="pln">     </span><span class="com">// creates getter named 'getStationModel'     -&gt; returns reference to Station model class</span><span
+               class="pln">
+       controllers</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="pun">[</span><span class="str">'Song'</span><span
+               class="pun">]</span><span class="pln">   </span><span
+               class="com">// creates getter named 'getSongController'   -&gt; returns the Song controller instance</span><span
+               class="pln">
+       stores</span><span class="pun">:</span><span class="pln"> </span><span
+               class="pun">[</span><span class="str">'Stations'</span><span
+               class="pun">]</span><span class="pln">    </span><span
+               class="com">// creates getter named 'getStationsStore'    -&gt; returns the Stations store instance</span></code></pre>
+
+    <p>It’s important to note that the getters for both views and models return
+        a
+        reference to the class (requiring you to instantiate your own
+        instances),
+        while the getters for stores and controllers return actual
+        instances.</p>
+
+    <a href="#TOC">Table of Contents</a>
+    <hr/>
+</article>
+
+<article>
+    <h3
+            class="topic"><a name="mvc_pt3-section-2">Referencing view
+        instances</a>
+    </h3>
+
+
+    <p>In the previous section, we described how the stores, models, controllers
+        and
+        views configurations automatically create getters allowing you to easily
+        retrieve references to them. The <code>getStationsListView</code> getter
+        will return a reference to the view class. In our application flow, we
+        would
+        like to select the first item in our StationsList. In this case, we
+        don’t
+        want a reference to the view class; instead, we want a reference to the
+        actual StationsList instance that is inside our viewport.</p>
+
+    <p>In Ext JS 3, a very common approach to getting a reference to an existing
+        component instance on the page was the <a
+                href="#!/api/Ext-method-getCmp"
+                rel="Ext-method-getCmp"
+                class="docClass">Ext.getCmp</a>
+        method. While this method continues to work, it’s not the recommended
+        method
+        in Ext JS 4. Using <a href="#!/api/Ext-method-getCmp"
+                              rel="Ext-method-getCmp"
+                              class="docClass">Ext.getCmp</a> requires you to
+        give
+        every component a unique ID in order to reference it in your
+        application. In
+        the new MVC package, we can put a reference to a view instance
+        (component)
+        inside of a controller by leveraging a new feature in Ext JS 4: <a
+                href="#!/api/Ext.ComponentQuery" rel="Ext.ComponentQuery"
+                class="docClass">ComponentQuery</a>.</p>
+
+    <h3><code>app/controller/Station.js</code></h3>
+       
+       <pre id="ext-gen3275" class="code"><code id="ext-gen3276"><span
+               class="pun">...</span><span class="pln">
+       refs</span><span class="pun">:</span><span class="pln"> </span><span
+               class="pun">[{</span><span class="pln">
+           </span><span class="com">// A component query</span><span
+               class="pln">
+           selector</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'viewport &gt; #west-region &gt; stationslist'</span><span
+               class="pun">,</span><span class="pln">
+           </span><span class="kwd">ref</span><span class="pun">:</span><span
+               class="pln"> </span><span class="str">'stationsList'</span><span
+               class="pln">
+       </span><span class="pun">}]</span><span class="pln">
+       </span><span class="pun">...</span></code></pre>
+
+    <p>In the <code>refs</code> configuration, you can set up references to view
+        instances. This allows you to retrieve and manipulate components on the
+        page
+        inside of your controller’s actions. To describe the component that you
+        want
+        to reference, you can use a ComponentQuery inside the selector property.
+        The
+        other required information inside of this object is the <code>ref</code>
+        property. This will be used as part of the name of the getter that will
+        be
+        generated automatically for each item inside the refs array. For
+        example, by
+        defining <code>ref: 'stationsList'</code> (note the capital L), a getter
+        will be generated on the controller called <code>getStationsList</code>.
+        Alternatively, if you did not set up a reference inside your controller,
+        you
+        could continue to use <code><a href="#!/api/Ext-method-getCmp"
+                                       rel="Ext-method-getCmp" class="docClass">Ext.getCmp</a></code>
+        inside of the controller actions. However, we discourage you from doing
+        this
+        because it forces you to manage unique component ID's in your project,
+        often
+        leading to problems as your project grows.</p>
+
+    <p>It’s important to remember that these getters will be created independent
+        of
+        whether the view actually exists on the page. When you call the getter
+        and
+        the selector successfully matches a component on the page, it caches the
+        result so that subsequent calls to the getter will be fast. However,
+        when
+        the selector doesn’t match any views on the page, the getter will return
+        null. This means that if you have logic that depends on a view and there
+        is
+        a possibility that the view does not exist on the page yet, you need to
+        add
+        a check around your logic to ensure it only executes if the getter
+        returned
+        a result. In addition, if multiple components match the selector, only
+        the
+        first one will be returned. Thus, it’s good practice to make your
+        selectors
+        specific to the single view you wish to get. Lastly, when you destroy a
+        component you are referencing, calls to the getter will start returning
+        null
+        again until there is another component matching the selector on the
+        page.</p>
+
+    <a href="#TOC">Table of Contents</a>
+    <hr/>
+</article>
+
+<article>
+<h3
+        class="topic"><a name="mvc_pt3-section-3">Cascading your controller
+    logic on application
+    launch.</a>
+</h3>
+
+<p>When the application starts, we want to load the user’s existing stations.
+    While you could put this logic inside of the application’s
+    <code>onReady</code> method, the MVC architecture provides you with an
+    <code>onLaunch</code> method which fires on each controller as soon as all
+    the controllers, models and stores are instantiated, and your initial views
+    are rendered. This provides you with a clean separation between global
+    application logic and logic specific to a controller.</p>
+
+<h3>Step 1</h3>
+
+<h3><code>app/controller/Station.js</code></h3>
+       
+       <pre id="ext-gen3277" class="code"><code id="ext-gen3278"><span
+               class="pun">...</span><span class="pln">
+       onLaunch</span><span class="pun">:</span><span class="pln"> </span><span
+               class="kwd">function</span><span class="pun">()</span><span
+               class="pln"> </span><span class="pun">{</span><span class="pln">
+           </span><span class="com">// Use the automatically generated getter to get the store</span><span
+               class="pln">
+           </span><span class="kwd">var</span><span
+               class="pln"> stationsStore </span><span class="pun">=</span><span
+               class="pln"> </span><span class="kwd">this</span><span
+               class="pun">.</span><span
+               class="pln">getStationsStore</span><span
+               class="pun">();</span><span class="pln">
+           stationsStore</span><span class="pun">.</span><span
+               class="pln">load</span><span class="pun">({</span><span
+               class="pln">
+               callback</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="kwd">this</span><span class="pun">.</span><span
+               class="pln">onStationsLoad</span><span
+               class="pun">,</span><span class="pln">
+               scope</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="kwd">this</span><span class="pln">
+           </span><span class="pun">});</span><span class="pln">
+       </span><span class="pun">}</span><span class="pln">
+       </span><span class="pun">...</span></code></pre>
+
+<p>The onLaunch method of the Station controller seems like the perfect place to
+    call the Station store’s load method. As you can see, we have also set up a
+    callback which gets executed as soon as our store is loaded.</p>
+
+<h3>Step 2</h3>
+
+<h3><code>app/controller/Station.js</code></h3>
+       
+       <pre id="ext-gen3279" class="code"><code id="ext-gen3280"><span
+               class="pun">...</span><span class="pln">
+       onStationsLoad</span><span class="pun">:</span><span class="pln"> </span><span
+               class="kwd">function</span><span class="pun">()</span><span
+               class="pln"> </span><span class="pun">{</span><span class="pln">
+           </span><span class="kwd">var</span><span
+               class="pln"> stationsList </span><span class="pun">=</span><span
+               class="pln"> </span><span class="kwd">this</span><span
+               class="pun">.</span><span class="pln">getStationsList</span><span
+               class="pun">();</span><span class="pln">
+           stationsList</span><span class="pun">.</span><span class="pln">getSelectionModel</span><span
+               class="pun">().</span><span class="kwd">select</span><span
+               class="pun">(</span><span class="lit">0</span><span
+               class="pun">);</span><span class="pln">
+       </span><span class="pun">}</span><span class="pln">
+       </span><span class="pun">...</span></code></pre>
+
+<p>In this callback we get the StationsList instance using the automatically
+    generated getter, and select the first item. This will trigger a <code>selectionchange</code>
+    event on the StationsList.</p>
+
+<h3>Step 3</h3>
+
+<h3><code>app/controller/Station.js</code></h3>
+       
+       <pre id="ext-gen3281" class="code"><code id="ext-gen3282"><span
+               class="pun">...</span><span class="pln">
+       init</span><span class="pun">:</span><span class="pln"> </span><span
+               class="kwd">function</span><span class="pun">()</span><span
+               class="pln"> </span><span class="pun">{</span><span class="pln">
+           </span><span class="kwd">this</span><span class="pun">.</span><span
+               class="pln">control</span><span class="pun">({</span><span
+               class="pln">
+               </span><span class="str">'stationslist'</span><span
+               class="pun">:</span><span
+               class="pln"> </span><span class="pun">{</span><span class="pln">
+                   selectionchange</span><span class="pun">:</span><span
+               class="pln"> </span><span class="kwd">this</span><span
+               class="pun">.</span><span class="pln">onStationSelect
+               </span><span class="pun">},</span><span class="pln">
+               </span><span class="pun">...</span><span class="pln">
+           </span><span class="pun">});</span><span class="pln">
+       </span><span class="pun">},</span><span class="pln">
+       
+       onStationSelect</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="kwd">function</span><span class="pun">(</span><span
+               class="pln">selModel</span><span
+               class="pun">,</span><span class="pln"> selection</span><span
+               class="pun">)</span><span class="pln"> </span><span
+               class="pun">{</span><span
+               class="pln">
+           </span><span class="kwd">this</span><span class="pun">.</span><span
+               class="pln">application</span><span class="pun">.</span><span
+               class="pln">fireEvent</span><span class="pun">(</span><span
+               class="str">'stationstart'</span><span
+               class="pun">,</span><span class="pln"> selection</span><span
+               class="pun">[</span><span class="lit">0</span><span
+               class="pun">]);</span><span class="pln">
+       </span><span class="pun">},</span><span class="pln">
+       </span><span class="pun">...</span></code></pre>
+
+<p>Application events are extremely useful when you have many controllers in
+    your application that are interested in an event. Instead of listening for
+    the same view event in each of these controllers, only one controller will
+    listen for the view event and fire an application-wide event that the others
+    can listen for. This also allows controllers to communicate to one another
+    without knowing about or depending on each other’s existence. In the <code>onStationSelect</code>
+    action, we fire an application event called <code>stationstart</code>.</p>
+
+<h3>Step 4</h3>
+
+<h3><code>app/controller/Song.js</code></h3>
+       
+       <pre id="ext-gen3283" class="code"><code id="ext-gen3284"><span
+               class="pun">...</span><span class="pln">
+       refs</span><span class="pun">:</span><span class="pln"> </span><span
+               class="pun">[{</span><span class="pln">
+           </span><span class="kwd">ref</span><span class="pun">:</span><span
+               class="pln"> </span><span class="str">'songInfo'</span><span
+               class="pun">,</span><span class="pln">
+           selector</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'songinfo'</span><span class="pln">
+       </span><span class="pun">},</span><span class="pln"> </span><span
+               class="pun">{</span><span class="pln">
+           </span><span class="kwd">ref</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'recentlyPlayedScroller'</span><span
+               class="pun">,</span><span class="pln">
+           selector</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'recentlyplayedscroller'</span><span class="pln">
+       </span><span class="pun">}],</span><span class="pln">
+       
+       stores</span><span class="pun">:</span><span class="pln"> </span><span
+               class="pun">[</span><span class="str">'RecentSongs'</span><span
+               class="pun">],</span><span class="pln">
+       
+       init</span><span class="pun">:</span><span class="pln"> </span><span
+               class="kwd">function</span><span class="pun">()</span><span
+               class="pln"> </span><span class="pun">{</span><span class="pln">
+           </span><span class="pun">...</span><span class="pln">
+           </span><span class="com">// We listen for the application-wide stationstart event</span><span
+               class="pln">
+           </span><span class="kwd">this</span><span class="pun">.</span><span
+               class="pln">application</span><span class="pun">.</span><span
+               class="pln">on</span><span class="pun">({</span><span
+               class="pln">
+               stationstart</span><span class="pun">:</span><span
+               class="pln"> </span><span class="kwd">this</span><span
+               class="pun">.</span><span class="pln">onStationStart</span><span
+               class="pun">,</span><span class="pln">
+               scope</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="kwd">this</span><span class="pln">
+           </span><span class="pun">});</span><span class="pln">
+       </span><span class="pun">},</span><span class="pln">
+       
+       onStationStart</span><span class="pun">:</span><span class="pln"> </span><span
+               class="kwd">function</span><span class="pun">(</span><span
+               class="pln">station</span><span
+               class="pun">)</span><span class="pln"> </span><span
+               class="pun">{</span><span
+               class="pln">
+           </span><span class="kwd">var</span><span
+               class="pln"> store </span><span
+               class="pun">=</span><span class="pln"> </span><span
+               class="kwd">this</span><span class="pun">.</span><span
+               class="pln">getRecentSongsStore</span><span
+               class="pun">();</span><span class="pln">
+       
+           store</span><span class="pun">.</span><span
+               class="pln">load</span><span
+               class="pun">({</span><span class="pln">
+               callback</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="kwd">this</span><span class="pun">.</span><span
+               class="pln">onRecentSongsLoad</span><span
+               class="pun">,</span><span class="pln">
+               </span><span class="kwd">params</span><span
+               class="pun">:</span><span
+               class="pln"> </span><span class="pun">{</span><span class="pln">
+                   station</span><span class="pun">:</span><span
+               class="pln"> station</span><span class="pun">.</span><span
+               class="kwd">get</span><span
+               class="pun">(</span><span class="str">'id'</span><span
+               class="pun">)</span><span class="pln">
+               </span><span class="pun">},</span><span class="pln">
+               scope</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="kwd">this</span><span class="pln">
+           </span><span class="pun">});</span><span class="pln">
+       </span><span class="pun">}</span><span class="pln">
+       </span><span class="pun">...</span></code></pre>
+
+<p>As part of the init method of the Song controller, we have set up a listener
+    to the <code>stationstart</code> application event. When this happens, we
+    need to load the songs for this station into our RecentSongs store. We do
+    this in the <code>onStationStart</code> method. We get a reference to the
+    RecentSongs store and call the load method on it, defining the controller
+    action that needs to get fired as soon as the loading has finished.</p>
+
+<h3>Step 5</h3>
+
+<h3><code>app/controller/Song.js</code></h3>
+       
+       <pre id="ext-gen3285" class="code"><code id="ext-gen3286"><span
+               class="pun">...</span><span class="pln">
+       onRecentSongsLoad</span><span class="pun">:</span><span
+               class="pln"> </span><span class="kwd">function</span><span
+               class="pun">(</span><span class="pln">songs</span><span
+               class="pun">,</span><span class="pln"> request</span><span
+               class="pun">)</span><span class="pln"> </span><span
+               class="pun">{</span><span
+               class="pln">
+           </span><span class="kwd">var</span><span
+               class="pln"> store </span><span
+               class="pun">=</span><span class="pln"> </span><span
+               class="kwd">this</span><span class="pun">.</span><span
+               class="pln">getRecentSongsStore</span><span
+               class="pun">(),</span><span class="pln">
+               selModel </span><span class="pun">=</span><span
+               class="pln"> </span><span class="kwd">this</span><span
+               class="pun">.</span><span
+               class="pln">getRecentlyPlayedScroller</span><span
+               class="pun">().</span><span
+               class="pln">getSelectionModel</span><span
+               class="pun">();</span><span
+               class="pln">
+       
+           selModel</span><span class="pun">.</span><span
+               class="kwd">select</span><span class="pun">(</span><span
+               class="pln">store</span><span
+               class="pun">.</span><span class="kwd">last</span><span
+               class="pun">());</span><span class="pln">
+       </span><span class="pun">}</span><span class="pln">
+       </span><span class="pun">...</span></code></pre>
+
+<p>When the songs for the station are loaded into the RecentSongs store, we
+    select the last song in the RecentlyPlayedScroller. We do this by getting
+    the selection model on the RecentlyPlayedScroller <code>dataview</code> and
+    calling the select method on it, passing the last record in the RecentSongs
+    store.</p>
+
+<h3>Step 6</h3>
+
+<h3><code>app/controller/Song.js</code></h3>
+       
+       <pre id="ext-gen3287" class="code"><code id="ext-gen3288"><span
+               class="pun">...</span><span class="pln">
+       init</span><span class="pun">:</span><span class="pln"> </span><span
+               class="kwd">function</span><span class="pun">()</span><span
+               class="pln"> </span><span class="pun">{</span><span class="pln">
+           </span><span class="kwd">this</span><span class="pun">.</span><span
+               class="pln">control</span><span class="pun">({</span><span
+               class="pln">
+               </span><span class="str">'recentlyplayedscroller'</span><span
+               class="pun">:</span><span class="pln"> </span><span
+               class="pun">{</span><span
+               class="pln">
+                   selectionchange</span><span class="pun">:</span><span
+               class="pln"> </span><span class="kwd">this</span><span
+               class="pun">.</span><span class="pln">onSongSelect
+               </span><span class="pun">}</span><span class="pln">
+           </span><span class="pun">});</span><span class="pln">
+           </span><span class="pun">...</span><span class="pln">
+       </span><span class="pun">},</span><span class="pln">
+       
+       onSongSelect</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="kwd">function</span><span class="pun">(</span><span
+               class="pln">selModel</span><span
+               class="pun">,</span><span class="pln"> selection</span><span
+               class="pun">)</span><span class="pln"> </span><span
+               class="pun">{</span><span
+               class="pln">
+           </span><span class="kwd">this</span><span class="pun">.</span><span
+               class="pln">getSongInfo</span><span class="pun">().</span><span
+               class="pln">update</span><span class="pun">(</span><span
+               class="pln">selection</span><span
+               class="pun">[</span><span class="lit">0</span><span
+               class="pun">]);</span><span class="pln">
+       </span><span class="pun">}</span><span class="pln">
+       </span><span class="pun">...</span></code></pre>
+
+<p>When we select the last song in the scroller, it will fire a <code>selectionchange</code>
+    event. In the control method, we already set up a listener for this event;
+    and in the onSongSelect method, we complete the application flow by updating
+    the data in the SongInfo view.</p>
+
+
+<a href="#TOC">Table of Contents</a>
+<hr/>
+</article>
+
+<article>
+    <h3
+            class="topic"><a name="mvc_pt3-section-4">Starting a new station</a>
+    </h3>
+
+
+    <p>Now, it becomes pretty easy to implement additional application flows.
+        Adding
+        logic to create and select a new station looks like:</p>
+
+    <h3><code>app/controller/Station.js</code></h3>
+       
+       <pre id="ext-gen3289" class="code"><code id="ext-gen3290"><span
+               class="pun">...</span><span class="pln">
+       refs</span><span class="pun">:</span><span class="pln"> </span><span
+               class="pun">[{</span><span class="pln">
+           </span><span class="kwd">ref</span><span class="pun">:</span><span
+               class="pln"> </span><span class="str">'stationsList'</span><span
+               class="pun">,</span><span class="pln">
+           selector</span><span class="pun">:</span><span
+               class="pln"> </span><span
+               class="str">'stationslist'</span><span class="pln">
+       </span><span class="pun">}],</span><span class="pln">
+       
+       init</span><span class="pun">:</span><span class="pln"> </span><span
+               class="kwd">function</span><span class="pun">()</span><span
+               class="pln"> </span><span class="pun">{</span><span class="pln">
+           </span><span class="com">// Listen for the select event on the NewStation combobox</span><span
+               class="pln">
+           </span><span class="kwd">this</span><span class="pun">.</span><span
+               class="pln">control</span><span class="pun">({</span><span
+               class="pln">
+               </span><span class="pun">...</span><span class="pln">
+               </span><span class="str">'newstation'</span><span
+               class="pun">:</span><span class="pln"> </span><span
+               class="pun">{</span><span
+               class="pln">
+                   </span><span class="kwd">select</span><span
+               class="pun">:</span><span class="pln"> </span><span
+               class="kwd">this</span><span class="pun">.</span><span
+               class="pln">onNewStationSelect
+               </span><span class="pun">}</span><span class="pln">
+           </span><span class="pun">});</span><span class="pln">
+       </span><span class="pun">},</span><span class="pln">
+       
+       onNewStationSelect</span><span class="pun">:</span><span
+               class="pln"> </span><span class="kwd">function</span><span
+               class="pun">(</span><span class="pln">field</span><span
+               class="pun">,</span><span class="pln"> selection</span><span
+               class="pun">)</span><span class="pln"> </span><span
+               class="pun">{</span><span
+               class="pln">
+           </span><span class="kwd">var</span><span
+               class="pln"> selected </span><span
+               class="pun">=</span><span class="pln"> selection</span><span
+               class="pun">[</span><span class="lit">0</span><span
+               class="pun">],</span><span class="pln">
+               store </span><span class="pun">=</span><span class="pln"> </span><span
+               class="kwd">this</span><span class="pun">.</span><span
+               class="pln">getStationsStore</span><span
+               class="pun">(),</span><span class="pln">
+               list </span><span class="pun">=</span><span
+               class="pln"> </span><span
+               class="kwd">this</span><span class="pun">.</span><span
+               class="pln">getStationsList</span><span
+               class="pun">();</span><span class="pln">
+       
+           </span><span class="kwd">if</span><span class="pln"> </span><span
+               class="pun">(</span><span class="pln">selected </span><span
+               class="pun">&amp;&amp;</span><span
+               class="pln"> </span><span class="pun">!</span><span
+               class="pln">store</span><span class="pun">.</span><span
+               class="pln">getById</span><span
+               class="pun">(</span><span class="pln">selected</span><span
+               class="pun">.</span><span class="kwd">get</span><span
+               class="pun">(</span><span class="str">'id'</span><span
+               class="pun">)))</span><span class="pln"> </span><span
+               class="pun">{</span><span class="pln">
+               </span><span class="com">// If the newly selected station does not exist in our station store we add it</span><span
+               class="pln">
+               store</span><span class="pun">.</span><span
+               class="pln">add</span><span
+               class="pun">(</span><span class="pln">selected</span><span
+               class="pun">);</span><span
+               class="pln">
+           </span><span class="pun">}</span><span class="pln">
+       
+           </span><span
+               class="com">// We select the station in the Station list</span><span
+               class="pln">
+           list</span><span class="pun">.</span><span
+               class="pln">getSelectionModel</span><span
+               class="pun">().</span><span
+               class="kwd">select</span><span class="pun">(</span><span
+               class="pln">selected</span><span
+               class="pun">);</span><span class="pln">
+       </span><span class="pun">}</span><span class="pln">
+       </span><span class="pun">...</span></code></pre>
+
+
+    <a href="#TOC">Table of Contents</a>
+    <hr/>
+</article>
+
+<article>
+    <h3
+            class="topic"><a name="mvc_pt3-section-5">Summary</a>
+    </h3>
+
+    <p>We have illustrated that by using some advanced controller techniques and
+        keeping your logic separate from your views, the application’s
+        architecture
+        becomes easier to understand and maintain. At this stage, the
+        application is
+        already quite functional. We can search for and add new stations, and we
+        can
+        start stations by selecting them. Songs for the station will be loaded,
+        and
+        we show the song and artist information.</p>
+
+    <p>We will continue to refine our application in the next part of this
+        series,
+        with the focus on styling and custom component creation.</p>
+
+    <p><a href="guides/mvc_pt3/code.zip">Download project files</a></p>
+    <a href="#TOC">Table of Contents</a>
+    <hr/>
+</article>
+</section>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"
+      xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Synerzip's HTML5 Summit</title>
+    <link rel="stylesheet" href="/resources/css/main.css"/>
+</head>
+<body>
+<section class='container'>
+    <header class='header'>
+        <img class='logo' src='/resources/images/synerzip-logo-hi-res.gif'></img>
+    </header>
+    <a href="/index.html">Return to Main Page</a>
+    <hr/>
+    <section class="content">
+    <article>
+        <h1>Introduction to Basic HTML, CSS & JavaScript</h1>
+        <p>
+            This tutorial is meant to give you a crash course into most important concepts of HTML tags, CSS declarations and JavaScript Programming. It is assumed that you have some very basic exposure to HTML Tags.
+        </p>
+    </article>
+    <article>
+        <h1><a name="TOC">Table of Contents</a></h1>
+        <ul>
+            <li><a href="#html-tags">HTML Tags Basics</a></li>
+            <li><a href="#css">CSS Primer</a></li>
+            <li><a href="#javascript">JavaScript Primer</a></li>
+            <li><a href="#topic-1">Topic 1 – Global Vs Local Variables</a></li>
+            <li><a href="#topic-2">Topic 2 – Functions are first class Objects</a></li>
+            <li><a href="#topic-3">Topic 3 – Object Oriented Programming – Simple way to declare Classes</a></li>
+            <li><a href="#topic-4">Topic 4 – Object Oriented Programming – Private Variables</a></li>
+            <li><a href="#topic-5">Topic 5 - Inheritance</a></li>
+            <li><a href="#topic-6">Topic 6 – Variable Scope and confusion around ‘this’ keyword</a></li>
+        </ul>
+        <hr/>
+    </article>
+
+    <article>
+        <h3 class="topic"><a name="html-tags">HTML Tags Basics</a></h3>
+
+        At the most basic level understand following are most popular HTML tags
+
+        <ul>
+            <li>Div – &lt;div&gt;</li>
+            <li>Span – &lt;span&gt;</li>
+            <li>Text Format – &lt;b&gt;, &lt;&gt;, &lt;strong&gt;</li>
+            <li>Paragraph – &lt;p&gt;</li>
+            <li>Headers – &lt;h1&gt; to &lt;h6&gt;</li>
+            <li>Table,Row, Column – &lt;table&gt;&lt;tr&gt;&lt;td&gt;col1&lt;/td&gt;&lt;td&gt;col 2&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</li>
+            <li>Anchor Tag – &lt;a href=”….”&gt;&lt;/a&gt;</li>
+            <li>Image Tag – &lt;img src=”….”&gt;&lt;/img&gt;</li>
+            <li>Line Break – &lt;br&gt;</li>
+            <li>Bullets – &lt;ul&gt;, &lt;ol&gt; and &lt;li&gt;</li>
+            <li>Forms – &lt;form&gt;</li>
+            <li>Form elements – &lt;input type=”…”&gt;&lt;/input&gt;, &lt;textarea&gt;, &lt;select&gt; etc</li>
+        </ul>
+
+        These elements can be distinguished between two type
+        <ul>
+            <li>Block Elements – Which take up a block of area on HTML, forcing next element to come on next line</li>
+            <li>Inline Elements- Which all elements to exist on the same line</li>
+        </ul>
+
+        <p>
+        It is important to understand which of these elements are Block and which are Inline. This jsFiddle code should help you understand the difference. The home work is to try out all the above elements and distinguish if they are block or inline elements
+        </p>
+
+
+        <iframe
+                style="width: 100%; height: 500px"
+                src="http://jsfiddle.net/rohitghatol/4W2NN/embedded/result,html,css">
+        </iframe>
+
+        <p><a target="_blank" href="http://jsfiddle.net/rohitghatol/4W2NN/light/">View this on JSFiddle</a></p>
+        <a href="#TOC">Table of Contents</a>
+    </article>
+    <article>
+
+
+        <h3 class="topic"><a name="css">CSS Primer</a></h3>
+
+        CSS properties can be declared in &lt;style&gt; tag with in the same HTML Page or in separate css files which are included as &lt;link href=”special.css” rel=”stylesheet” type=”text/css”&gt;
+
+        CSS style can be applied in following manner
+        <ul>
+            <li>
+                <p>CSS style can be applied globally for a particular element
+                    <pre>div { background:yellow}</pre>  - This makes all div’s background yellow
+                </p>
+            </li>
+            <li>
+                <p>CSS style can be applied to a CSS Class
+                    <pre>.myclass {border:1px solid blue; } </pre>– This makes any element with class=”myclass” border as solid blue
+                </p>
+            </li>
+            <li>
+                <p>CSS style can be applied to a Element Id
+                    <pre>#myid { color: white ; }</pre> – This makes any element with id = “myid” text color to white
+                </p>
+            </li>
+        </ul>
+
+        <p>
+        Refer to following JSFiddle to understand the above
+        </p>
+        <iframe
+                style="width: 100%; height: 300px"
+                src="http://jsfiddle.net/rohitghatol/UG22N/embedded/result,html,css">
+        </iframe>
+
+        <p><a target="_blank" href="http://jsfiddle.net/rohitghatol/UG22N/light/">View this on JSFiddle</a></p>
+
+
+        CSS Styles can also be used in permutation and combinations of above. There are mainly 2 things to look at here
+        <ul>
+        <li>CSS Style for multiple combinations – These are comma separated</li>
+        <li>CSS Style for nested elements – These are space separated</li>
+        </ul>
+
+        <iframe
+                style="width: 100%; height: 500px"
+                src="http://jsfiddle.net/rohitghatol/aHASr/embedded/result,html,css">
+        </iframe>
+
+        <p><a target="_blank" href="http://jsfiddle.net/rohitghatol/aHASr/light/">View this on JSFiddle</a></p>
+
+
+        <p>
+        Understanding Padding and Margin
+        </p>
+
+        <iframe
+                style="width: 100%; height: 300px"
+                src="http://jsfiddle.net/rohitghatol/D83bP/embedded/result,html,css">
+        </iframe>
+
+        <p><a target="_blank" href="http://jsfiddle.net/rohitghatol/D83bP/light/">View this on JSFiddle</a></p>
+        <a href="#TOC">Table of Contents</a>
+    </article>
+    <article>
+
+        <h3 class="javascript"><a name="javascript">JavaScript Primer<a/></h3>
+
+        <p>
+        In this part of JavaScript Primer we will cover precisely the following
+        </p>
+
+        <ul>
+            <li>Global Vs Local Variables – Most important Anti Pattern</li>
+            <li>Functions in JavaScript. How functions are first class objects in JavaScript?</li>
+            <li>Popular and Easy to understand Class System</li>
+            <li>Function based Class Systems</li>
+            <li>Closure based Class Systems and private variables</li>
+            <li>Prototype based Class System</li>
+            <li>Understanding Scope in JavaScript. The misconception around ‘this’ keyword</li>
+        </ul>
+        <p>
+        We are deliberately not covering DOM Manipulation, Ajax as this would be covered in Day 2 – jQuery Primer
+        </p>
+        <a href="#TOC">Table of Contents</a>
+    </article>
+    <article>
+        <h3 class="topic"><a name="topic-1">Topic 1 – Global Vs Local Variables</a></h3>
+
+        <p>
+        In JavaScript we have variable scope defined at function level. However a common mistake or anti pattern is how we define the variable. See the jsFiddle below
+        </p>
+
+
+
+        <iframe
+                style="width: 100%; height: 400px"
+                src="http://jsfiddle.net/rohitghatol/4bTmm/embedded/result,html,css">
+        </iframe>
+
+        <p><a target="_blank" href="http://jsfiddle.net/rohitghatol/4bTmm/light/">View this on JSFiddle</a></p>
+        <a href="#TOC">Table of Contents</a>
+    </article>
+    <article>
+
+        <h3 class="topic"><a name="topic-2">Topic 2 – Functions are first class Objects<a/></h3>
+
+
+        <iframe
+                style="width: 100%; height: 500px"
+                src="http://jsfiddle.net/rohitghatol/KRnBJ/embedded/result,html,css">
+        </iframe>
+
+        <p><a target="_blank" href="http://jsfiddle.net/rohitghatol/KRnBJ/light/">View this on JSFiddle</a></p>
+
+
+        <a href="#TOC">Table of Contents</a>
+    </article>
+    <article>
+        <h3 class="topic"><a name="topic-3">Topic 3 – Object Oriented Programming – Simple way to declare Classes</a></h3>
+
+        <iframe
+                style="width: 100%; height: 350px"
+                src="http://jsfiddle.net/rohitghatol/bpYFU/embedded/result,html,css">
+        </iframe>
+
+        <p><a target="_blank" href="http://jsfiddle.net/rohitghatol/bpYFU/light/">View this on JSFiddle</a></p>
+        <a href="#TOC">Table of Contents</a>
+    </article>
+    <article>
+
+        <h3 class="topic"><a name="topic-4">Topic 4 – Object Oriented Programming – Private Variables</a></h3>
+
+        <iframe
+                style="width: 100%; height: 350px"
+                src="http://jsfiddle.net/rohitghatol/DM8FJ/embedded/result,html,css">
+        </iframe>
+
+        <p><a target="_blank" href="http://jsfiddle.net/rohitghatol/DM8FJ/light/">View this on JSFiddle</a></p>
+        <a href="#TOC">Table of Contents</a>
+    </article>
+    <article>
+        <h3 class="topic"><a name="topic-5"> Topic 5 - Inheritance</a></h3>
+
+        <p>
+        Until you get out of your Java or C# Class paradigm, it is best to delay this topic. First of all JavaScript doesn’t have classes, it only have objects and a Function is a first class Object. The whole confusion is caused by the use of new keyword.
+        </p>
+
+        <p>
+        In JavaScript, Inheritance can be done is two ways
+        <ul>
+            <li>Classical - Mimicking a concept of Class in JavaScript</li>
+            <li>Modern/Prototypal – Leaving Classes out and inheriting from other Objects</li>
+        </ul>
+
+        More on this later.
+        </p>
+        <a href="#TOC">Table of Contents</a>
+    </article>
+    <article>
+        <h3 class="topic"><a name="topic-6">Topic 6 – Variable Scope and confusion around ‘this’ keyword</a></h3>
+
+        <p>
+        Lets see the problem first
+        </p>
+
+
+
+        <iframe
+                style="width: 100%; height: 500px"
+                src="http://jsfiddle.net/rohitghatol/aAakG/embedded/result,html,css">
+        </iframe>
+
+        <p><a target="_blank" href="http://jsfiddle.net/rohitghatol/aAakG/light/">View this on JSFiddle</a></p>
+
+
+
+
+
+        <p>Here is the solution for the same</p>
+
+
+
+        <iframe
+                style="width: 100%; height: 500px"
+                src="http://jsfiddle.net/rohitghatol/ALxSN/embedded/result,html,css">
+        </iframe>
+
+        <p><a target="_blank" href="http://jsfiddle.net/rohitghatol/ALxSN/light/">View this on JSFiddle</a></p>
+
+
+        <a href="#TOC">Table of Contents</a>
+    </article>
+
+
+
+    </section>
+</section>
+
+</body>
+</html>

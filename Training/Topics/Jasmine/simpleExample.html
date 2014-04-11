@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Synerzip's HTML5 Summit</title>
+    <link rel="stylesheet" href="/resources/css/main.css"/>
+</head>
+<body>
+<section class='container'>
+    <header class='header'>
+        <img class='logo' src='/resources/images/synerzip-logo-hi-res.gif'></img>
+    </header>
+    <button onClick="history.go(-1);return true;">Back</button>
+    <hr/>
+    <section class="content">
+        <h1><img src="resources/jasmine_logo.png" height="100"><br><span>Simple Example</span></h1>
+        <ul>
+            <li><a href="index.html">Main</a></li>
+            <li><a href="#">Presentation</a></li>
+            <li><a href="SpecRunner.html">Run Test Cases</a></li>
+
+            <!--	  <li><a href="#">Configuring Tasks</a></li>
+          <li><a href="#">Examples</a></li>
+          <li><a href="#">RequiredJs</a></li>
+          <li><a href="#">Creating Tasks</a></li>
+          <li><a href="#references">References</a></li> -->
+        </ul>
+        <section class="GettingStarted">
+            <h1 class="topic">Simple Example</h1>
+            <p>Simple Javascript method for addition.</p>
+        <pre class="code">
+
+            <code>
+            var addition = function (a, b) {
+                    if (a && b) {
+                        return a + b;
+                    }
+                    else {
+                        return undefined;
+                    }
+                };
+            </code>
+            <a href="src/addition.js">addition.js</a>
+        </pre>
+            <br>
+            <p>Possible unit test cases for above function.</p>
+        <pre class="code"><code>
+            describe('Unit Tests for blah-blah addition function', function () {
+                it('should return undefined if no argument(s) supplied to it.', function () {
+                    expect(addition()).toBe(undefined);
+                    expect(addition()).toBeUndefined();
+                });
+                it('should return undefined if either of argument(s) is supplied as undefined.', function () {
+                    expect(addition(4)).toBe(undefined);
+                    expect(addition(4)).toBeUndefined();
+                });
+                it('should return sum if int or float type arguments are supplied.', function () {
+                    expect(addition(4, 5)).not.toBeUndefined();
+                    expect(addition(4, 5)).toBe(9);
+                    expect(addition(4.5, 5.6)).not.toBeUndefined();
+                    expect(addition(4.5, 5.6)).toBe(10.1);
+                });
+                it('should return concatenated string if string type arguments are supplied.', function () {
+                    expect(addition('QuickOffice', ' Google')).not.toBeUndefined();
+                    expect(addition('QuickOffice', ' Google')).toBe('QuickOffice Google');
+                });
+            });
+         </code>
+            <a href="spec/additionSpec.js">additionSpec.js</a>
+        </pre>
+
+        </section>
+        <section>
+            <h1 class="topic">References</h1>
+            <ul>
+                <li><a href="http://pivotal.github.com/jasmine/">Jasmine doc</a></li>
+                <li><a href="http://evanhahn.com/how-do-i-jasmine/">How do I ?</a></li>
+                <li><a href="http://try-jasmine.heroku.com/">Try Jasmine</a></li>
+        </section>
+    </section>
+</section>
+
+</body>
+</html>

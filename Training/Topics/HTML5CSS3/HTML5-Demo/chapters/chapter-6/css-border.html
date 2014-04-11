@@ -1,0 +1,116 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <style>
+    div {
+      background:red;
+      color:white;
+      padding:10px;
+    }
+    textarea{
+      width:400px;
+      height:80px;
+    }
+    .simpleround{
+       -webkit-border-radius: 50px;
+       -moz-border-radius: 50px;
+    }
+    .alternateround{
+		-webkit-border-top-left-radius: 50px;
+	  	-webkit-border-bottom-right-radius: 50px;
+  		-moz-border-radius-topleft: 50px;
+		-moz-border-radius-bottomright: 50px;
+    }
+    .differentround{
+		-webkit-border-radius: 5px 200px 30px 50px;
+		-moz-border-radius: 5px 200px 30px 50px;    
+	}
+	.ecliptical{
+		-webkit-border-radius: 100px / 30px;
+		-moz-border-radius: 100px / 30px;
+	}
+	.circle{
+		-webkit-border-radius: 300px;
+		-moz-border-radius: 300px;
+		width:50px;
+		height:50px;
+
+	}
+  </style>
+</head>
+<body>
+  <table width="100%">
+   <tr>
+     <td><h1>Example</h1></td>
+     <td><h1>CSS Code</h1></td>
+   </tr>
+   <tr>
+     <td>
+     	<div class="simpleround">Simple Round</div>
+     </td>
+     <td>
+     	<textarea>
+     		.simpleround{
+		       -webkit-border-radius: 50px;
+		       -moz-border-radius: 50px;
+		    }
+		</textarea>
+	</td>
+   </tr>
+   <tr>
+     <td>
+     	<div class="alternateround">Alternate Round</div>
+     </td>
+     <td>
+     	<textarea>
+     		.alternateround{
+		       -webkit-border-radius: 50px;
+		       -moz-border-radius: 50px;
+		    }
+		</textarea>
+	 </td>
+   </tr>  
+   <tr>
+     <td>
+     	<div class="differentround">Different Round</div>
+     </td>
+     <td>
+     	<textarea>
+     		.differentround{
+				-webkit-border-radius: 5px 200px 30px 50px;
+				-moz-border-radius: 5px 200px 30px 50px;    
+			}
+		</textarea>
+	 </td>
+   </tr>  
+   <tr>
+     <td>
+     	<div class="ecliptical">Ecliptical Round</div>
+     </td>
+     <td>
+     	<textarea>
+     		.ecliptical{
+				-webkit-border-radius: 100px / 30px;
+				-moz-border-radius: 100px / 30px;
+			}
+		</textarea>
+	 </td>
+   </tr>  
+<tr>
+     <td>
+     	<div class="circle">Circle</div>
+     </td>
+     <td>
+     	<textarea>
+     		.circle{
+				-webkit-border-radius: 300px;
+				-moz-border-radius: 300px;
+				width:50px;
+				height:50px;
+			}
+		</textarea>
+	 </td>
+   </tr>  
+   </table>
+</body>
+</html>

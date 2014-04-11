@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+  <h1>Canvas Bouncing Ball</h1>
+  <canvas id="canvas" width="300px" height="300px" style="border:1px solid black"></canvas>
+  <script>
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+    ctx.fillStyle = "#000000";
+    var ballX=100, ballY=200;
+    var radius=20;
+    var xInc=10;
+    var yInc=10;
+    setInterval(gameLoop,10); 
+
+    function gameLoop(){
+      advanceBall();
+      clearCanvas();
+      drawBall();   
+    }
+   
+    function advanceBall(){
+       ballX+=xInc;
+       ballY+=yInc;
+       if((ballX+radius)>canvas.width){
+         xInc = (-1)*xInc;
+       }
+       if((ballX-radius)<0){
+         xInc = (-1)*xInc;
+       }
+       if((ballY+radius)>canvas.height){
+         yInc = (-1)*yInc;
+       }
+       if((ballY-radius)<0){
+         yInc = (-1)*yInc;
+       }
+    }
+    function clearCanvas(){
+       ctx.clearRect(0,0,canvas.width,canvas.height);
+    }
+    function drawBall(){
+       ctx.beginPath();
+       ctx.arc(ballX, ballY, radius, 0, Math.PI*2, true);
+       ctx.closePath();
+       ctx.fill();
+    }
+        
+  </script>
+</body>
+</html>

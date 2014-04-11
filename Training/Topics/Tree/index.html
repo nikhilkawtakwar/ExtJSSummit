@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Synerzip's ExtJS Summit</title>
+    <link rel="stylesheet" href="/resources/css/main.css"/>
+</head>
+<body>
+<section class='container'>
+<header class='header'>
+    <img class='logo'
+         src='/resources/images/synerzip-logo-hi-res.gif'></img>
+</header>
+<a href="/index.html">Return to Main Page</a>
+<hr/>
+<section class="content">
+    <article>
+        <h1><img src="/resources/images/extlogo.png" height="150"></h1>
+
+    </article>
+    <article>
+        <h1><a name="TOC">Table of Contents</a></h1>
+        <ul>
+            <li><a href="#what_is_Tree">What is Tree ?</a></li>
+            <li><a href="#components">Components</a></li>
+            <li><a href="#comsettingponents">Store and Model</a></li>
+            <li><a href="#gridPanel">Grid Panel</a></li>
+            <li><a href="#run-example">Example</a></li>
+            <li><a href="#references">References</a></li>
+        </ul>
+        <hr/>
+    </article>
+    <article>
+        <h3
+                class="topic"><a name="what_is_Tree">What is a Tree ?</a>
+        </h3>
+
+        <p>
+            The TreePanel provides tree-structured UI representation of
+            tree-structured data. A TreePanel must be bound to a
+            Ext.data.TreeStore. TreePanel's support multiple columns through the
+            columns configuration.
+        <li>Columns</li>
+        <li>Rows</li>
+
+        </p>
+        <a href="#TOC">Table of Contents</a>
+        <hr/>
+    </article>
+    <article>
+        <h3 class="topic"><a name="components">Components</a></h3>
+        </p>
+        Displaying data in a grid requires two Ext components:
+        <li>A <b>Store</b> that acts like an in-memory database, keeping
+            track
+            of the data we want to display
+        </li>
+        <li>A <b>Grid Panel</b> that provides a way to display the data
+            stored i
+            n a data store
+            Before we start to create each of these, let's look at some of
+            the terminology that will be used, because this can be confusing
+            at first
+        </li>
+        <li><b>Columns,</b> This refers to a whole column of data, and
+            would
+            contain information only relevant to the display of data down
+            through the entire column, including the heading. In Ext JS,
+            this information is part of the <b>Column Model</b>.
+        </li>
+        <li><b>Fields,</b> This also refers to an entire column of data,
+            but is refers to the actual data values. With Ext JS, this is
+            used in the <b>Reader</b>, for loading data
+        </li>
+        </p>
+        <a href="#TOC">Table of Contents</a>
+        <hr/>
+    </article>
+
+    <article>
+        <h3
+                class="topic"><a name="comsettingponents">Store and
+            Model</a></h3>
+
+        <p>The Store class encapsulates a client side cache of Model
+            objects. Stores load data via a Proxy, and also provide
+            functions for <b>sorting, filtering and querying </b>the model
+            instances contained within it.</p>
+
+
+        <p>
+            Proxies are used by Stores to handle the loading and saving of
+            Model data. Usually developers will not need to create or
+            interact with proxies directly.
+
+        <p> There are two types of Proxy </p>
+
+        <li><b>Client</b></li>
+        <li><b>Server</b></li>
+
+
+        <p> Some client proxies are </p>
+
+
+        <li><b>LocalStorageProxy</b> - saves its data to localStorage if the
+            browser supports it
+        </li>
+        <li><b>SessionStorageProxy</b> - saves its data to sessionStorage if
+            the browsers supports it
+        </li>
+        <li><b>MemoryProxy</b> - holds data in memory only, any data is lost
+            when the page is refreshed
+        </li>
+
+        <p> There are four types of server proxies
+
+        <li><b>Ajax</b> - sends requests to a server on the same domain
+        </li>
+        <li><b>JsonP</b> - uses JSON-P to send requests to a server on a
+            different domain
+        </li>
+        <li><b>Rest</b> - uses RESTful HTTP methods (GET/PUT/POST/DELETE)
+            tocommunicate with server
+        </li>
+        <li><b>Direct</b> - uses Ext.direct.Manager to send requests
+        </li>
+        </p>
+
+            <pre class="code">
+
+          Ext.create(<b>'Ext.data.Store'</b>, {
+            storeId: ' STORE ID - by which we can load it',
+            fields: ['name', 'email', 'phone', 'doj'],
+
+            data: {'employees': [
+              { 'name': 'Pankaj', "email": "pankaj@synerzip.com", "phone": "234-234-5645", "doj": '10-10-2012' },
+               . . .
+            ]},
+
+            //READERS
+            proxy: {
+              type: 'memory',
+              reader: {
+                type: 'json',
+                root: 'employees'
+              }
+            }
+
+            </pre>
+
+
+        <p>
+
+        </p>
+
+
+        <a href="#TOC">Table of Contents</a>
+        <hr/>
+
+    </article>
+
+
+    <article>
+        <h3 class="topic"><a name="gridPanel">Grid Panel</a></h3>
+
+        <p>Simple Ext code to show "Hello World" </p>
+            <pre class="code">
+              Ext.create('Ext.grid.Panel', {
+                title: 'TITLE',
+                store: Ext.data.StoreManager.lookup('STORE-ID'),
+                columns: [
+                  { text: 'Name', dataIndex: 'name', renderer : function(name){ return '<b>'+name+'</b>';} },
+                  { text: 'Email', dataIndex: 'email', width: 200 },
+                  { text: 'Phone', dataIndex: 'phone' },
+                  { text: 'Date Of Joining', dataIndex: 'doj' }
+                ],
+                height: 200,
+                width: 500,
+                renderTo: Ext.getBody()
+              });
+
+            </pre>
+        <br>
+
+
+        <br/><br/>
+        <a href="#TOC">Table of Contents</a>
+        <hr/>
+    </article>
+
+
+    <article>
+        <h3 class="topic"><a name="run-example">Run Live Example</a></h3>
+        <li><a href="example1/simplegrid.html">Example 1</a></li>
+        <li><a
+                href="example2/grid.html">Example 2</a></li>
+        <br/><br/>
+        <a href="#TOC">Table of Contents</a>
+        <hr/>
+    </article>
+    <article>
+        <h3 class="topic"><a name="references">References</a></h3>
+        <ul>
+            <li><a href="http://localhost:4000/extzip/ext-4.2.1.883/docs/index.html#!/api/Ext.grid.View">Ext Grid docs</a></li>
+        </ul>
+        <a href="#TOC">Table of Contents</a>
+        <hr/>
+    </article>
+
+</section>
+</section>
+
+</body>
+</html>

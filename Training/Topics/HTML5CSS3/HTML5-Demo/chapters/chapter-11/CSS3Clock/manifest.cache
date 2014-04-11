@@ -1,0 +1,15 @@
+CACHE MANIFEST 
+index.html 
+jquery-1.2.6.min.js
+app.css
+images/clockface.jpg
+images/hourhand.png	
+images/minhand.png	
+images/sechand.png
+
+ 
+NETWORK: 
+
+FALLBACK: 
+/ /offline.html
+

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">	
+
+	<link rel="stylesheet" href="css/app.css">
+
+	<title>HTML5</title>
+</head>
+<body>
+  <div id="demo">
+    <h1>HTML5 Video Demo</h1>
+    
+    <video width="640" height="368" id="myVideo" controls>
+      <source src="http://www.html5videoplayer.net/videos/madagascar3.ogv" type='video/ogg; codecs="theora, vorbis"'>
+      <source src="http://www.html5videoplayer.net/videos/madagascar3.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+      <source src="http://www.html5videoplayer.net/videos/madagascar3.webm" type='video/webm; codecs="vp8.0, vorbis"'>
+    </video>
+    <div class="controls">
+      <input type="button" name="skipBack" value="&lt;&lt;" id="rewind">
+      <input type="button" name="play" value="&gt;" id="play">
+      <input type="button" name="pause" value="||" id="pause">
+      <input type="button" name="stop" value="[]" id="stop">
+      <input type="button" name="skipBack" value="&gt;&gt;" id="forward">
+      <input type="range" name="range" id="range">
+    </div>
+  </div>
+
+  
+	<script>
+		var videoElem = document.getElementById("myVideo");
+		var playButton= document.getElementById("play");
+		var pauseButton= document.getElementById("pause");
+		var stopButton= document.getElementById("stop");
+		var rewindButton= document.getElementById("rewind");
+		var forwardButton= document.getElementById("forward");
+		var range= document.getElementById("range");
+		
+		videoElem.addEventListener("loadedmetadata",function(){
+		  range.min=0;
+		  range.step=1;
+		  range.max=videoElem.duration;
+		},false);
+
+		videoElem.addEventListener("timeupdate",function(){
+		  range.value=videoElem.currentTime;			
+		});
+		
+		range.addEventListener("mousedown",function(){
+		  videoElem.pause();
+
+		});
+		range.addEventListener("mouseup",function(){
+		  videoElem.currentTime=range.value;
+		  videoElem.play();
+
+		});
+
+		rewindButton.addEventListener("click",function(){
+		  videoElem.currentTime -= 2;
+		});
+
+		playButton.addEventListener("click",function(){
+		  videoElem.play();
+		});
+		pauseButton.addEventListener("click",function(){
+		  videoElem.pause();
+		});
+		stopButton.addEventListener("click",function(){
+		  videoElem.currentTime = 0;
+		  videoElem.pause();
+		});
+
+		forwardButton.addEventListener("click",function(){
+		  videoElem.currentTime += 2;
+		});
+	</script>  
+</body>
+</html>

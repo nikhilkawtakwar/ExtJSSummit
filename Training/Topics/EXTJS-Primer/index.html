@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Synerzip's ExtJS Summit</title>
+    <link rel="stylesheet" href="/resources/css/main.css"/>
+</head>
+<body>
+<section class='container'>
+    <header class='header'>
+        <img class='logo'
+             src='/resources/images/synerzip-logo-hi-res.gif'></img>
+    </header>
+    <a href="/index.html">Return to Main Page</a>
+    <hr/>
+    <section class="content">
+        <article>
+            <h1><img src="/resources/images/extlogo.png" height="150"></h1>
+
+        </article>
+        <article>
+            <h1><a name="TOC">Table of Contents</a></h1>
+            <ul>
+                <li><a href="#what_is_ExtJS">What is ExtJS ?</a></li>
+                <li><a href="#installation">Installation</a></li>
+                <li><a href="#presentation">Simple Includes</a></li>
+                <li><a href="#example">First Example</a></li>
+                <li><a href="#Ext.onReady>Ext.onReady</a></li>
+                <li><a href="#references">References</a></li>
+            </ul>
+            <hr/>
+        </article>
+        <article>
+            <h3
+                    class="topic"><a name="what_is_ExtJS">What is ExtJS ?</a>
+            </h3>
+
+            <p>
+
+                Ext JS is a pure JavaScript application framework for building
+                interactive web applications using techniques such as Ajax,
+                DHTML and DOM scripting.
+                Ext JS is the leading standard for business-grade web
+                application development. With over 100 examples, 1000 APIs,
+                hundreds of components, a full documentation suite and built in
+                themes, Ext JS provides the tools necessary to build robust
+                desktop applications. Ext JS also brings a rich data package
+                that allows developers to use a <i>model-view-controller
+                (MVC)</i>
+                architecture when building their app. The MVC leverages features
+                like Big Data Grids enabling an entirely new level of
+                interactivity in web apps.
+            </p>
+            <a href="#TOC">Table of Contents</a>
+            <hr/>
+        </article>
+        <article>
+            <h3 class="topic"><a name="installation">Installation</a></h3>
+
+            <p>You can download latest GPLV3 version from <a
+                    href="http://www.sencha.com/products/extjs/download/">here</a>
+                </p>
+            <!--<img src='resources/jasmineFolderStructure.png'></img>-->
+            </p>
+            <a href="#TOC">Table of Contents</a>
+            <hr/>
+        </article>
+        <article>
+            <p>
+
+            <h3 class="topic"><a name="presentation">Simple Includes</a></h3>
+            You need following files to included to run basic example
+            <ul>
+                <li>ext-all.css</li>
+                <li>ext-all.js</li>
+            </ul>
+            So your HTML file would look like
+            <pre class="code">
+                <code style="font-size: 20px">
+                    &lt;html&gt;
+                    &lt;head&gt;
+                    &lt;title&gt;page_title&lt;/title&gt;
+
+                    <b>&lt;link rel="stylesheet" type="text/css"
+                    href=<span style="color: red">"&lt;your Ext base
+                        folder&gt;/resources/css/ext-all.css"</span>/&gt;
+
+                    &lt;script type="text/javascript"
+                    src=<span style="color: red">"&lt;your Ext base
+                            folder&gt;/ext-all.js"</span>&gt;&lt;/script&gt;
+                    </b>
+                    &lt;/head&gt;
+                    &lt;body&gt;
+                    &lt;/body&gt;
+                    &lt;/html&gt;
+                </code>
+            </pre>
+            </p>
+            <p>
+                The *-all file(s) contain the entire framework, whereas the
+                other files contain the core files needed by the framework.
+            </p>
+            <br/>
+            <a href="#TOC">Table of Contents</a>
+            <hr/>
+
+        </article>
+
+
+        <article>
+            <h3 class="topic"><a name="example">Simple Example i.e
+                Hello world</a></h3>
+            <p>Simple Ext code to show "Hello World" </p>
+            <pre class="code">
+
+        Ext.onReady(function () {
+	       Ext.MessageBox.alert('Hello World !!', 'Hello ExtJS !!',function(){}
+           );
+       });
+            </pre>
+            <br>
+
+
+            <br/><br/>
+            <a href="#TOC">Table of Contents</a>
+            <hr/>
+        </article>
+
+
+        <article>
+            <h3 class="topic"><a name="run-example">Run Live Example</a></h3>
+            <a href="SpecRunner.html">Run Test Cases</a></li>
+            <br/><br/>
+            <a href="#TOC">Table of Contents</a>
+            <hr/>
+        </article>
+        <article>
+            <h3 class="topic"><a name="references">References</a></h3>
+            <ul>
+                <li><a href="http://jasmine.github.io/">Jasmine doc</a></li>
+                <li><a href="http://evanhahn.com/how-do-i-jasmine/">How do I
+                    ?</a></li>
+                <li><a href="http://try-jasmine.heroku.com/">Try Jasmine</a>
+                </li>
+            </ul>
+            <a href="#TOC">Table of Contents</a>
+            <hr/>
+        </article>
+
+    </section>
+</section>
+
+</body>
+</html>
